@@ -1,0 +1,32 @@
+package seom;
+
+import java.util.HashMap;
+
+public class StagHunt implements IGame {
+    private final HashMap<StrategyProfile, Payoffs> results = new HashMap<>();
+
+    public enum Strategy implements IStrategy {
+        Stag,
+        Hare
+    }
+
+    public StagHunt() {
+        results.put(new StrategyProfile(Strategy.Stag, Strategy.Stag), new Payoffs(2, 2));
+        results.put(new StrategyProfile(Strategy.Stag, Strategy.Hare), new Payoffs(0, 1));
+        results.put(new StrategyProfile(Strategy.Hare, Strategy.Stag), new Payoffs(1, 0));
+        results.put(new StrategyProfile(Strategy.Hare, Strategy.Hare), new Payoffs(1, 1));
+    }
+
+    public StagHunt(Payoffs ss, Payoffs sh, Payoffs hs, Payoffs hh) {
+        results.put(new StrategyProfile(Strategy.Stag, Strategy.Stag), ss);
+        results.put(new StrategyProfile(Strategy.Stag, Strategy.Hare), sh);
+        results.put(new StrategyProfile(Strategy.Hare, Strategy.Stag), hs);
+        results.put(new StrategyProfile(Strategy.Hare, Strategy.Hare), hh);
+    }
+
+    @Override
+    public Payoffs play(IStrategy... strategies) {
+        StrategyProfile profile = new StrategyProfile(strategies);
+        return results.get(profile);
+    }
+}
