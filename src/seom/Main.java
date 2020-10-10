@@ -1,5 +1,9 @@
 package seom;
 
+import seom.games.BargainingGame;
+import seom.games.PrisonersDilemma;
+import seom.games.UltimatumGame;
+
 public class Main {
 
     public static void main(String[] args) {

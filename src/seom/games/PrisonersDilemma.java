@@ -1,4 +1,4 @@
-package seom;
+package seom.games;
 
 import java.util.HashMap;
 

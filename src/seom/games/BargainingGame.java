@@ -1,4 +1,4 @@
-package seom;
+package seom.games;
 
 public class BargainingGame implements IGame {
     public enum Strategy implements IStrategy {
