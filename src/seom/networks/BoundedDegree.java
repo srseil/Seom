@@ -13,6 +13,9 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
      * While he doesn't mention it explicitly, it looks like Alexander uses such a kind
      * of bounded degree network, too. Therefore, it seems best to keep this implementation,
      * but add another one whereby the degrees are uniformly distributed.
+     *
+     * WARNING:
+     * This can run into an infinite loop!
      */
     public BoundedDegree(int numAgents, int minDegree, int maxDegree) {
         MersenneTwisterFast random = new MersenneTwisterFast();
