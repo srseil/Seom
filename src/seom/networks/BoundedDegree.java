@@ -3,8 +3,8 @@ package seom.networks;
 import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import seom.Agent;
-import seom.Main;
 import seom.Relationship;
+import seom.Simulation;
 
 public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
     /* Note:
@@ -16,7 +16,7 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
      */
     public BoundedDegree(int numAgents, int minDegree, int maxDegree) {
         MersenneTwisterFast random = new MersenneTwisterFast();
-        random.setSeed(Main.seed);
+        random.setSeed(Simulation.getSeed());
 
         Agent[] agents = new Agent[numAgents];
         for (int i = 0; i < numAgents; i++) {

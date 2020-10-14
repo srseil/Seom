@@ -1,15 +1,20 @@
 package seom;
 
-import edu.uci.ics.jung.algorithms.layout.KKLayout;
+import edu.uci.ics.jung.algorithms.layout.CircleLayout;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import sim.display.Controller;
 import sim.display.GUIState;
+import sim.engine.SimState;
+import sim.engine.Steppable;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
 
-public class SimulationWithUI extends GUIState {
+public class SimulationWithUI extends GUIState implements Steppable {
     private final Simulation simulation;
+    private CircleLayout<Agent, Relationship> layout;
+    private BasicVisualizationServer<Agent, Relationship> visualizer;
     private JFrame frame;
 
     public SimulationWithUI() {
@@ -31,11 +36,16 @@ public class SimulationWithUI extends GUIState {
     public void init(Controller controller) {
         super.init(controller);
 
+        this.scheduleRepeatingImmediatelyAfter(this);
+
         // If there is ever more than the network visualization frame, refactor this into its own class
-        var layout = new KKLayout<>(simulation.getGraph());
+        layout = new CircleLayout<>(simulation.getGraph());
+        layout.setVertexOrder(Comparator.comparingInt(Agent::getId));
         layout.setSize(new Dimension(300, 300));
-        var visualizer = new BasicVisualizationServer<>(layout);
+        layout.initialize();
+        visualizer = new BasicVisualizationServer<>(layout);
         visualizer.setPreferredSize(new Dimension(350, 350));
+        visualizer.getRenderContext().setVertexFillPaintTransformer(Agent::getStrategyColor);
 
         frame = new JFrame();
         frame.setTitle("Network Visualization");
@@ -47,11 +57,6 @@ public class SimulationWithUI extends GUIState {
     }
 
     @Override
-    public void start() {
-        super.start();
-    }
-
-    @Override
     public void quit() {
         super.quit();
 
@@ -59,5 +64,22 @@ public class SimulationWithUI extends GUIState {
             frame.dispose();
         }
         frame = null;
+    }
+
+    @Override
+    public void step(SimState simState) {
+        // If the layout ever changes over the run of the simulation, we need to call this
+        /*
+        layout = new CircleLayout<>(simulation.getGraph());
+        layout.setVertexOrder(Comparator.comparingInt(Agent::getId));
+        layout.setSize(new Dimension(300, 300));
+        layout.initialize();
+        visualizer.setGraphLayout(layout);
+        //visualizer.repaint();
+        */
+    }
+
+    public Simulation getSimulation() {
+        return simulation;
     }
 }

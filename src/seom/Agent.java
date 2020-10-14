@@ -4,6 +4,8 @@ import edu.uci.ics.jung.graph.Graph;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
+import java.awt.*;
+
 public class Agent implements Steppable {
     private static int nextId = 0;
 
@@ -25,5 +27,13 @@ public class Agent implements Steppable {
     @Override
     public String toString() {
         return String.valueOf(id);
+    }
+
+    public Paint getStrategyColor() {
+        return Color.BLUE;
+    }
+
+    public int getId() {
+        return id;
     }
 }
