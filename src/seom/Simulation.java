@@ -27,10 +27,8 @@ public class Simulation extends SimState {
     @Override
     public void start() {
         super.start();
-
-        for (Agent agent : graph.getVertices()) {
-            schedule.scheduleRepeating(agent);
-        }
+        schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
+        schedule.scheduleRepeating(Schedule.EPOCH_PLUS_EPSILON, interactions);
     }
 
     public static long getSeed() {
