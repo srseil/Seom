@@ -8,7 +8,7 @@ public class Lattice1D extends UndirectedSparseGraph<Agent, Relationship> {
     public Lattice1D(int length, boolean wrapAround) {
         Agent[] agents = new Agent[length];
         for (int i = 0; i < length; i++) {
-            Agent agent = new Agent(this);
+            Agent agent = new Agent();
             agents[i] = agent;
             addVertex(agent);
 

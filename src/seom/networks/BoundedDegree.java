@@ -23,7 +23,7 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
 
         Agent[] agents = new Agent[numAgents];
         for (int i = 0; i < numAgents; i++) {
-            agents[i] = new Agent(this);
+            agents[i] = new Agent();
             addVertex(agents[i]);
         }
 

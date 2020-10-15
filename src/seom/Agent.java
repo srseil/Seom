@@ -1,27 +1,18 @@
 package seom;
 
-import edu.uci.ics.jung.graph.Graph;
-import sim.engine.SimState;
-import sim.engine.Steppable;
+import seom.games.Strategy;
 
 import java.awt.*;
 
-public class Agent implements Steppable {
+public class Agent {
     private static int nextId = 0;
 
-    private final Graph<Agent, Relationship> network;
     private final int id;
+    private Strategy strategy;
+    private int score;
 
-    public Agent(Graph<Agent, Relationship> network) {
-        this.network = network;
+    public Agent() {
         id = nextId++;
-    }
-
-    @Override
-    public void step(SimState simState) {
-        for (Agent neighbor : network.getNeighbors(this)) {
-            // Do something
-        }
     }
 
     @Override
@@ -35,5 +26,25 @@ public class Agent implements Steppable {
 
     public int getId() {
         return id;
+    }
+
+    public Strategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(Strategy strategy) {
+        this.strategy = strategy;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void increaseScore(int value) {
+        score += value;
+    }
+
+    public void resetScore() {
+        score = 0;
     }
 }

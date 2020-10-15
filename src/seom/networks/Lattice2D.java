@@ -8,7 +8,7 @@ public class Lattice2D extends UndirectedSparseGraph<Agent, Relationship> {
     public Lattice2D(int width, int height, boolean wrapAround) {
         Agent[] agents = new Agent[width * height];
         for (int i = 0; i < agents.length; i++) {
-            agents[i] = new Agent(this);
+            agents[i] = new Agent();
         }
 
         for (int i = 0; i < agents.length; i++) {
