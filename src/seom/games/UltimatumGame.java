@@ -1,15 +1,17 @@
 package seom.games;
 
+import java.awt.*;
+
 public class UltimatumGame implements Game {
     public enum Strategy implements seom.games.Strategy {
-        S1Gamesman  (9, 5, 9),
-        S2          (9),
-        S3          (9, 5),
-        S4MadDog    (9, 9),
-        S5EasyRider (5, 5, 9),
-        S6          (5),
-        S7Fairman   (5, 5),
-        S8          (5, 9);
+        S1Gamesman(9, 5, 9),
+        S2(9),
+        S3(9, 5),
+        S4MadDog(9, 9),
+        S5EasyRider(5, 5, 9),
+        S6(5),
+        S7Fairman(5, 5),
+        S8(5, 9);
 
         private final int demand;
         private final int[] accept;
@@ -26,6 +28,20 @@ public class UltimatumGame implements Game {
                 }
             }
             return false;
+        }
+
+        @Override
+        public Color getColor() {
+            return switch (this) {
+                case S1Gamesman -> new Color(0, 0, 0);
+                case S2 -> new Color(45, 48, 146);
+                case S3 -> new Color(0, 166, 79);
+                case S4MadDog -> new Color(0, 173, 239);
+                case S5EasyRider -> new Color(237, 27, 35);
+                case S6 -> new Color(236, 0, 140);
+                case S7Fairman -> new Color(255, 242, 0);
+                case S8 -> new Color(255, 255, 255);
+            };
         }
     }
 

@@ -1,5 +1,6 @@
 package seom.games;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class PrisonersDilemma implements Game {
@@ -7,7 +8,15 @@ public class PrisonersDilemma implements Game {
 
     public enum Strategy implements seom.games.Strategy {
         Cooperate,
-        Defect
+        Defect;
+
+        @Override
+        public Color getColor() {
+            return switch (this) {
+                case Cooperate -> Color.WHITE;
+                case Defect -> Color.BLACK;
+            };
+        }
     }
 
     public PrisonersDilemma() {

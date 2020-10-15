@@ -1,5 +1,6 @@
 package seom.games;
 
+import java.awt.*;
 import java.util.HashMap;
 
 public class StagHunt implements Game {
@@ -7,7 +8,15 @@ public class StagHunt implements Game {
 
     public enum Strategy implements seom.games.Strategy {
         Stag,
-        Hare
+        Hare;
+
+        @Override
+        public Color getColor() {
+            return switch (this) {
+                case Stag -> Color.LIGHT_GRAY;
+                case Hare -> Color.BLACK;
+            };
+        }
     }
 
     public StagHunt() {
