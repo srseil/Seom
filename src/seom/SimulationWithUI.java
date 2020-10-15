@@ -17,13 +17,12 @@ public class SimulationWithUI extends GUIState implements Steppable {
     private BasicVisualizationServer<Agent, Relationship> visualizer;
     private JFrame frame;
 
-    public SimulationWithUI() {
-        super(new Simulation());
-        simulation = (Simulation)state;
+    public SimulationWithUI(Configuration config) throws Exception {
+        this(config, Simulation.getSeed());
     }
 
-    public SimulationWithUI(long seed) {
-        super(new Simulation(seed));
+    public SimulationWithUI(Configuration config, long seed) throws Exception {
+        super(new Simulation(config, seed));
         simulation = (Simulation)state;
     }
 
@@ -39,7 +38,7 @@ public class SimulationWithUI extends GUIState implements Steppable {
         this.scheduleRepeatingImmediatelyAfter(this);
 
         // If there is ever more than the network visualization frame, refactor this into its own class
-        layout = new CircleLayout<>(simulation.getGraph());
+        layout = new CircleLayout<>(simulation.getConfig().getNetwork());
         layout.setVertexOrder(Comparator.comparingInt(Agent::getId));
         layout.setSize(new Dimension(300, 300));
         layout.initialize();
@@ -75,8 +74,9 @@ public class SimulationWithUI extends GUIState implements Steppable {
         layout.setSize(new Dimension(300, 300));
         layout.initialize();
         visualizer.setGraphLayout(layout);
-        //visualizer.repaint();
         */
+
+        visualizer.repaint();
     }
 
     public Simulation getSimulation() {

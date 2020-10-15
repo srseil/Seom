@@ -1,19 +1,27 @@
 package seom;
 
-import edu.uci.ics.jung.graph.Graph;
+import sim.engine.Schedule;
 import sim.engine.SimState;
 
 public class Simulation extends SimState {
-    private static long seed = 560646223;
+    private static final long seed = 560646223;
 
-    private Graph<Agent, Relationship> graph;
+    private final Configuration config;
+    private final Interactions interactions;
 
-    public Simulation() {
-        super(seed);
+    public Simulation(Configuration config) throws Exception {
+        this(config, seed);
     }
 
-    public Simulation(long seed) {
+    public Simulation(Configuration config, long seed) throws Exception {
         super(seed);
+
+        if (!config.validate()) {
+            throw new Exception("Configuration is invalid");
+        }
+
+        this.config = config;
+        interactions = new Interactions(config);
     }
 
     @Override
@@ -29,11 +37,7 @@ public class Simulation extends SimState {
         return seed;
     }
 
-    public Graph<Agent, Relationship> getGraph() {
-        return graph;
-    }
-
-    public void setGraph(Graph<Agent, Relationship> graph) {
-        this.graph = graph;
+    public Configuration getConfig() {
+        return config;
     }
 }
