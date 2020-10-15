@@ -2,10 +2,10 @@ package seom.games;
 
 import java.util.HashMap;
 
-public class PrisonersDilemma implements IGame {
+public class PrisonersDilemma implements Game {
     private final HashMap<StrategyProfile, Payoffs> results = new HashMap<>();
 
-    public enum Strategy implements IStrategy {
+    public enum Strategy implements seom.games.Strategy {
         Cooperate,
         Defect
     }
@@ -25,7 +25,12 @@ public class PrisonersDilemma implements IGame {
     }
 
     @Override
-    public Payoffs play(IStrategy... strategies) {
+    public seom.games.Strategy[] getStrategies() {
+        return Strategy.values();
+    }
+
+    @Override
+    public Payoffs play(seom.games.Strategy... strategies) {
         StrategyProfile profile = new StrategyProfile(strategies);
         return results.get(profile);
     }

@@ -1,7 +1,7 @@
 package seom.games;
 
-public class BargainingGame implements IGame {
-    public enum Strategy implements IStrategy {
+public class BargainingGame implements Game {
+    public enum Strategy implements seom.games.Strategy {
         Demand0,
         Demand1,
         Demand2,
@@ -16,9 +16,14 @@ public class BargainingGame implements IGame {
     }
 
     @Override
-    public Payoffs play(IStrategy... strategies) {
+    public seom.games.Strategy[] getStrategies() {
+        return Strategy.values();
+    }
+
+    @Override
+    public Payoffs play(seom.games.Strategy... strategies) {
         int sum = 0;
-        for (IStrategy strategy : strategies) {
+        for (seom.games.Strategy strategy : strategies) {
             Strategy demand = (Strategy) strategy;
             sum += demand.ordinal();
         }

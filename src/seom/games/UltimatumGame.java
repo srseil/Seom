@@ -1,7 +1,7 @@
 package seom.games;
 
-public class UltimatumGame implements IGame {
-    public enum Strategy implements IStrategy {
+public class UltimatumGame implements Game {
+    public enum Strategy implements seom.games.Strategy {
         S1Gamesman  (9, 5, 9),
         S2          (9),
         S3          (9, 5),
@@ -30,7 +30,12 @@ public class UltimatumGame implements IGame {
     }
 
     @Override
-    public Payoffs play(IStrategy... strategies) {
+    public seom.games.Strategy[] getStrategies() {
+        return Strategy.values();
+    }
+
+    @Override
+    public Payoffs play(seom.games.Strategy... strategies) {
         Strategy p1Strategy = (Strategy) strategies[0];
         Strategy p2Strategy = (Strategy) strategies[1];
 
