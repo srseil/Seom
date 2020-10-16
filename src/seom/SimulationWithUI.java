@@ -25,10 +25,16 @@ public class SimulationWithUI extends GUIState {
     public void init(Controller controller) {
         super.init(controller);
 
-        var networkFrame = new NetworkVisualization(simulation.getConfig());
-        this.scheduleRepeatingImmediatelyAfter(networkFrame);
+        networkFrame = new NetworkVisualization(simulation.getConfig());
         controller.registerFrame(networkFrame);
         networkFrame.setVisible(true);
+    }
+
+    @Override
+    public void start() {
+        super.start();
+
+        scheduleRepeatingImmediatelyAfter(networkFrame);
     }
 
     @Override
