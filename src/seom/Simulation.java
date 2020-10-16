@@ -28,7 +28,7 @@ public class Simulation extends SimState {
     public void start() {
         super.start();
         schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
-        schedule.scheduleRepeating(Schedule.EPOCH_PLUS_EPSILON, interactions);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, interactions);
     }
 
     public static long getSeed() {
