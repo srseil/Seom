@@ -5,67 +5,96 @@ import seom.Agent;
 import seom.Relationship;
 
 public class Lattice2D extends UndirectedSparseGraph<Agent, Relationship> {
-    public Lattice2D(int width, int height, boolean wrapAround) {
+    private final int width;
+    private final int height;
+    private final boolean wrapAround;
+
+    public enum Neighborhood {
+        VonNeumann,
+        Moore
+    }
+
+    public Lattice2D(int width, int height, boolean wrapAround, Neighborhood neighborhood) {
+        this.width = width;
+        this.height = height;
+        this.wrapAround = wrapAround;
+
         Agent[] agents = new Agent[width * height];
         for (int i = 0; i < agents.length; i++) {
             agents[i] = new Agent();
         }
 
         for (int i = 0; i < agents.length; i++) {
-            addVertex(agents[i]);
-
             Agent agent = agents[i];
-            Agent agentLeft = null;
-            Agent agentRight = null;
-            Agent agentUp = null;
-            Agent agentDown = null;
+            addVertex(agent);
 
-            int agentX = i % width;
-            int agentY = i / width;
-
-            // Determine edges
-
-            if (agentX > 0) {
-                agentLeft = agents[i - 1];
-            } else if (wrapAround) {
-                agentLeft = agents[i + width - 1];
+            if (neighborhood == Neighborhood.VonNeumann || neighborhood == Neighborhood.Moore) {
+                addEdgeIfPossible(agent, topOf(i), agents);
+                addEdgeIfPossible(agent, rightOf(i), agents);
+                addEdgeIfPossible(agent, bottomOf(i), agents);
+                addEdgeIfPossible(agent, leftOf(i), agents);
             }
 
-            if (agentX < width - 1) {
-                agentRight = agents[i + 1];
-            } else if (wrapAround) {
-                agentRight = agents[i - width + 1];
+            if (neighborhood == Neighborhood.Moore) {
+                addEdgeIfPossible(agent, topOf(rightOf(i)), agents);
+                addEdgeIfPossible(agent, bottomOf(rightOf(i)), agents);
+                addEdgeIfPossible(agent, bottomOf(leftOf(i)), agents);
+                addEdgeIfPossible(agent, topOf(leftOf(i)), agents);
             }
+        }
+    }
 
-            if (agentY > 0) {
-                agentUp = agents[i - width];
-            } else if (wrapAround) {
-                agentUp = agents[i + width * (height - 1)];
-            }
+    private void addEdgeIfPossible(Agent agent, int targetIndex, Agent[] agents) {
+        if (targetIndex != -1) {
+            addEdge(new Relationship(), agent, agents[targetIndex]);
+        }
+    }
 
-            if (agentY < height - 1) {
-                agentDown = agents[i + width];
-            } else if (wrapAround) {
-                agentDown = agents[i - width * (height - 1)];
-            }
+    private int topOf(int index) {
+        if (index == -1) {
+            return -1;
+        } else if (index / width > 0) {
+            return index - width;
+        } else if (wrapAround) {
+            return index + width * (height - 1);
+        } else {
+            return -1;
+        }
+    }
 
-            // Create edges
+    private int bottomOf(int index) {
+        if (index == -1) {
+            return -1;
+        } else if (index / width < height - 1) {
+            return index + width;
+        } else if (wrapAround) {
+            return index - width * (height - 1);
+        } else {
+            return -1;
+        }
+    }
 
-            if (agentLeft != null) {
-                addEdge(new Relationship(), agent, agentLeft);
-            }
+    private int leftOf(int index) {
+        if (index == -1) {
+            return -1;
+        } else if (index % width > 0) {
+            return index - 1;
+        } else if (wrapAround) {
+            return index + width - 1;
+        } else {
+            return -1;
+        }
+    }
 
-            if (agentRight != null) {
-                addEdge(new Relationship(), agent, agentRight);
-            }
-
-            if (agentUp != null) {
-                addEdge(new Relationship(), agent, agentUp);
-            }
-
-            if (agentDown != null) {
-                addEdge(new Relationship(), agent, agentDown);
-            }
+    private int rightOf(int index) {
+        if (index == -1) {
+            return -1;
+        } else if (index % width < width - 1) {
+            return index + 1;
+        } else if (wrapAround) {
+            return index - width + 1;
+        } else {
+            return -1;
         }
     }
 }
