@@ -8,6 +8,7 @@ public class Simulation extends SimState {
 
     private final Configuration config;
     private final Interactions interactions;
+    private final Stability stability;
 
     public Simulation(Configuration config) throws Exception {
         this(config, seed);
@@ -22,13 +23,16 @@ public class Simulation extends SimState {
 
         this.config = config;
         interactions = new Interactions(config);
+        stability = new Stability(this);
     }
 
     @Override
     public void start() {
         super.start();
+
         schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
-        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, interactions);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, interactions);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 1, stability);
     }
 
     public static long getSeed() {
