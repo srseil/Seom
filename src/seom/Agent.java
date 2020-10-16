@@ -21,7 +21,11 @@ public class Agent {
     }
 
     public Paint getStrategyColor() {
-        return strategy.getColor();
+        if (strategy != null) {
+            return strategy.getColor();
+        } else {
+            return Color.WHITE;
+        }
     }
 
     public int getId() {
