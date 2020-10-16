@@ -1,7 +1,9 @@
 package seom;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.visualization.BasicVisualizationServer;
+import edu.uci.ics.jung.visualization.VisualizationViewer;
+import edu.uci.ics.jung.visualization.control.DefaultModalGraphMouse;
+import edu.uci.ics.jung.visualization.control.ModalGraphMouse;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
@@ -10,7 +12,7 @@ import java.awt.*;
 import java.util.Comparator;
 
 public class NetworkVisualization extends JFrame implements Steppable {
-    private final BasicVisualizationServer<Agent, Relationship> visualizer;
+    private final VisualizationViewer<Agent, Relationship> visualizer;
 
     public NetworkVisualization(Configuration config) {
         CircleLayout<Agent, Relationship> layout = new CircleLayout<>(config.getNetwork());
@@ -18,9 +20,13 @@ public class NetworkVisualization extends JFrame implements Steppable {
         layout.setSize(new Dimension(300, 300));
         layout.initialize();
 
-        visualizer = new BasicVisualizationServer<>(layout);
+        visualizer = new VisualizationViewer<>(layout);
         visualizer.setPreferredSize(new Dimension(350, 350));
         visualizer.getRenderContext().setVertexFillPaintTransformer(Agent::getStrategyColor);
+
+        var graphMouse = new DefaultModalGraphMouse<Agent, Relationship>();
+        graphMouse.setMode(ModalGraphMouse.Mode.TRANSFORMING);
+        visualizer.setGraphMouse(graphMouse);
 
         setTitle("Network Visualization");
         getContentPane().add(visualizer);
