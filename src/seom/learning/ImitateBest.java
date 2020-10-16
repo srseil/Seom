@@ -14,7 +14,7 @@ public class ImitateBest implements LearningRule {
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var bestNeighbors = new ArrayList<Agent>(neighbors.size());
-        int bestNeighborScore = 0;
+        double bestNeighborScore = 0.0;
         for (Agent neighbor : neighbors) {
             if (neighbor.getScore() == bestNeighborScore) {
                 bestNeighbors.add(neighbor);

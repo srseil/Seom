@@ -1,17 +1,17 @@
 package seom.games;
 
 public class Payoffs {
-    private final int[] payoffs;
+    private final double[] payoffs;
 
-    public Payoffs(int... payoffs) {
+    public Payoffs(double... payoffs) {
         this.payoffs = payoffs;
     }
 
-    public int[] getPayoffs() {
+    public double[] getPayoffs() {
         return payoffs;
     }
 
-    public int getPayoffForPlayer(int player) {
+    public double getPayoffForPlayer(int player) {
         return payoffs[player];
     }
 }

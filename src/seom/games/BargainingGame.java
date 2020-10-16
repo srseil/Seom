@@ -47,7 +47,7 @@ public class BargainingGame implements Game {
             sum += demand.ordinal();
         }
 
-        int[] payoffs = new int[strategies.length];
+        double[] payoffs = new double[strategies.length];
         if (sum > 10) {
             for (int i = 0; i < strategies.length; i++) {
                 payoffs[i] = 0;

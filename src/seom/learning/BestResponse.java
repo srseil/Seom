@@ -17,13 +17,13 @@ public class BestResponse implements LearningRule {
 
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
-        var strategyScores = new HashMap<Strategy, Integer>();
+        var strategyScores = new HashMap<Strategy, Double>();
         for (Strategy strategy : game.getStrategies()) {
             if (agent.getStrategy() == strategy) {
                 continue;
             }
 
-            int score = 0;
+            double score = 0;
             for (Agent neighbor : neighbors) {
                 Payoffs payoffs = game.play(strategy, neighbor.getStrategy());
                 score += payoffs.getPayoffForPlayer(0);
@@ -33,8 +33,8 @@ public class BestResponse implements LearningRule {
         }
 
         var bestStrategies = new ArrayList<Strategy>(strategyScores.size());
-        int bestStrategyScore = 0;
-        for (Map.Entry<Strategy, Integer> entry : strategyScores.entrySet()) {
+        double bestStrategyScore = 0.0;
+        for (Map.Entry<Strategy, Double> entry : strategyScores.entrySet()) {
             if (entry.getValue() == bestStrategyScore) {
                 bestStrategies.add(entry.getKey());
             } else if (entry.getValue() > bestStrategyScore) {

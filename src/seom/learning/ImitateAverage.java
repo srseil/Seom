@@ -13,7 +13,7 @@ public class ImitateAverage implements LearningRule {
 
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
-        var strategyPayoffs = new HashMap<Strategy, ArrayList<Integer>>();
+        var strategyPayoffs = new HashMap<Strategy, ArrayList<Double>>();
         for (Agent neighbor : neighbors) {
             if (!strategyPayoffs.containsKey(neighbor.getStrategy())) {
                 strategyPayoffs.put(neighbor.getStrategy(), new ArrayList<>());
@@ -23,9 +23,9 @@ public class ImitateAverage implements LearningRule {
         }
 
         var avgStrategyPayoffs = new HashMap<Strategy, Double>(strategyPayoffs.size());
-        for (Map.Entry<Strategy, ArrayList<Integer>> entry : strategyPayoffs.entrySet()) {
-            double sum = 0;
-            for (Integer score : entry.getValue()) {
+        for (Map.Entry<Strategy, ArrayList<Double>> entry : strategyPayoffs.entrySet()) {
+            double sum = 0.0;
+            for (Double score : entry.getValue()) {
                 sum += score;
             }
 

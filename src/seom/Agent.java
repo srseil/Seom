@@ -9,7 +9,7 @@ public class Agent {
 
     private final int id;
     private Strategy strategy;
-    private int score;
+    private double score;
 
     public Agent() {
         id = nextId++;
@@ -40,15 +40,15 @@ public class Agent {
         this.strategy = strategy;
     }
 
-    public int getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void increaseScore(int value) {
+    public void increaseScore(double value) {
         score += value;
     }
 
     public void resetScore() {
-        score = 0;
+        score = 0.0;
     }
 }
