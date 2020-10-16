@@ -1,21 +1,11 @@
 package seom;
 
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.visualization.BasicVisualizationServer;
 import sim.display.Controller;
 import sim.display.GUIState;
-import sim.engine.SimState;
-import sim.engine.Steppable;
 
-import javax.swing.*;
-import java.awt.*;
-import java.util.Comparator;
-
-public class SimulationWithUI extends GUIState implements Steppable {
+public class SimulationWithUI extends GUIState {
     private final Simulation simulation;
-    private CircleLayout<Agent, Relationship> layout;
-    private BasicVisualizationServer<Agent, Relationship> visualizer;
-    private JFrame frame;
+    private NetworkVisualization networkFrame;
 
     public SimulationWithUI(Configuration config) throws Exception {
         this(config, Simulation.getSeed());
@@ -35,51 +25,19 @@ public class SimulationWithUI extends GUIState implements Steppable {
     public void init(Controller controller) {
         super.init(controller);
 
-        this.scheduleRepeatingImmediatelyAfter(this);
-
-        // If there is ever more than the network visualization frame, refactor this into its own class
-        layout = new CircleLayout<>(simulation.getConfig().getNetwork());
-        layout.setVertexOrder(Comparator.comparingInt(Agent::getId));
-        layout.setSize(new Dimension(300, 300));
-        layout.initialize();
-        visualizer = new BasicVisualizationServer<>(layout);
-        visualizer.setPreferredSize(new Dimension(350, 350));
-        visualizer.getRenderContext().setVertexFillPaintTransformer(Agent::getStrategyColor);
-
-        frame = new JFrame();
-        frame.setTitle("Network Visualization");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(visualizer);
-        frame.pack();
-        controller.registerFrame(frame);
-        frame.setVisible(true);
+        var networkFrame = new NetworkVisualization(simulation.getConfig());
+        this.scheduleRepeatingImmediatelyAfter(networkFrame);
+        controller.registerFrame(networkFrame);
+        networkFrame.setVisible(true);
     }
 
     @Override
     public void quit() {
         super.quit();
 
-        if (frame != null) {
-            frame.dispose();
+        if (networkFrame != null) {
+            networkFrame.dispose();
         }
-        frame = null;
-    }
-
-    @Override
-    public void step(SimState simState) {
-        // If the layout ever changes over the run of the simulation, we need to call this
-        /*
-        layout = new CircleLayout<>(simulation.getGraph());
-        layout.setVertexOrder(Comparator.comparingInt(Agent::getId));
-        layout.setSize(new Dimension(300, 300));
-        layout.initialize();
-        visualizer.setGraphLayout(layout);
-        */
-
-        visualizer.repaint();
-    }
-
-    public Simulation getSimulation() {
-        return simulation;
+        networkFrame = null;
     }
 }
