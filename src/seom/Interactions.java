@@ -18,7 +18,7 @@ public class Interactions implements Steppable {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("interactions");
+        System.out.println("Interactions");
 
         Graph<Agent, Relationship> network = config.getNetwork();
 

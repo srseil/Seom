@@ -15,7 +15,7 @@ public class Initialization implements Steppable {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("initialization");
+        System.out.println("Initialization");
 
         Strategy[] strategies = config.getGame().getStrategies();
         for (Agent agent : config.getNetwork().getVertices()) {

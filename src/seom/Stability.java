@@ -13,7 +13,7 @@ public class Stability implements Steppable {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("stability");
+        System.out.println("Stability");
 
         boolean stable = true;
         Strategy stableStratey = null;
@@ -27,9 +27,7 @@ public class Stability implements Steppable {
         }
 
         if (stable) {
-            simulation.finish();
-            System.out.println("Finish (" + simulation.schedule.getSteps() + ")");
-            System.out.println();
+            simulation.kill();
         }
     }
 }

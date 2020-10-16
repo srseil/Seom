@@ -33,6 +33,15 @@ public class Simulation extends SimState {
         schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, interactions);
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 1, stability);
+        System.out.println("Start");
+    }
+
+    @Override
+    public void finish() {
+        super.finish();
+
+        System.out.println("Finish (" + schedule.getSteps() + ")");
+        System.out.println();
     }
 
     public static long getSeed() {
