@@ -7,6 +7,8 @@ import seom.games.Game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImitateProbability implements LearningRule {
     private final MersenneTwisterFast random = new MersenneTwisterFast(Simulation.getSeed());
@@ -14,7 +16,7 @@ public class ImitateProbability implements LearningRule {
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var betterNeighbors = new ArrayList<Agent>(neighbors.size());
-        var totalScoreDifference = 0;
+        double totalScoreDifference = 0.0;
         for (Agent neighbor : neighbors) {
             if (neighbor.getScore() > agent.getScore()) {
                 betterNeighbors.add(neighbor);
@@ -22,20 +24,43 @@ public class ImitateProbability implements LearningRule {
             }
         }
 
-        if (betterNeighbors.size() == 1) {
+        if (betterNeighbors.size() == 0) {
+            return;
+        } else if (betterNeighbors.size() == 1) {
             agent.setStrategy(betterNeighbors.get(0).getStrategy());
             return;
         }
 
-        var betterNeighborsDistribution = new ArrayList<Agent>(totalScoreDifference);
+        var betterNeighborDistribution = new HashMap<Range, Agent>();
+        double lastUpperBound = 0.0;
         for (Agent neighbor : betterNeighbors) {
-            int scoreDifference = neighbor.getScore() - agent.getScore();
-            for (int i = 0; i < scoreDifference; i++) {
-                betterNeighborsDistribution.add(neighbor);
-            }
+            double scoreDifference = neighbor.getScore() - agent.getScore();
+            double relativeDifference = scoreDifference / totalScoreDifference;
+            Range range = new Range(lastUpperBound, lastUpperBound + relativeDifference);
+            betterNeighborDistribution.put(range, neighbor);
+            lastUpperBound = range.upperBound;
         }
 
-        int rand = random.nextInt(betterNeighborsDistribution.size());
-        agent.setStrategy(betterNeighborsDistribution.get(rand).getStrategy());
+        double rand = random.nextDouble();
+        for (Map.Entry<Range, Agent> entry : betterNeighborDistribution.entrySet()) {
+            if (entry.getKey().contains(rand)) {
+                agent.setStrategy(entry.getValue().getStrategy());
+                break;
+            }
+        }
+    }
+
+    private static class Range {
+        final double lowerBound;
+        final double upperBound;
+
+        Range(double lowerBound, double upperBound) {
+            this.lowerBound = lowerBound;
+            this.upperBound = upperBound;
+        }
+
+        boolean contains(double value) {
+            return value >= lowerBound && value < upperBound;
+        }
     }
 }
