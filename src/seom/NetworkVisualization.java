@@ -15,13 +15,16 @@ public class NetworkVisualization extends JFrame implements Steppable {
     private final VisualizationViewer<Agent, Relationship> visualizer;
 
     public NetworkVisualization(Configuration config) {
+        int width = 600;
+        int height = 600;
+
         CircleLayout<Agent, Relationship> layout = new CircleLayout<>(config.getNetwork());
         layout.setVertexOrder(Comparator.comparingInt(Agent::getId));
-        layout.setSize(new Dimension(300, 300));
+        layout.setSize(new Dimension(width, height));
         layout.initialize();
 
         visualizer = new VisualizationViewer<>(layout);
-        visualizer.setPreferredSize(new Dimension(350, 350));
+        visualizer.setPreferredSize(new Dimension(width, height));
         visualizer.getRenderContext().setVertexFillPaintTransformer(Agent::getStrategyColor);
 
         var graphMouse = new DefaultModalGraphMouse<Agent, Relationship>();
