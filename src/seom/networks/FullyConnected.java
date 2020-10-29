@@ -6,6 +6,8 @@ import seom.Relationship;
 
 public class FullyConnected extends UndirectedSparseGraph<Agent, Relationship> {
     public FullyConnected(int numAgents) {
+        assert numAgents > 1 : "The number of agents must be at least 2";
+
         for (int i = 0; i < numAgents; i++) {
             addVertex(new Agent());
         }
