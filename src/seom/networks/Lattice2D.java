@@ -8,18 +8,22 @@ public class Lattice2D extends UndirectedSparseGraph<Agent, Relationship> {
     private final int width;
     private final int height;
     private final boolean wrapAround;
+    private final Agent[] agents;
 
     public enum Neighborhood {
         VonNeumann,
         Moore
     }
 
-    public Lattice2D(int width, int height, boolean wrapAround, Neighborhood neighborhood) {
+    public Lattice2D(int width, int height, int radius, boolean wrapAround, Neighborhood neighborhood) {
+        assert width > 1 || height > 1 : "Either width or height must be larger than 1";
+        assert radius < width || radius < height : "Radius must be smaller than largest dimension";
+
         this.width = width;
         this.height = height;
         this.wrapAround = wrapAround;
 
-        Agent[] agents = new Agent[width * height];
+        agents = new Agent[width * height];
         for (int i = 0; i < agents.length; i++) {
             agents[i] = new Agent();
         }
@@ -29,22 +33,42 @@ public class Lattice2D extends UndirectedSparseGraph<Agent, Relationship> {
             addVertex(agent);
 
             if (neighborhood == Neighborhood.VonNeumann || neighborhood == Neighborhood.Moore) {
-                addEdgeIfPossible(agent, topOf(i), agents);
-                addEdgeIfPossible(agent, rightOf(i), agents);
-                addEdgeIfPossible(agent, bottomOf(i), agents);
-                addEdgeIfPossible(agent, leftOf(i), agents);
+                int topIndex = i;
+                int rightIndex = i;
+                int bottomIndex = i;
+                int leftIndex = i;
+                for (int j = 0; j < radius; j++) {
+                    topIndex = topOf(topIndex);
+                    rightIndex = rightOf(rightIndex);
+                    bottomIndex = bottomOf(bottomIndex);
+                    leftIndex = leftOf(leftIndex);
+                    addEdgeIfPossible(agent, topIndex);
+                    addEdgeIfPossible(agent, rightIndex);
+                    addEdgeIfPossible(agent, bottomIndex);
+                    addEdgeIfPossible(agent, leftIndex);
+                }
             }
 
             if (neighborhood == Neighborhood.Moore) {
-                addEdgeIfPossible(agent, topOf(rightOf(i)), agents);
-                addEdgeIfPossible(agent, bottomOf(rightOf(i)), agents);
-                addEdgeIfPossible(agent, bottomOf(leftOf(i)), agents);
-                addEdgeIfPossible(agent, topOf(leftOf(i)), agents);
+                int topRightIndex = i;
+                int bottomRightIndex = i;
+                int bottomLeftIndex = i;
+                int topLeftIndex = i;
+                for (int j = 0; j < radius; j++) {
+                    topRightIndex = topOf(rightOf(topRightIndex));
+                    bottomRightIndex = bottomOf(rightOf(bottomRightIndex));
+                    bottomLeftIndex = bottomOf(leftOf(bottomLeftIndex));
+                    topLeftIndex = topOf(leftOf(topLeftIndex));
+                    addEdgeIfPossible(agent, topRightIndex);
+                    addEdgeIfPossible(agent, bottomRightIndex);
+                    addEdgeIfPossible(agent, bottomLeftIndex);
+                    addEdgeIfPossible(agent, topLeftIndex);
+                }
             }
         }
     }
 
-    private void addEdgeIfPossible(Agent agent, int targetIndex, Agent[] agents) {
+    private void addEdgeIfPossible(Agent agent, int targetIndex) {
         if (targetIndex != -1) {
             addEdge(new Relationship(), agent, agents[targetIndex]);
         }
