@@ -1,10 +1,12 @@
 package seom;
 
+import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.Graph;
 import seom.games.Game;
 import seom.learning.LearningRule;
 
 public class Configuration {
+    private MersenneTwisterFast random;
     private Game game;
     private LearningRule learningRule;
     private Graph<Agent, Relationship> network;
@@ -12,6 +14,14 @@ public class Configuration {
 
     public boolean validate() {
         return game != null && learningRule != null && network != null;
+    }
+
+    public MersenneTwisterFast getRandom() {
+        return random;
+    }
+
+    public void setRandom(MersenneTwisterFast random) {
+        this.random = random;
     }
 
     public Game getGame() {

@@ -7,7 +7,6 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.Relationship;
-import seom.Simulation;
 import seom.utils.JavaRandomFacade;
 
 import java.util.*;
@@ -17,15 +16,14 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
     private final JavaRandomFacade javaRandom;
     private final Agent[] stubs;
 
-    public BoundedDegree(int numAgents, int minDegree, int maxDegree) {
+    public BoundedDegree(int numAgents, int minDegree, int maxDegree, MersenneTwisterFast random) {
         assert numAgents > 0 : "Number of agents must be larger than one";
         assert minDegree <= maxDegree : "Minimum degree must not be larger than maximum degree";
         assert numAgents > minDegree : "Number of agents must be larger than minimum degree";
         assert minDegree != maxDegree || (numAgents * minDegree) % 2 == 0
             : "If the minimum and maximum degrees are equal, (degree * numAgents) must be even";
 
-        random = new MersenneTwisterFast();
-        random.setSeed(Simulation.getSeed());
+        this.random = random;
         javaRandom = new JavaRandomFacade(random);
         stubs = new Agent[maxDegree];
 

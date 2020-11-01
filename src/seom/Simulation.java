@@ -11,11 +11,7 @@ public class Simulation extends SimState {
     private final Stability stability;
 
     public Simulation(Configuration config) throws Exception {
-        this(config, seed);
-    }
-
-    public Simulation(Configuration config, long seed) throws Exception {
-        super(seed);
+        super(config.getRandom());
 
         if (!config.validate()) {
             throw new Exception("Configuration is invalid");

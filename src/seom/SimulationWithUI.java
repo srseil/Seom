@@ -8,11 +8,7 @@ public class SimulationWithUI extends GUIState {
     private NetworkVisualization networkFrame;
 
     public SimulationWithUI(Configuration config) throws Exception {
-        this(config, Simulation.getSeed());
-    }
-
-    public SimulationWithUI(Configuration config, long seed) throws Exception {
-        super(new Simulation(config, seed));
+        super(new Simulation(config));
         simulation = (Simulation)state;
     }
 
