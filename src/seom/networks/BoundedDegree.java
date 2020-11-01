@@ -8,11 +8,13 @@ import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.Relationship;
 import seom.Simulation;
+import seom.utils.JavaRandomFacade;
 
 import java.util.*;
 
 public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
     private final MersenneTwisterFast random;
+    private final JavaRandomFacade javaRandom;
     private final Agent[] stubs;
 
     public BoundedDegree(int numAgents, int minDegree, int maxDegree) {
@@ -24,6 +26,7 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
 
         random = new MersenneTwisterFast();
         random.setSeed(Simulation.getSeed());
+        javaRandom = new JavaRandomFacade(random);
         stubs = new Agent[maxDegree];
 
         //noinspection StatementWithEmptyBody
@@ -182,13 +185,13 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
         for (Agent stub : stubs) {
             agents.remove(stub);
         }
-        Collections.shuffle(agents);
+        Collections.shuffle(agents, javaRandom);
         return agents.toArray(Agent[]::new);
     }
 
     private Relationship[] getShuffledEdges(Graph<Agent, Relationship> graph) {
         ArrayList<Relationship> edges = new ArrayList<>(graph.getEdges());
-        Collections.shuffle(edges);
+        Collections.shuffle(edges, javaRandom);
         return edges.toArray(Relationship[]::new);
     }
 }

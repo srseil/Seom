@@ -6,6 +6,7 @@ import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.Relationship;
 import seom.Simulation;
+import seom.utils.JavaRandomFacade;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,6 +18,7 @@ public class SmallWorld extends UndirectedSparseGraph<Agent, Relationship> {
         assert beta >= 0 && beta <= 1.0 : "Beta must be in [0,1]";
 
         var random = new MersenneTwisterFast(Simulation.getSeed());
+        var javaRandom = new JavaRandomFacade(random);
 
         Agent[] agents = new Agent[numAgents];
         for (int i = 0; i < numAgents; i++) {
@@ -51,7 +53,7 @@ public class SmallWorld extends UndirectedSparseGraph<Agent, Relationship> {
 
                 Agent agent2 = null;
                 var nodes = new ArrayList<>(getVertices());
-                Collections.shuffle(nodes);
+                Collections.shuffle(nodes, javaRandom);
                 for (Agent node : nodes) {
                     if (agent1 != node && findEdge(agent1, node) == null) {
                         agent2 = node;
