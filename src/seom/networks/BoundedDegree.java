@@ -122,70 +122,15 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
             for (Relationship edge : getShuffledEdges(configGraph)) {
                 if (edge == unwantedEdge) continue;
 
-                Pair<Agent> endpoints1 = configGraph.getEndpoints(edge);
-                Pair<Agent> endpoints2 = configGraph.getEndpoints(unwantedEdge);
-
-                // Both edges are loops
-                if (endpoints1.getFirst() == endpoints1.getSecond()
-                    && endpoints2.getFirst() == endpoints2.getSecond()) {
-                    // Try to replace a triple of loops
-                    for (Relationship thirdEdge : unwantedEdges) {
-                        if (!configGraph.containsEdge(thirdEdge)) continue;
-                        if (thirdEdge == unwantedEdge || thirdEdge == edge) continue;
-
-                        Pair<Agent> endpoints3 = configGraph.getEndpoints(thirdEdge);
-                        if (endpoints3.getFirst() != endpoints3.getSecond()) continue;
-
-                        // Loops share at least one node
-                        if (endpoints1.getFirst() == endpoints2.getFirst()
-                            || endpoints2.getFirst() == endpoints3.getFirst()
-                            || endpoints3.getFirst() == endpoints1.getFirst()) {
-                            continue;
-                        }
-
-                        // At least two nodes of the loops are already connected
-                        if (configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getFirst())
-                            || configGraph.isNeighbor(endpoints2.getFirst(), endpoints3.getFirst())
-                            || configGraph.isNeighbor(endpoints3.getFirst(), endpoints1.getFirst())) {
-                            continue;
-                        }
-
-                        configGraph.removeEdge(edge);
-                        configGraph.removeEdge(unwantedEdge);
-                        configGraph.removeEdge(thirdEdge);
-                        configGraph.addEdge(new Relationship(), endpoints1.getSecond(), endpoints2.getFirst());
-                        configGraph.addEdge(new Relationship(), endpoints2.getSecond(), endpoints3.getFirst());
-                        configGraph.addEdge(new Relationship(), endpoints3.getSecond(), endpoints1.getFirst());
-                        removed = true;
-                        break;
-                    }
-
-                    if (removed) break;
-                    else continue;
+                if (tryReplaceLoopTriple(edge, unwantedEdge, configGraph)) {
+                    removed = true;
+                    break;
                 }
 
-                // Edges share at least one node
-                if (endpoints1.getFirst() == endpoints2.getFirst()
-                    || endpoints1.getFirst() == endpoints2.getSecond()
-                    || endpoints1.getSecond() == endpoints2.getFirst()
-                    || endpoints1.getSecond() == endpoints2.getSecond()) {
-                    continue;
+                if (tryReplaceDuplicateEdge(edge, unwantedEdge, configGraph)) {
+                    removed = true;
+                    break;
                 }
-
-                // Edges are connected through exactly one other edge
-                if (configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getFirst())
-                    || configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getSecond())
-                    || configGraph.isNeighbor(endpoints1.getSecond(), endpoints2.getFirst())
-                    || configGraph.isNeighbor(endpoints1.getSecond(), endpoints2.getSecond())) {
-                    continue;
-                }
-
-                configGraph.removeEdge(edge);
-                configGraph.removeEdge(unwantedEdge);
-                configGraph.addEdge(new Relationship(), endpoints1.getFirst(), endpoints2.getFirst());
-                configGraph.addEdge(new Relationship(), endpoints1.getSecond(), endpoints2.getSecond());
-                removed = true;
-                break;
             }
 
             if (!removed) {
@@ -208,6 +153,83 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
             addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
         }
 
+        return true;
+    }
+
+    private boolean tryReplaceLoopTriple(Relationship edge1, Relationship edge2, Graph<Agent, Relationship> configGraph) {
+        Pair<Agent> endpoints1 = configGraph.getEndpoints(edge1);
+        Pair<Agent> endpoints2 = configGraph.getEndpoints(edge2);
+
+        // Two loops need to be given
+        if (endpoints1.getFirst() != endpoints1.getSecond()
+            || endpoints2.getFirst() != endpoints2.getSecond()) {
+            return false;
+        }
+
+        // Attempt to find suitable third loop
+        for (Relationship edge3 : getShuffledEdges(configGraph)) {
+            if (!configGraph.containsEdge(edge3)) continue;
+            if (edge3 == edge1 || edge3 == edge2) continue;
+
+            Pair<Agent> endpoints3 = configGraph.getEndpoints(edge3);
+            if (endpoints3.getFirst() != endpoints3.getSecond()) continue;
+
+            // Loops share at least one node
+            if (endpoints1.getFirst() == endpoints2.getFirst()
+                || endpoints2.getFirst() == endpoints3.getFirst()
+                || endpoints3.getFirst() == endpoints1.getFirst()) {
+                continue;
+            }
+
+            // At least two nodes of the loops are already connected
+            if (configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getFirst())
+                || configGraph.isNeighbor(endpoints2.getFirst(), endpoints3.getFirst())
+                || configGraph.isNeighbor(endpoints3.getFirst(), endpoints1.getFirst())) {
+                continue;
+            }
+
+            configGraph.removeEdge(edge1);
+            configGraph.removeEdge(edge2);
+            configGraph.removeEdge(edge3);
+            configGraph.addEdge(new Relationship(), endpoints1.getSecond(), endpoints2.getFirst());
+            configGraph.addEdge(new Relationship(), endpoints2.getSecond(), endpoints3.getFirst());
+            configGraph.addEdge(new Relationship(), endpoints3.getSecond(), endpoints1.getFirst());
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean tryReplaceDuplicateEdge(Relationship edge1, Relationship edge2, Graph<Agent, Relationship> configGraph) {
+        Pair<Agent> endpoints1 = configGraph.getEndpoints(edge1);
+        Pair<Agent> endpoints2 = configGraph.getEndpoints(edge2);
+
+        // Both edges are loops
+        if (endpoints1.getFirst() == endpoints1.getSecond()
+            && endpoints2.getFirst() == endpoints2.getSecond()) {
+            return false;
+        }
+
+        // Edges share at least one node
+        if (endpoints1.getFirst() == endpoints2.getFirst()
+            || endpoints1.getFirst() == endpoints2.getSecond()
+            || endpoints1.getSecond() == endpoints2.getFirst()
+            || endpoints1.getSecond() == endpoints2.getSecond()) {
+            return false;
+        }
+
+        // Edges are connected through exactly one other edge
+        if (configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getFirst())
+            || configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getSecond())
+            || configGraph.isNeighbor(endpoints1.getSecond(), endpoints2.getFirst())
+            || configGraph.isNeighbor(endpoints1.getSecond(), endpoints2.getSecond())) {
+            return false;
+        }
+
+        configGraph.removeEdge(edge1);
+        configGraph.removeEdge(edge2);
+        configGraph.addEdge(new Relationship(), endpoints1.getFirst(), endpoints2.getFirst());
+        configGraph.addEdge(new Relationship(), endpoints1.getSecond(), endpoints2.getSecond());
         return true;
     }
 
