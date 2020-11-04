@@ -4,26 +4,32 @@ import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.games.Payoffs;
+import seom.networks.InteractionEdge;
+import seom.networks.LearningEdge;
+import seom.networks.NetworkUtils;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
 public class Interactions implements Steppable {
     private final Configuration config;
     private final MersenneTwisterFast random;
+    private final Graph<Agent, InteractionEdge> interactionGraph;
+    private final Graph<Agent, LearningEdge> learningGraph;
+
 
     public Interactions(Configuration config) {
         this.config = config;
         random = new MersenneTwisterFast();
+        interactionGraph = NetworkUtils.getInteractionGraph(config.getNetwork());
+        learningGraph = NetworkUtils.getLearningGraph(config.getNetwork());
     }
 
     @Override
     public void step(SimState simState) {
         System.out.println("Interactions");
 
-        Graph<Agent, Relationship> network = config.getNetwork();
-
-        for (Relationship edge : network.getEdges()) {
-            Pair<Agent> agents = network.getEndpoints(edge);
+        for (InteractionEdge edge : interactionGraph.getEdges()) {
+            Pair<Agent> agents = interactionGraph.getEndpoints(edge);
             Agent agent0 = agents.getFirst();
             Agent agent1 = agents.getSecond();
 
@@ -33,11 +39,11 @@ public class Interactions implements Steppable {
         }
 
         if (sampleUpdateProbability()) {
-            for (Agent agent : network.getVertices()) {
-                config.getLearningRule().updateStrategy(agent, network.getNeighbors(agent), config.getGame());
+            for (Agent agent : learningGraph.getVertices()) {
+                config.getLearningRule().updateStrategy(agent, learningGraph.getNeighbors(agent), config.getGame());
             }
 
-            for (Agent agent : network.getVertices()) {
+            for (Agent agent : learningGraph.getVertices()) {
                 agent.resetScore();
             }
         }

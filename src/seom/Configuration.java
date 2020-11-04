@@ -4,12 +4,13 @@ import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.Graph;
 import seom.games.Game;
 import seom.learning.LearningRule;
+import seom.networks.Edge;
 
 public class Configuration {
     private MersenneTwisterFast random;
     private Game game;
     private LearningRule learningRule;
-    private Graph<Agent, Relationship> network;
+    private Graph<Agent, Edge> network;
     private double learningProbability;
 
     public boolean validate() {
@@ -40,11 +41,11 @@ public class Configuration {
         this.learningRule = learningRule;
     }
 
-    public Graph<Agent, Relationship> getNetwork() {
+    public Graph<Agent, Edge> getNetwork() {
         return network;
     }
 
-    public void setNetwork(Graph<Agent, Relationship> network) {
+    public void setNetwork(Graph<Agent, Edge> network) {
         this.network = network;
     }
 
