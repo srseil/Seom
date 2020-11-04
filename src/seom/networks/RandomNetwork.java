@@ -3,9 +3,8 @@ package seom.networks;
 import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import seom.Agent;
-import seom.Relationship;
 
-public class RandomNetwork extends UndirectedSparseGraph<Agent, Relationship> {
+public class RandomNetwork extends UndirectedSparseGraph<Agent, Edge> {
     public RandomNetwork(int numAgents, double edgeProbability, MersenneTwisterFast random) {
         assert numAgents > 1 : "The number of agents must be at least 2";
         assert edgeProbability >= 0 && edgeProbability <= 1.0 : "Edge probability must be in [0,1]";
@@ -20,7 +19,7 @@ public class RandomNetwork extends UndirectedSparseGraph<Agent, Relationship> {
 
                 double rand = random.nextDouble();
                 if (rand < edgeProbability) {
-                    addEdge(new Relationship(), agent, other);
+                    addEdge(new InteractionEdge(), agent, other);
                 }
             }
         }

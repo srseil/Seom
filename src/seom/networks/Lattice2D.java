@@ -2,9 +2,8 @@ package seom.networks;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import seom.Agent;
-import seom.Relationship;
 
-public class Lattice2D extends UndirectedSparseGraph<Agent, Relationship> {
+public class Lattice2D extends UndirectedSparseGraph<Agent, Edge> {
     private final int width;
     private final int height;
     private final boolean wrapAround;
@@ -70,7 +69,7 @@ public class Lattice2D extends UndirectedSparseGraph<Agent, Relationship> {
 
     private void addEdgeIfPossible(Agent agent, int targetIndex) {
         if (targetIndex != -1) {
-            addEdge(new Relationship(), agent, agents[targetIndex]);
+            addEdge(new InteractionEdge(), agent, agents[targetIndex]);
         }
     }
 

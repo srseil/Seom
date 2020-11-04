@@ -2,9 +2,8 @@ package seom.networks;
 
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import seom.Agent;
-import seom.Relationship;
 
-public class Lattice1D extends UndirectedSparseGraph<Agent, Relationship> {
+public class Lattice1D extends UndirectedSparseGraph<Agent, Edge> {
     public Lattice1D(int length, int radius, boolean wrapAround) {
         assert length > 1 : "Length must be at least 2";
         assert radius <= length / 2 : "Maximum radius is length / 2";
@@ -26,7 +25,7 @@ public class Lattice1D extends UndirectedSparseGraph<Agent, Relationship> {
                 } else {
                     break;
                 }
-                addEdge(new Relationship(), agents[i], agents[neighborIndex]);
+                addEdge(new InteractionEdge(), agents[i], agents[neighborIndex]);
             }
         }
     }

@@ -4,13 +4,12 @@ import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
-import seom.Relationship;
 import seom.utils.JavaRandomFacade;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SmallWorld extends UndirectedSparseGraph<Agent, Relationship> {
+public class SmallWorld extends UndirectedSparseGraph<Agent, Edge> {
     public SmallWorld(int numAgents, int radius, double beta, MersenneTwisterFast random) {
         assert numAgents > 1 : "The number of agents must be at least 2";
         assert radius <= numAgents / 2 : "Maximum radius is numAgents / 2";
@@ -33,11 +32,11 @@ public class SmallWorld extends UndirectedSparseGraph<Agent, Relationship> {
                 } else if (neighborIndex == numAgents - 1) {
                     neighborIndex = 0;
                 }
-                addEdge(new Relationship(), agents[i], agents[neighborIndex]);
+                addEdge(new InteractionEdge(), agents[i], agents[neighborIndex]);
             }
         }
 
-        for (Relationship edge : getEdges().toArray(Relationship[]::new)) {
+        for (Edge edge : getEdges().toArray(Edge[]::new)) {
             double rand = random.nextDouble();
             if (rand < beta) {
                 Agent agent1;
@@ -58,7 +57,7 @@ public class SmallWorld extends UndirectedSparseGraph<Agent, Relationship> {
                     }
                 }
 
-                addEdge(new Relationship(), agent1, agent2);
+                addEdge(new InteractionEdge(), agent1, agent2);
             }
         }
     }
