@@ -28,7 +28,7 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
         stubs = new Agent[maxDegree];
 
         //noinspection StatementWithEmptyBody
-        while (!tryCreateNetwork(numAgents, minDegree, maxDegree));
+        while (!tryCreateNetwork(numAgents, minDegree, maxDegree)) ;
 
         for (Agent agent : getVertices()) {
             int neighborCount = getNeighborCount(agent);
@@ -128,7 +128,40 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
                 // Both edges are loops
                 if (endpoints1.getFirst() == endpoints1.getSecond()
                     && endpoints2.getFirst() == endpoints2.getSecond()) {
-                    continue;
+                    // Try to replace a triple of loops
+                    for (Relationship thirdEdge : unwantedEdges) {
+                        if (!configGraph.containsEdge(thirdEdge)) continue;
+                        if (thirdEdge == unwantedEdge || thirdEdge == edge) continue;
+
+                        Pair<Agent> endpoints3 = configGraph.getEndpoints(thirdEdge);
+                        if (endpoints3.getFirst() != endpoints3.getSecond()) continue;
+
+                        // Loops share at least one node
+                        if (endpoints1.getFirst() == endpoints2.getFirst()
+                            || endpoints2.getFirst() == endpoints3.getFirst()
+                            || endpoints3.getFirst() == endpoints1.getFirst()) {
+                            continue;
+                        }
+
+                        // At least two nodes of the loops are already connected
+                        if (configGraph.isNeighbor(endpoints1.getFirst(), endpoints2.getFirst())
+                            || configGraph.isNeighbor(endpoints2.getFirst(), endpoints3.getFirst())
+                            || configGraph.isNeighbor(endpoints3.getFirst(), endpoints1.getFirst())) {
+                            continue;
+                        }
+
+                        configGraph.removeEdge(edge);
+                        configGraph.removeEdge(unwantedEdge);
+                        configGraph.removeEdge(thirdEdge);
+                        configGraph.addEdge(new Relationship(), endpoints1.getSecond(), endpoints2.getFirst());
+                        configGraph.addEdge(new Relationship(), endpoints2.getSecond(), endpoints3.getFirst());
+                        configGraph.addEdge(new Relationship(), endpoints3.getSecond(), endpoints1.getFirst());
+                        removed = true;
+                        break;
+                    }
+
+                    if (removed) break;
+                    else continue;
                 }
 
                 // Edges share at least one node
@@ -156,7 +189,7 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
             }
 
             if (!removed) {
-                System.out.println("Could not remove unwanted edge, trying network construction from scratch");
+                System.out.println("Could not remove unwanted edge, attempting network construction from scratch");
                 return false;
             }
         }
