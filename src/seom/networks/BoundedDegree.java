@@ -122,10 +122,10 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Relationship> {
             for (Relationship edge : getShuffledEdges(configGraph)) {
                 if (edge == unwantedEdge) continue;
 
-                if (tryReplaceLoopTriple(edge, unwantedEdge, configGraph)) {
-                    removed = true;
-                    break;
-                }
+//                if (tryReplaceLoopTriple(edge, unwantedEdge, configGraph)) {
+//                    removed = true;
+//                    break;
+//                }
 
                 if (tryReplaceDuplicateEdge(edge, unwantedEdge, configGraph)) {
                     removed = true;
