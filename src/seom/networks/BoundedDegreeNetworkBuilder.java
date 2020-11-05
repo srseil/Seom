@@ -36,7 +36,7 @@ public class BoundedDegreeNetworkBuilder {
         stubs = new Agent[maxDegree];
 
         //noinspection StatementWithEmptyBody
-        while (!tryCreateNetwork(numAgents, minDegree, maxDegree)) ;
+        while (!tryCreateNetwork()) ;
 
         for (Agent agent : interactionGraph.getVertices()) {
             int neighborCount = interactionGraph.getNeighborCount(agent);
@@ -76,7 +76,7 @@ public class BoundedDegreeNetworkBuilder {
 
     //endregion
 
-    private boolean tryCreateNetwork(int numAgents, int minDegree, int maxDegree) {
+    private boolean tryCreateNetwork() {
         var configGraph = new UndirectedSparseMultigraph<Agent, InteractionEdge>();
 
         // Stubs are implemented as edges to pre-defined stub agents
