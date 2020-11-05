@@ -1,7 +1,7 @@
 package seom.networks;
 
 import ec.util.MersenneTwisterFast;
-import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
@@ -9,41 +9,75 @@ import seom.utils.JavaRandomFacade;
 
 import java.util.*;
 
-public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
+public class BoundedDegreeNetworkBuilder {
+    private int numAgents;
+    private int minDegree;
+    private int maxDegree;
+    private int learningDistance;
+
     private final MersenneTwisterFast random;
     private final JavaRandomFacade javaRandom;
-    private final Agent[] stubs;
+    private Agent[] stubs;
+    private UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
-    public BoundedDegree(int numAgents, int learningDistance, int minDegree, int maxDegree, MersenneTwisterFast random) {
+    public BoundedDegreeNetworkBuilder(MersenneTwisterFast random) {
+        this.random = random;
+        javaRandom = new JavaRandomFacade(random);
+    }
+
+    public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert numAgents > 0 : "Number of agents must be larger than one";
         assert minDegree <= maxDegree : "Minimum degree must not be larger than maximum degree";
         assert numAgents > minDegree : "Number of agents must be larger than minimum degree";
         assert minDegree != maxDegree || (numAgents * minDegree) % 2 == 0
             : "If the minimum and maximum degrees are equal, (degree * numAgents) must be even";
 
-        this.random = random;
-        javaRandom = new JavaRandomFacade(random);
+
         stubs = new Agent[maxDegree];
 
         //noinspection StatementWithEmptyBody
         while (!tryCreateNetwork(numAgents, minDegree, maxDegree)) ;
 
-        NetworkUtils.addLearningEdges(learningDistance, this);
-
-        for (Agent agent : getVertices()) {
-            int neighborCount = getNeighborCount(agent);
+        for (Agent agent : interactionGraph.getVertices()) {
+            int neighborCount = interactionGraph.getNeighborCount(agent);
             assert neighborCount >= minDegree : "Graph contains node with degree smaller than minimum bound";
             assert neighborCount <= maxDegree : "Graph contains node with degree larger than maximum bound";
         }
 
-        for (Edge edge : getEdges()) {
-            Pair<Agent> endpoints = getEndpoints(edge);
+        for (InteractionEdge edge : interactionGraph.getEdges()) {
+            Pair<Agent> endpoints = interactionGraph.getEndpoints(edge);
             assert endpoints.getFirst() != endpoints.getSecond() : "Graph contains loop edge";
         }
+
+        return NetworkUtils.createFullGraph(learningDistance, interactionGraph);
     }
 
+    //region Builder Setters
+
+    public BoundedDegreeNetworkBuilder setNumAgents(int numAgents) {
+        this.numAgents = numAgents;
+        return this;
+    }
+
+    public BoundedDegreeNetworkBuilder setMinDegree(int minDegree) {
+        this.minDegree = minDegree;
+        return this;
+    }
+
+    public BoundedDegreeNetworkBuilder setMaxDegree(int maxDegree) {
+        this.maxDegree = maxDegree;
+        return this;
+    }
+
+    public BoundedDegreeNetworkBuilder setLearningDistance(int learningDistance) {
+        this.learningDistance = learningDistance;
+        return this;
+    }
+
+    //endregion
+
     private boolean tryCreateNetwork(int numAgents, int minDegree, int maxDegree) {
-        var configGraph = new UndirectedSparseMultigraph<Agent, Edge>();
+        var configGraph = new UndirectedSparseMultigraph<Agent, InteractionEdge>();
 
         // Stubs are implemented as edges to pre-defined stub agents
         for (int i = 0; i < maxDegree; i++) {
@@ -69,7 +103,7 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
             boolean removed = false;
             for (Agent agent : getShuffledNodesWithoutStubs(configGraph)) {
                 if (configGraph.getNeighborCount(agent) > minDegree) {
-                    Edge edge = (Edge) configGraph.getOutEdges(agent).toArray()[0];
+                    InteractionEdge edge = (InteractionEdge) configGraph.getOutEdges(agent).toArray()[0];
                     configGraph.removeEdge(edge);
                     removed = true;
                     break;
@@ -86,7 +120,7 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         }
 
         // Randomly connect stubs
-        Edge[] shuffledEdges = getShuffledEdges(configGraph);
+        InteractionEdge[] shuffledEdges = getShuffledEdges(configGraph);
         for (int i = 0; i < shuffledEdges.length; i += 2) {
             Pair<Agent> endpoints1 = configGraph.getEndpoints(shuffledEdges[i]);
             Pair<Agent> endpoints2 = configGraph.getEndpoints(shuffledEdges[i + 1]);
@@ -96,9 +130,9 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         }
 
         // Collect loops and duplicate edges
-        List<Edge> unwantedEdges = new ArrayList<>();
+        List<InteractionEdge> unwantedEdges = new ArrayList<>();
         Set<Pair<Agent>> edgeSet = new HashSet<>();
-        for (Edge edge : configGraph.getEdges()) {
+        for (InteractionEdge edge : configGraph.getEdges()) {
             Pair<Agent> endpoints = configGraph.getEndpoints(edge);
             if (endpoints.getFirst() == endpoints.getSecond()) {
                 unwantedEdges.add(edge);
@@ -115,11 +149,11 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         }
 
         // Attempt to remove all loops and duplicate edges
-        for (Edge unwantedEdge : unwantedEdges) {
+        for (InteractionEdge unwantedEdge : unwantedEdges) {
             if (!configGraph.containsEdge(unwantedEdge)) continue;
 
             boolean removed = false;
-            for (Edge edge : getShuffledEdges(configGraph)) {
+            for (InteractionEdge edge : getShuffledEdges(configGraph)) {
                 if (edge == unwantedEdge) continue;
 
 //                if (tryReplaceLoopTriple(edge, unwantedEdge, configGraph)) {
@@ -145,18 +179,20 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         }
 
         // Create network from config graph
+        interactionGraph = new UndirectedSparseGraph<>();
         for (Agent agent : configGraph.getVertices()) {
-            addVertex(agent);
+            interactionGraph.addVertex(agent);
         }
-        for (Edge edge : configGraph.getEdges()) {
+        for (InteractionEdge edge : configGraph.getEdges()) {
             Pair<Agent> endpoints = configGraph.getEndpoints(edge);
-            addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
+            interactionGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
         }
 
         return true;
     }
 
-    private boolean tryReplaceLoopTriple(Edge edge1, Edge edge2, Graph<Agent, Edge> configGraph) {
+    private boolean tryReplaceLoopTriple(InteractionEdge edge1, InteractionEdge edge2,
+                                         UndirectedSparseMultigraph<Agent, InteractionEdge> configGraph) {
         Pair<Agent> endpoints1 = configGraph.getEndpoints(edge1);
         Pair<Agent> endpoints2 = configGraph.getEndpoints(edge2);
 
@@ -167,7 +203,7 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         }
 
         // Attempt to find suitable third loop
-        for (Edge edge3 : getShuffledEdges(configGraph)) {
+        for (InteractionEdge edge3 : getShuffledEdges(configGraph)) {
             if (!configGraph.containsEdge(edge3)) continue;
             if (edge3 == edge1 || edge3 == edge2) continue;
 
@@ -200,7 +236,8 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         return false;
     }
 
-    private boolean tryReplaceDuplicateEdge(Edge edge1, Edge edge2, Graph<Agent, Edge> configGraph) {
+    private boolean tryReplaceDuplicateEdge(InteractionEdge edge1, InteractionEdge edge2,
+                                            UndirectedSparseMultigraph<Agent, InteractionEdge> configGraph) {
         Pair<Agent> endpoints1 = configGraph.getEndpoints(edge1);
         Pair<Agent> endpoints2 = configGraph.getEndpoints(edge2);
 
@@ -233,8 +270,8 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         return true;
     }
 
-    private Agent[] getShuffledNodesWithoutStubs(Graph<Agent, Edge> graph) {
-        ArrayList<Agent> agents = new ArrayList<>(graph.getVertices());
+    private Agent[] getShuffledNodesWithoutStubs(UndirectedSparseMultigraph<Agent, InteractionEdge> configGraph) {
+        ArrayList<Agent> agents = new ArrayList<>(configGraph.getVertices());
         for (Agent stub : stubs) {
             agents.remove(stub);
         }
@@ -242,9 +279,9 @@ public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
         return agents.toArray(Agent[]::new);
     }
 
-    private Edge[] getShuffledEdges(Graph<Agent, Edge> graph) {
-        ArrayList<Edge> edges = new ArrayList<>(graph.getEdges());
+    private InteractionEdge[] getShuffledEdges(UndirectedSparseMultigraph<Agent, InteractionEdge> configGraph) {
+        ArrayList<InteractionEdge> edges = new ArrayList<>(configGraph.getEdges());
         Collections.shuffle(edges, javaRandom);
-        return edges.toArray(Edge[]::new);
+        return edges.toArray(InteractionEdge[]::new);
     }
 }

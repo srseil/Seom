@@ -2,6 +2,7 @@ package seom.networks;
 
 import edu.uci.ics.jung.graph.Graph;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 
@@ -53,30 +54,47 @@ public class NetworkUtils {
         return learningEdges;
     }
 
-    public static void addLearningEdges(int steps, Graph<Agent, Edge> graph) {
-        for (Agent agent : graph.getVertices()) {
-            addLearningEdges(steps, agent, agent, graph);
+    public static UndirectedSparseMultigraph<Agent, Edge>
+    createFullGraph(int learningDistance, UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph) {
+        var learningGraph = new UndirectedSparseGraph<Agent, LearningEdge>();
+        for (Agent agent : interactionGraph.getVertices()) {
+            addLearningEdges(learningDistance, agent, agent, interactionGraph, learningGraph);
         }
+
+        var fullGraph = new UndirectedSparseMultigraph<Agent, Edge>();
+        for (Agent agent : interactionGraph.getVertices()) {
+            fullGraph.addVertex(agent);
+        }
+        for (InteractionEdge edge : interactionGraph.getEdges()) {
+            Pair<Agent> endpoints = interactionGraph.getEndpoints(edge);
+            fullGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
+        }
+
+        for (Agent agent : learningGraph.getVertices()) {
+            fullGraph.addVertex(agent);
+        }
+        for (LearningEdge edge : learningGraph.getEdges()) {
+            Pair<Agent> endpoints = learningGraph.getEndpoints(edge);
+            fullGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
+        }
+
+        return fullGraph;
     }
 
-    private static void addLearningEdges(int steps, Agent agent, Agent hub, Graph<Agent, Edge> graph) {
-        var learningEdges = new ArrayList<Pair<Agent>>();
-        for (Edge interactionEdge : graph.getOutEdges(hub)) {
-            if (!(interactionEdge instanceof InteractionEdge)) continue;
-
-            Pair<Agent> endpoints = graph.getEndpoints(interactionEdge);
+    private static void
+    addLearningEdges(int steps, Agent agent, Agent hub,
+                     UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph,
+                     UndirectedSparseGraph<Agent, LearningEdge> learningGraph) {
+        for (InteractionEdge interactionEdge : interactionGraph.getOutEdges(hub)) {
+            Pair<Agent> endpoints = interactionGraph.getEndpoints(interactionEdge);
             Agent hubNeighbor = endpoints.getFirst() == hub ? endpoints.getSecond() : endpoints.getFirst();
-            learningEdges.add(new Pair<>(agent, hubNeighbor));
+            learningGraph.addEdge(new LearningEdge(), agent, hubNeighbor);
         }
 
         if (steps > 1) {
-            for (Agent neighbor : graph.getNeighbors(hub)) {
-                addLearningEdges(steps - 1, agent, neighbor, graph);
+            for (Agent neighbor : interactionGraph.getNeighbors(hub)) {
+                addLearningEdges(steps - 1, agent, neighbor, interactionGraph, learningGraph);
             }
-        }
-
-        for (Pair<Agent> pair : learningEdges) {
-            graph.addEdge(new LearningEdge(), pair.getFirst(), pair.getSecond());
         }
     }
 }
