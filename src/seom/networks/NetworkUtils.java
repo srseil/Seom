@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkUtils {
-    public static Graph<Agent, InteractionEdge> getInteractionGraph(Graph<Agent, Edge> graph) {
+    public static UndirectedSparseGraph<Agent, InteractionEdge>
+    getInteractionGraph(UndirectedSparseMultigraph<Agent, Edge> graph) {
         var interactionGraph = new UndirectedSparseGraph<Agent, InteractionEdge>();
         for (Agent agent : graph.getVertices()) {
             interactionGraph.addVertex(agent);
@@ -22,7 +23,8 @@ public class NetworkUtils {
         return interactionGraph;
     }
 
-    public static Graph<Agent, LearningEdge> getLearningGraph(Graph<Agent, Edge> graph) {
+    public static UndirectedSparseGraph<Agent, LearningEdge>
+    getLearningGraph(UndirectedSparseMultigraph<Agent, Edge> graph) {
         var learningGraph = new UndirectedSparseGraph<Agent, LearningEdge>();
         for (Agent agent : graph.getVertices()) {
             learningGraph.addVertex(agent);

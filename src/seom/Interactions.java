@@ -1,7 +1,7 @@
 package seom;
 
 import ec.util.MersenneTwisterFast;
-import edu.uci.ics.jung.graph.Graph;
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.games.Payoffs;
 import seom.networks.InteractionEdge;
@@ -13,8 +13,8 @@ import sim.engine.Steppable;
 public class Interactions implements Steppable {
     private final Configuration config;
     private final MersenneTwisterFast random;
-    private final Graph<Agent, InteractionEdge> interactionGraph;
-    private final Graph<Agent, LearningEdge> learningGraph;
+    private final UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
+    private final UndirectedSparseGraph<Agent, LearningEdge> learningGraph;
 
 
     public Interactions(Configuration config) {
