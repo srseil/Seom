@@ -12,6 +12,8 @@ public class Configuration {
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
     private double learningProbability;
+    private boolean interactionsVisualized;
+    private boolean learningVisualized;
 
     public boolean validate() {
         return game != null && learningRule != null && network != null;
@@ -55,5 +57,21 @@ public class Configuration {
 
     public void setLearningProbability(double learningProbability) {
         this.learningProbability = learningProbability;
+    }
+
+    public boolean areInteractionsVisualized() {
+        return interactionsVisualized;
+    }
+
+    public void setInteractionsVisualized(boolean interactionsVisualized) {
+        this.interactionsVisualized = interactionsVisualized;
+    }
+
+    public boolean isLearningVisualized() {
+        return learningVisualized;
+    }
+
+    public void setLearningVisualized(boolean learningVisualized) {
+        this.learningVisualized = learningVisualized;
     }
 }

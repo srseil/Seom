@@ -36,7 +36,33 @@ public class NetworkUtils {
         return learningGraph;
     }
 
-    public static List<InteractionEdge> getInteractionEdges(Graph<Agent, Edge> graph) {
+    public static UndirectedSparseGraph<Agent, Edge>
+    getGenericInteractionGraph(UndirectedSparseMultigraph<Agent, Edge> graph) {
+        var interactionGraph = new UndirectedSparseGraph<Agent, Edge>();
+        for (Agent agent : graph.getVertices()) {
+            interactionGraph.addVertex(agent);
+        }
+        for (InteractionEdge edge : getInteractionEdges(graph)) {
+            Pair<Agent> endpoints = graph.getEndpoints(edge);
+            interactionGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
+        }
+        return interactionGraph;
+    }
+
+    public static UndirectedSparseGraph<Agent, Edge>
+    getGenericLearningGraph(UndirectedSparseMultigraph<Agent, Edge> graph) {
+        var learningGraph = new UndirectedSparseGraph<Agent, Edge>();
+        for (Agent agent : graph.getVertices()) {
+            learningGraph.addVertex(agent);
+        }
+        for (LearningEdge edge : getLearningEdges(graph)) {
+            Pair<Agent> endpoints = graph.getEndpoints(edge);
+            learningGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
+        }
+        return learningGraph;
+    }
+
+    public static List<InteractionEdge> getInteractionEdges(UndirectedSparseMultigraph<Agent, Edge> graph) {
         var interactionEdges = new ArrayList<InteractionEdge>();
         for (Edge edge : graph.getEdges()) {
             if (edge instanceof InteractionEdge) {
