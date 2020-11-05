@@ -9,26 +9,10 @@ public class FullyConnectedNetworkBuilder {
     private int numAgents;
 
     public UndirectedSparseMultigraph<Agent, Edge> create() {
-        assert numAgents > 1 : "The number of agents must be at least 2";
-
-        var fullGraph = new UndirectedSparseMultigraph<Agent, Edge>();
-        for (int i = 0; i < numAgents; i++) {
-            fullGraph.addVertex(new Agent());
-        }
-
-        var interactionGraph = new UndirectedSparseGraph<Agent, InteractionEdge>();
-        for (Agent agent : fullGraph.getVertices()) {
-            interactionGraph.addVertex(agent);
-        }
-        for (Agent agent : interactionGraph.getVertices()) {
-            for (Agent other : interactionGraph.getVertices()) {
-                if (agent == other) continue;
-                interactionGraph.addEdge(new InteractionEdge(), agent, other);
-            }
-        }
+        UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph = createInteractionGraph();
 
         var learningGraph = new UndirectedSparseGraph<Agent, LearningEdge>();
-        for (Agent agent : fullGraph.getVertices()) {
+        for (Agent agent : interactionGraph.getVertices()) {
             learningGraph.addVertex(agent);
         }
         for (Agent agent : learningGraph.getVertices()) {
@@ -38,6 +22,10 @@ public class FullyConnectedNetworkBuilder {
             }
         }
 
+        var fullGraph = new UndirectedSparseMultigraph<Agent, Edge>();
+        for (Agent agent : interactionGraph.getVertices()) {
+            fullGraph.addVertex(agent);
+        }
         for (InteractionEdge interactionEdge : interactionGraph.getEdges()) {
             Pair<Agent> endpoints = interactionGraph.getEndpoints(interactionEdge);
             fullGraph.addEdge(interactionEdge, endpoints.getFirst(), endpoints.getSecond());
@@ -48,6 +36,23 @@ public class FullyConnectedNetworkBuilder {
         }
 
         return fullGraph;
+    }
+
+    UndirectedSparseGraph<Agent, InteractionEdge> createInteractionGraph() {
+        assert numAgents > 1 : "The number of agents must be at least 2";
+
+        var interactionGraph = new UndirectedSparseGraph<Agent, InteractionEdge>();
+        for (int i = 0; i < numAgents; i++) {
+            interactionGraph.addVertex(new Agent());
+        }
+        for (Agent agent : interactionGraph.getVertices()) {
+            for (Agent other : interactionGraph.getVertices()) {
+                if (agent == other) continue;
+                interactionGraph.addEdge(new InteractionEdge(), agent, other);
+            }
+        }
+
+        return interactionGraph;
     }
 
     public FullyConnectedNetworkBuilder setNumAgents(int numAgents) {
