@@ -1,9 +1,9 @@
 package seom.networks;
 
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.Agent;
 
-public class Lattice2D extends UndirectedSparseGraph<Agent, Edge> {
+public class Lattice2D extends UndirectedSparseMultigraph<Agent, Edge> {
     private final int width;
     private final int height;
     private final boolean wrapAround;
@@ -14,7 +14,7 @@ public class Lattice2D extends UndirectedSparseGraph<Agent, Edge> {
         Moore
     }
 
-    public Lattice2D(int width, int height, int radius, boolean wrapAround, Neighborhood neighborhood) {
+    public Lattice2D(int width, int height, int learningDistance, int radius, boolean wrapAround, Neighborhood neighborhood) {
         assert width > 1 || height > 1 : "Either width or height must be larger than 1";
         assert radius < width || radius < height : "Radius must be smaller than largest dimension";
 
@@ -65,6 +65,8 @@ public class Lattice2D extends UndirectedSparseGraph<Agent, Edge> {
                 }
             }
         }
+
+        NetworkUtils.addLearningEdges(learningDistance, this);
     }
 
     private void addEdgeIfPossible(Agent agent, int targetIndex) {

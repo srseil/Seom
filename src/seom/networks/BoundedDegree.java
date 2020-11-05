@@ -2,7 +2,6 @@ package seom.networks;
 
 import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.Graph;
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
@@ -10,12 +9,12 @@ import seom.utils.JavaRandomFacade;
 
 import java.util.*;
 
-public class BoundedDegree extends UndirectedSparseGraph<Agent, Edge> {
+public class BoundedDegree extends UndirectedSparseMultigraph<Agent, Edge> {
     private final MersenneTwisterFast random;
     private final JavaRandomFacade javaRandom;
     private final Agent[] stubs;
 
-    public BoundedDegree(int numAgents, int minDegree, int maxDegree, MersenneTwisterFast random) {
+    public BoundedDegree(int numAgents, int learningDistance, int minDegree, int maxDegree, MersenneTwisterFast random) {
         assert numAgents > 0 : "Number of agents must be larger than one";
         assert minDegree <= maxDegree : "Minimum degree must not be larger than maximum degree";
         assert numAgents > minDegree : "Number of agents must be larger than minimum degree";
@@ -28,6 +27,8 @@ public class BoundedDegree extends UndirectedSparseGraph<Agent, Edge> {
 
         //noinspection StatementWithEmptyBody
         while (!tryCreateNetwork(numAgents, minDegree, maxDegree)) ;
+
+        NetworkUtils.addLearningEdges(learningDistance, this);
 
         for (Agent agent : getVertices()) {
             int neighborCount = getNeighborCount(agent);

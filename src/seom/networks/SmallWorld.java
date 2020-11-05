@@ -1,7 +1,7 @@
 package seom.networks;
 
 import ec.util.MersenneTwisterFast;
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.utils.JavaRandomFacade;
@@ -9,8 +9,8 @@ import seom.utils.JavaRandomFacade;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SmallWorld extends UndirectedSparseGraph<Agent, Edge> {
-    public SmallWorld(int numAgents, int radius, double beta, MersenneTwisterFast random) {
+public class SmallWorld extends UndirectedSparseMultigraph<Agent, Edge> {
+    public SmallWorld(int numAgents, int learningDistance, int radius, double beta, MersenneTwisterFast random) {
         assert numAgents > 1 : "The number of agents must be at least 2";
         assert radius <= numAgents / 2 : "Maximum radius is numAgents / 2";
         assert beta >= 0 && beta <= 1.0 : "Beta must be in [0,1]";
@@ -60,5 +60,7 @@ public class SmallWorld extends UndirectedSparseGraph<Agent, Edge> {
                 addEdge(new InteractionEdge(), agent1, agent2);
             }
         }
+
+        NetworkUtils.addLearningEdges(learningDistance, this);
     }
 }

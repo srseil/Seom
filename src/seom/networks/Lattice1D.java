@@ -1,10 +1,10 @@
 package seom.networks;
 
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.Agent;
 
-public class Lattice1D extends UndirectedSparseGraph<Agent, Edge> {
-    public Lattice1D(int length, int radius, boolean wrapAround) {
+public class Lattice1D extends UndirectedSparseMultigraph<Agent, Edge> {
+    public Lattice1D(int length, int learningDistance, int radius, boolean wrapAround) {
         assert length > 1 : "Length must be at least 2";
         assert radius <= length / 2 : "Maximum radius is length / 2";
 
@@ -28,5 +28,7 @@ public class Lattice1D extends UndirectedSparseGraph<Agent, Edge> {
                 addEdge(new InteractionEdge(), agents[i], agents[neighborIndex]);
             }
         }
+
+        NetworkUtils.addLearningEdges(learningDistance, this);
     }
 }
