@@ -95,6 +95,9 @@ public class RandomNetworkBuilder {
         if (leftover != 0) {
             System.out.println("Could not remove enough edges, attempting network construction from scratch");
             return false;
+        } else if (!NetworkUtils.isConnected(interactionGraph)) {
+            System.out.println("Generated network is not connected, attempting network construction from scratch");
+            return false;
         }
 
         return true;

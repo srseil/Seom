@@ -178,6 +178,11 @@ public class BoundedDegreeNetworkBuilder {
             configGraph.removeVertex(stub);
         }
 
+        if (!NetworkUtils.isConnected(configGraph)) {
+            System.out.println("Generated network is not connected, attempting network construction from scratch");
+            return false;
+        }
+
         // Create network from config graph
         interactionGraph = new UndirectedSparseGraph<>();
         for (Agent agent : configGraph.getVertices()) {

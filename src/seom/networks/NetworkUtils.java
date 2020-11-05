@@ -6,8 +6,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class NetworkUtils {
     public static UndirectedSparseGraph<Agent, InteractionEdge>
@@ -80,6 +79,20 @@ public class NetworkUtils {
             }
         }
         return learningEdges;
+    }
+
+    public static boolean isConnected(Graph<Agent, ? extends Edge> graph) {
+        Agent root = graph.getVertices().toArray(Agent[]::new)[0];
+        var agentSet = new HashSet<Agent>();
+        var queue = new ArrayDeque<Agent>();
+        queue.add(root);
+        while (!queue.isEmpty()) {
+            Agent agent = queue.pop();
+            if (agentSet.add(agent)) {
+                queue.addAll(graph.getNeighbors(agent));
+            }
+        }
+        return agentSet.size() == graph.getVertexCount();
     }
 
     public static UndirectedSparseMultigraph<Agent, Edge>
