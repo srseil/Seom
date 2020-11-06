@@ -5,9 +5,11 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.games.Game;
 import seom.learning.LearningRule;
 import seom.networks.Edge;
+import seom.utils.JavaRandomFacade;
 
 public class Configuration {
     private MersenneTwisterFast random;
+    private JavaRandomFacade javaRandom;
     private Game game;
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
@@ -25,9 +27,14 @@ public class Configuration {
 
     public void setRandom(MersenneTwisterFast random) {
         this.random = random;
+        javaRandom = new JavaRandomFacade(random);
         if (learningRule != null) {
             learningRule.setRandom(random);
         }
+    }
+
+    public JavaRandomFacade getJavaRandom() {
+        return javaRandom;
     }
 
     public Game getGame() {

@@ -3,7 +3,6 @@ package seom.processes;
 import seom.Agent;
 import seom.Configuration;
 import seom.games.Strategy;
-import seom.utils.JavaRandomFacade;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
@@ -13,11 +12,9 @@ import java.util.List;
 
 public class Mutation implements Steppable {
     private final Configuration config;
-    private final JavaRandomFacade javaRandom;
 
     public Mutation(Configuration config) {
         this.config = config;
-        javaRandom = new JavaRandomFacade(config.getRandom());
     }
 
     @Override
@@ -29,7 +26,7 @@ public class Mutation implements Steppable {
             if (rand >= config.getMutationProbability()) continue;
 
             List<Strategy> shuffledStrategies = Arrays.asList(config.getGame().getStrategies());
-            Collections.shuffle(shuffledStrategies, javaRandom);
+            Collections.shuffle(shuffledStrategies, config.getJavaRandom());
             if (shuffledStrategies.get(0) != agent.getStrategy()) {
                 agent.setStrategy(shuffledStrategies.get(0));
             } else {
