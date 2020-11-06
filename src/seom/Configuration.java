@@ -11,9 +11,7 @@ public class Configuration {
     private Game game;
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
-    private double learningProbability;
     private double mutationProbability;
-
     private boolean interactionsVisualized;
     private boolean learningVisualized;
 
@@ -65,14 +63,6 @@ public class Configuration {
 
     public void setMutationProbability(double mutationProbability) {
         this.mutationProbability = mutationProbability;
-    }
-
-    public double getLearningProbability() {
-        return learningProbability;
-    }
-
-    public void setLearningProbability(double learningProbability) {
-        this.learningProbability = learningProbability;
     }
 
     public boolean areInteractionsVisualized() {

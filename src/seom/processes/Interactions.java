@@ -37,23 +37,12 @@ public class Interactions implements Steppable {
             agent1.increaseScore(payoffs.getPayoffForPlayer(1));
         }
 
-        if (sampleUpdateProbability()) {
-            for (Agent agent : learningGraph.getVertices()) {
-                config.getLearningRule().updateStrategy(agent, learningGraph.getNeighbors(agent), config.getGame());
-            }
-
-            for (Agent agent : learningGraph.getVertices()) {
-                agent.resetScore();
-            }
+        for (Agent agent : learningGraph.getVertices()) {
+            config.getLearningRule().updateStrategy(agent, learningGraph.getNeighbors(agent), config.getGame());
         }
-    }
 
-    private boolean sampleUpdateProbability() {
-        if (config.getLearningProbability() == 1.0) {
-            return true;
-        } else {
-            double rand = config.getRandom().nextDouble();
-            return rand < config.getLearningProbability();
+        for (Agent agent : learningGraph.getVertices()) {
+            agent.resetScore();
         }
     }
 }
