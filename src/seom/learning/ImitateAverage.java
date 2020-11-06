@@ -2,14 +2,16 @@ package seom.learning;
 
 import ec.util.MersenneTwisterFast;
 import seom.Agent;
-import seom.Simulation;
 import seom.games.Game;
 import seom.games.Strategy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ImitateAverage implements LearningRule {
-    private final MersenneTwisterFast random = new MersenneTwisterFast(Simulation.getSeed());
+    private MersenneTwisterFast random;
 
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
@@ -55,5 +57,10 @@ public class ImitateAverage implements LearningRule {
             int rand = random.nextInt(bestStrategies.size());
             agent.setStrategy(bestStrategies.get(rand));
         }
+    }
+
+    @Override
+    public void setRandom(MersenneTwisterFast random) {
+        this.random = random;
     }
 }

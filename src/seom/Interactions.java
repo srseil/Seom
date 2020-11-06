@@ -12,14 +12,12 @@ import sim.engine.Steppable;
 
 public class Interactions implements Steppable {
     private final Configuration config;
-    private final MersenneTwisterFast random;
     private final UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
     private final UndirectedSparseGraph<Agent, LearningEdge> learningGraph;
 
 
     public Interactions(Configuration config) {
         this.config = config;
-        random = new MersenneTwisterFast();
         interactionGraph = NetworkUtils.getInteractionGraph(config.getNetwork());
         learningGraph = NetworkUtils.getLearningGraph(config.getNetwork());
     }
@@ -53,7 +51,7 @@ public class Interactions implements Steppable {
         if (config.getLearningProbability() == 1.0) {
             return true;
         } else {
-            double rand = random.nextDouble();
+            double rand = config.getRandom().nextDouble();
             return rand < config.getLearningProbability();
         }
     }

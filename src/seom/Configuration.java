@@ -27,6 +27,9 @@ public class Configuration {
 
     public void setRandom(MersenneTwisterFast random) {
         this.random = random;
+        if (learningRule != null) {
+            learningRule.setRandom(random);
+        }
     }
 
     public Game getGame() {
@@ -43,6 +46,9 @@ public class Configuration {
 
     public void setLearningRule(LearningRule learningRule) {
         this.learningRule = learningRule;
+        if (random != null) {
+            learningRule.setRandom(random);
+        }
     }
 
     public UndirectedSparseMultigraph<Agent, Edge> getNetwork() {
