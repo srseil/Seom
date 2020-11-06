@@ -27,11 +27,6 @@ public class SmallWorldNetworkBuilder {
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert baseLattice.getVertexCount() > 1 : "The number of agents in base lattice must be at least 2";
         assert beta >= 0 && beta <= 1.0 : "Beta must be in [0,1]";
-        Agent[] vertices = baseLattice.getVertices().toArray(new Agent[0]);
-        for (int i = 1; i < baseLattice.getVertexCount(); i++) {
-            assert baseLattice.getNeighborCount(vertices[i]) == baseLattice.getNeighborCount(vertices[i - 1])
-                : "Base lattice is not a uniform ring";
-        }
 
         //noinspection StatementWithEmptyBody
         while (!tryCreateNetwork()) ;
@@ -73,7 +68,7 @@ public class SmallWorldNetworkBuilder {
             if (rand >= beta) continue;
 
             Pair<Agent> endpoints = interactionGraph.getEndpoints(edge);
-            Agent agent1 = endpoints.getFirst();
+            Agent agent1 = random.nextBoolean() ? endpoints.getFirst() : endpoints.getSecond();
 
             Agent agent2 = null;
             var nodes = new ArrayList<>(interactionGraph.getVertices());
@@ -91,6 +86,11 @@ public class SmallWorldNetworkBuilder {
 
             interactionGraph.removeEdge(edge);
             interactionGraph.addEdge(new InteractionEdge(), agent1, agent2);
+        }
+
+        if (!NetworkUtils.isConnected(interactionGraph)) {
+            System.out.println("Constructed graph is not connected, attempting network construction from scratch");
+            return false;
         }
 
         return true;
