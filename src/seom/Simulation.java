@@ -8,6 +8,7 @@ public class Simulation extends SimState {
 
     private final Configuration config;
     private final Interactions interactions;
+    private final Mutation mutation;
     private final Stability stability;
 
     public Simulation(Configuration config) throws Exception {
@@ -19,6 +20,7 @@ public class Simulation extends SimState {
 
         this.config = config;
         interactions = new Interactions(config);
+        mutation = new Mutation(config);
         stability = new Stability(this);
     }
 
@@ -27,8 +29,12 @@ public class Simulation extends SimState {
         super.start();
 
         schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
+
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, interactions);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, mutation);
+
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 1, stability);
+
         System.out.println("Start");
     }
 

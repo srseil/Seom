@@ -12,6 +12,8 @@ public class Configuration {
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
     private double learningProbability;
+    private double mutationProbability;
+
     private boolean interactionsVisualized;
     private boolean learningVisualized;
 
@@ -49,6 +51,14 @@ public class Configuration {
 
     public void setNetwork(UndirectedSparseMultigraph<Agent, Edge> network) {
         this.network = network;
+    }
+
+    public double getMutationProbability() {
+        return mutationProbability;
+    }
+
+    public void setMutationProbability(double mutationProbability) {
+        this.mutationProbability = mutationProbability;
     }
 
     public double getLearningProbability() {
