@@ -6,7 +6,6 @@ import seom.Agent;
 import seom.Configuration;
 import seom.games.Payoffs;
 import seom.networks.InteractionEdge;
-import seom.networks.LearningEdge;
 import seom.networks.NetworkUtils;
 import sim.engine.SimState;
 import sim.engine.Steppable;
@@ -14,13 +13,10 @@ import sim.engine.Steppable;
 public class Interactions implements Steppable {
     private final Configuration config;
     private final UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
-    private final UndirectedSparseGraph<Agent, LearningEdge> learningGraph;
-
 
     public Interactions(Configuration config) {
         this.config = config;
         interactionGraph = NetworkUtils.getInteractionGraph(config.getNetwork());
-        learningGraph = NetworkUtils.getLearningGraph(config.getNetwork());
     }
 
     @Override
@@ -35,14 +31,6 @@ public class Interactions implements Steppable {
             Payoffs payoffs = config.getGame().play(agent0.getStrategy(), agent1.getStrategy());
             agent0.increaseScore(payoffs.getPayoffForPlayer(0));
             agent1.increaseScore(payoffs.getPayoffForPlayer(1));
-        }
-
-        for (Agent agent : learningGraph.getVertices()) {
-            config.getLearningRule().updateStrategy(agent, learningGraph.getNeighbors(agent), config.getGame());
-        }
-
-        for (Agent agent : learningGraph.getVertices()) {
-            agent.resetScore();
         }
     }
 }

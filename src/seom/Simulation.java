@@ -1,9 +1,6 @@
 package seom;
 
-import seom.processes.Initialization;
-import seom.processes.Interactions;
-import seom.processes.Mutation;
-import seom.processes.Stability;
+import seom.processes.*;
 import sim.engine.Schedule;
 import sim.engine.SimState;
 
@@ -12,6 +9,7 @@ public class Simulation extends SimState {
 
     private final Configuration config;
     private final Interactions interactions;
+    private final Learning learning;
     private final Mutation mutation;
     private final Stability stability;
 
@@ -24,6 +22,7 @@ public class Simulation extends SimState {
 
         this.config = config;
         interactions = new Interactions(config);
+        learning = new Learning(config);
         mutation = new Mutation(config);
         stability = new Stability(this);
     }
@@ -35,6 +34,7 @@ public class Simulation extends SimState {
         schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
 
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, interactions);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, learning);
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, mutation);
 
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 1, stability);
