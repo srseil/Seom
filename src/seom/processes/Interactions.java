@@ -1,8 +1,9 @@
-package seom;
+package seom.processes;
 
-import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.util.Pair;
+import seom.Agent;
+import seom.Configuration;
 import seom.games.Payoffs;
 import seom.networks.InteractionEdge;
 import seom.networks.LearningEdge;

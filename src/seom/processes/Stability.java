@@ -1,5 +1,7 @@
-package seom;
+package seom.processes;
 
+import seom.Agent;
+import seom.Simulation;
 import seom.games.Strategy;
 import sim.engine.SimState;
 import sim.engine.Steppable;

@@ -1,5 +1,9 @@
 package seom;
 
+import seom.processes.Initialization;
+import seom.processes.Interactions;
+import seom.processes.Mutation;
+import seom.processes.Stability;
 import sim.engine.Schedule;
 import sim.engine.SimState;
 

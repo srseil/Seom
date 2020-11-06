@@ -1,5 +1,7 @@
-package seom;
+package seom.processes;
 
+import seom.Agent;
+import seom.Configuration;
 import seom.games.Strategy;
 import seom.utils.JavaRandomFacade;
 import sim.engine.SimState;
@@ -20,6 +22,8 @@ public class Mutation implements Steppable {
 
     @Override
     public void step(SimState simState) {
+        System.out.println("Mutation");
+
         for (Agent agent : config.getNetwork().getVertices()) {
             double rand = config.getRandom().nextDouble();
             if (rand >= config.getMutationProbability()) continue;
