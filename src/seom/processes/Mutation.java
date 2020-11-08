@@ -1,8 +1,11 @@
 package seom.processes;
 
+import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import seom.Agent;
 import seom.Configuration;
 import seom.games.Strategy;
+import seom.networks.InteractionEdge;
+import seom.networks.NetworkUtils;
 import sim.engine.SimState;
 import sim.engine.Steppable;
 
@@ -12,9 +15,11 @@ import java.util.List;
 
 public class Mutation implements Steppable {
     private final Configuration config;
+    private final UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
     public Mutation(Configuration config) {
         this.config = config;
+        interactionGraph = NetworkUtils.getInteractionGraph(config.getNetwork());
     }
 
     @Override
@@ -27,10 +32,14 @@ public class Mutation implements Steppable {
 
             List<Strategy> shuffledStrategies = Arrays.asList(config.getGame().getStrategies());
             Collections.shuffle(shuffledStrategies, config.getJavaRandom());
-            if (shuffledStrategies.get(0) != agent.getStrategy()) {
-                agent.setStrategy(shuffledStrategies.get(0));
-            } else {
-                agent.setStrategy(shuffledStrategies.get(1));
+            Strategy newStrategy = shuffledStrategies.get(0) != agent.getStrategy()
+                ? shuffledStrategies.get(0)
+                : shuffledStrategies.get(1);
+
+            agent.setStrategy(newStrategy);
+            Agent[] neighborhood = NetworkUtils.getDistanceNeighborhood(agent, config.getMutationDistance(), interactionGraph);
+            for (Agent neighbor : neighborhood) {
+                neighbor.setStrategy(newStrategy);
             }
         }
     }

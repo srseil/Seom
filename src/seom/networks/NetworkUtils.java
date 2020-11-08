@@ -95,6 +95,15 @@ public class NetworkUtils {
         return agentSet.size() == graph.getVertexCount();
     }
 
+    public static Agent[]
+    getDistanceNeighborhood(Agent agent, int distance, UndirectedSparseGraph<Agent, ? extends Edge> graph) {
+        var neighbors = new HashSet<Agent>();
+        neighbors.add(agent);
+        collectDistanceNeighborhood(agent, distance, graph, neighbors);
+        neighbors.remove(agent);
+        return neighbors.toArray(Agent[]::new);
+    }
+
     public static UndirectedSparseMultigraph<Agent, Edge>
     createFullGraph(int learningDistance, UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph) {
         var learningGraph = new UndirectedSparseGraph<Agent, LearningEdge>();
@@ -120,6 +129,23 @@ public class NetworkUtils {
         }
 
         return fullGraph;
+    }
+
+    private static void collectDistanceNeighborhood(Agent agent, int distance,
+                                                    UndirectedSparseGraph<Agent, ? extends Edge> graph,
+                                                    Set<Agent> neighbors) {
+        if (distance == 0) return;
+
+        var nextNeighbors = new ArrayList<Agent>();
+        for (Agent neighbor : graph.getNeighbors(agent)) {
+            if (neighbors.add(neighbor)) {
+                nextNeighbors.add(neighbor);
+            }
+        }
+
+        for (Agent next : nextNeighbors) {
+            collectDistanceNeighborhood(next, distance - 1, graph, neighbors);
+        }
     }
 
     private static void

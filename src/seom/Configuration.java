@@ -14,6 +14,7 @@ public class Configuration {
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
     private double mutationProbability;
+    private int mutationDistance;
     private boolean interactionsVisualized;
     private boolean learningVisualized;
 
@@ -70,6 +71,14 @@ public class Configuration {
 
     public void setMutationProbability(double mutationProbability) {
         this.mutationProbability = mutationProbability;
+    }
+
+    public int getMutationDistance() {
+        return mutationDistance;
+    }
+
+    public void setMutationDistance(int mutationDistance) {
+        this.mutationDistance = mutationDistance;
     }
 
     public boolean areInteractionsVisualized() {
