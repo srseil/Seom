@@ -6,6 +6,7 @@ import sim.engine.SimState;
 
 public class Simulation extends SimState {
     private final Configuration config;
+    private final Result result;
     private final Interactions interactions;
     private final Learning learning;
     private final Mutation mutation;
@@ -19,6 +20,7 @@ public class Simulation extends SimState {
         }
 
         this.config = config;
+        result = new Result();
         interactions = new Interactions(config);
         learning = new Learning(config);
         mutation = new Mutation(config);
@@ -50,5 +52,9 @@ public class Simulation extends SimState {
 
     public Configuration getConfig() {
         return config;
+    }
+
+    public Result getResult() {
+        return result;
     }
 }
