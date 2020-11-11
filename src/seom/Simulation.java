@@ -5,8 +5,6 @@ import sim.engine.Schedule;
 import sim.engine.SimState;
 
 public class Simulation extends SimState {
-    private static final long seed = 560646223;
-
     private final Configuration config;
     private final Interactions interactions;
     private final Learning learning;
@@ -48,10 +46,6 @@ public class Simulation extends SimState {
 
         System.out.println("Finish (" + schedule.getSteps() + ")");
         System.out.println();
-    }
-
-    public static long getSeed() {
-        return seed;
     }
 
     public Configuration getConfig() {
