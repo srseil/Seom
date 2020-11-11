@@ -201,9 +201,10 @@ public class BoundedDegreeNetworkBuilder {
         Pair<Agent> endpoints1 = configGraph.getEndpoints(edge1);
         Pair<Agent> endpoints2 = configGraph.getEndpoints(edge2);
 
-        // Two loops need to be given
+        // Two different loops need to be given
         if (endpoints1.getFirst() != endpoints1.getSecond()
-            || endpoints2.getFirst() != endpoints2.getSecond()) {
+            || endpoints2.getFirst() != endpoints2.getSecond()
+            || endpoints1.getFirst() == endpoints2.getFirst()) {
             return false;
         }
 
