@@ -9,8 +9,8 @@ import java.util.List;
 
 public class Simulation extends SimState {
     private final Configuration config;
-    private final Result result;
     private final List<SimulationProcess> processes;
+    private Result result;
 
     private final Initialization initialization;
     private final Interactions interactions;
@@ -26,7 +26,6 @@ public class Simulation extends SimState {
         }
 
         this.config = config;
-        result = new Result();
         processes = new ArrayList<>();
 
         initialization = new Initialization(config);
@@ -48,6 +47,8 @@ public class Simulation extends SimState {
     @Override
     public void start() {
         super.start();
+
+        result = new Result();
 
         stability.setCycleDetectionEnabled(true);
         for (SimulationProcess process : processes) {
