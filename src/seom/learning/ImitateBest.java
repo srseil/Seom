@@ -6,10 +6,9 @@ import seom.games.Game;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 
 public class ImitateBest implements LearningRule {
-    private MersenneTwisterFast random;
-
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var bestNeighbors = new ArrayList<Agent>(neighbors.size());
@@ -28,16 +27,11 @@ public class ImitateBest implements LearningRule {
             return;
         }
 
-        if (bestNeighbors.size() == 1) {
-            agent.setStrategy(bestNeighbors.get(0).getStrategy());
-        } else {
-            int rand = random.nextInt(bestNeighbors.size());
-            agent.setStrategy(bestNeighbors.get(rand).getStrategy());
-        }
+        bestNeighbors.sort(Comparator.comparingInt(Agent::getId));
+        agent.setStrategy(bestNeighbors.get(0).getStrategy());
     }
 
     @Override
     public void setRandom(MersenneTwisterFast random) {
-        this.random = random;
     }
 }

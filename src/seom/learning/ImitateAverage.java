@@ -11,8 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ImitateAverage implements LearningRule {
-    private MersenneTwisterFast random;
-
     @Override
     public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var strategyPayoffs = new HashMap<Strategy, ArrayList<Double>>();
@@ -54,13 +52,15 @@ public class ImitateAverage implements LearningRule {
         if (bestStrategies.size() == 1) {
             agent.setStrategy(bestStrategies.get(0));
         } else {
-            int rand = random.nextInt(bestStrategies.size());
-            agent.setStrategy(bestStrategies.get(rand));
+            for (Strategy strategy : game.getStrategies()) {
+                if (bestStrategies.contains(strategy)) {
+                    agent.setStrategy(strategy);
+                }
+            }
         }
     }
 
     @Override
     public void setRandom(MersenneTwisterFast random) {
-        this.random = random;
     }
 }
