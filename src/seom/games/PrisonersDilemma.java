@@ -11,6 +11,11 @@ public class PrisonersDilemma implements Game {
         Defect;
 
         @Override
+        public int getId() {
+            return ordinal();
+        }
+
+        @Override
         public Color getColor() {
             return switch (this) {
                 case Cooperate -> Color.WHITE;

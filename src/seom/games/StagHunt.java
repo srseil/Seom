@@ -11,6 +11,11 @@ public class StagHunt implements Game {
         Hare;
 
         @Override
+        public int getId() {
+            return ordinal();
+        }
+
+        @Override
         public Color getColor() {
             return switch (this) {
                 case Stag -> Color.LIGHT_GRAY;

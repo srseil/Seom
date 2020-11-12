@@ -17,6 +17,11 @@ public class BargainingGame implements Game {
         Demand10;
 
         @Override
+        public int getId() {
+            return ordinal();
+        }
+
+        @Override
         public Color getColor() {
             return switch (this) {
                 case Demand0 -> new Color(0, 0, 0);

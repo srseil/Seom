@@ -2,7 +2,7 @@ package seom.games;
 
 import java.awt.*;
 
-public class UltimatumGame implements Game {
+public class UltimatumSubgame implements Game {
     public enum Strategy implements seom.games.Strategy {
         S1Gamesman(9, 5, 9),
         S2(9),
@@ -28,6 +28,11 @@ public class UltimatumGame implements Game {
                 }
             }
             return false;
+        }
+
+        @Override
+        public int getId() {
+            return ordinal();
         }
 
         @Override
