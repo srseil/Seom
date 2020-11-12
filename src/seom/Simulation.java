@@ -46,7 +46,10 @@ public class Simulation extends SimState {
     public void finish() {
         super.finish();
 
-        System.out.println("Finish (" + schedule.getSteps() + ")");
+        // The zeroth generation is only used for initialization
+        result.setGenerationCount(schedule.getSteps() - 1);
+
+        System.out.println("Finish (" + result.getGenerationCount() + ")");
         System.out.println();
     }
 

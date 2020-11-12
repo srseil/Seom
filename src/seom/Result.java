@@ -1,6 +1,7 @@
 package seom;
 
 public class Result {
+    private long generationCount;
     private boolean cyclic;
     private int cycleStart;
     private int cycleEnd;
@@ -25,5 +26,13 @@ public class Result {
 
     public int getCycleEnd() {
         return cycleEnd;
+    }
+
+    public long getGenerationCount() {
+        return generationCount;
+    }
+
+    public void setGenerationCount(long generationCount) {
+        this.generationCount = generationCount;
     }
 }
