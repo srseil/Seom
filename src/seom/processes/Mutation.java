@@ -23,7 +23,7 @@ public class Mutation implements SimulationProcess {
 
     @Override
     public boolean isStochastic() {
-        return true;
+        return config.getMutationProbability() > 0.0;
     }
 
     @Override
