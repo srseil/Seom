@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class Stability implements SimulationProcess {
     private final Simulation simulation;
-    private final Map<Agent, Strategy> strategyMap;
+    private final Map<Integer, Strategy> strategyMap;
     private final List<Integer> strategyProgression;
 
     private boolean cycleDetectionEnabled;
@@ -41,7 +41,7 @@ public class Stability implements SimulationProcess {
         if (cycleDetectionEnabled) {
             strategyMap.clear();
             for (Agent agent : simulation.getConfig().getNetwork().getVertices()) {
-                strategyMap.put(agent, agent.getStrategy());
+                strategyMap.put(agent.getId(), agent.getStrategy());
             }
 
             int currentHashCode = strategyMap.hashCode();
