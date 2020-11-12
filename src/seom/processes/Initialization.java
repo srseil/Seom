@@ -4,13 +4,23 @@ import seom.Agent;
 import seom.Configuration;
 import seom.games.Strategy;
 import sim.engine.SimState;
-import sim.engine.Steppable;
 
-public class Initialization implements Steppable {
+public class Initialization implements SimulationProcess {
     private final Configuration config;
 
     public Initialization(Configuration config) {
         this.config = config;
+    }
+
+    @Override
+    public boolean isStochastic() {
+        // Even though it is randomized, the initial distribution of
+        // strategies is not considered to be a stochastic process.
+        return false;
+    }
+
+    @Override
+    public void reset() {
     }
 
     @Override

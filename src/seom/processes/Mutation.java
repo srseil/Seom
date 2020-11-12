@@ -7,19 +7,27 @@ import seom.games.Strategy;
 import seom.networks.InteractionEdge;
 import seom.networks.NetworkUtils;
 import sim.engine.SimState;
-import sim.engine.Steppable;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-public class Mutation implements Steppable {
+public class Mutation implements SimulationProcess {
     private final Configuration config;
     private final UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
     public Mutation(Configuration config) {
         this.config = config;
         interactionGraph = NetworkUtils.getInteractionGraph(config.getNetwork());
+    }
+
+    @Override
+    public boolean isStochastic() {
+        return true;
+    }
+
+    @Override
+    public void reset() {
     }
 
     @Override

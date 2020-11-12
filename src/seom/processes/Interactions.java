@@ -8,15 +8,23 @@ import seom.games.Payoffs;
 import seom.networks.InteractionEdge;
 import seom.networks.NetworkUtils;
 import sim.engine.SimState;
-import sim.engine.Steppable;
 
-public class Interactions implements Steppable {
+public class Interactions implements SimulationProcess {
     private final Configuration config;
     private final UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
     public Interactions(Configuration config) {
         this.config = config;
         interactionGraph = NetworkUtils.getInteractionGraph(config.getNetwork());
+    }
+
+    @Override
+    public boolean isStochastic() {
+        return false;
+    }
+
+    @Override
+    public void reset() {
     }
 
     @Override
