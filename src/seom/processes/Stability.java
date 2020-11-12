@@ -5,21 +5,23 @@ import seom.Simulation;
 import seom.games.Strategy;
 import sim.engine.SimState;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.ByteBuffer;
+import java.security.MessageDigest;
+import java.util.*;
 
 public class Stability implements SimulationProcess {
     private final Simulation simulation;
-    private final Map<Integer, Strategy> strategyMap;
-    private final List<Integer> strategyProgression;
+    private final List<Agent> sortedAgents;
+    private final ByteBuffer byteBuffer;
+    private final List<byte[]> strategyProgression;
 
     private boolean cycleDetectionEnabled;
 
     public Stability(Simulation simulation) {
         this.simulation = simulation;
-        strategyMap = new HashMap<>();
+        sortedAgents = new ArrayList<>(simulation.getConfig().getNetwork().getVertices());
+        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        byteBuffer = ByteBuffer.allocate(Integer.BYTES * simulation.getConfig().getNetwork().getVertexCount());
         strategyProgression = new ArrayList<>();
     }
 
@@ -39,22 +41,24 @@ public class Stability implements SimulationProcess {
 
         // Cycle detection
         if (cycleDetectionEnabled) {
-            strategyMap.clear();
-            for (Agent agent : simulation.getConfig().getNetwork().getVertices()) {
-                strategyMap.put(agent.getId(), agent.getStrategy());
+            byteBuffer.clear();
+            for (Agent agent : sortedAgents) {
+                byteBuffer.putInt(agent.getStrategy().getId());
             }
 
-            int currentHashCode = strategyMap.hashCode();
-            for (int hashCode : strategyProgression) {
-                if (hashCode == currentHashCode) {
-                    int start = strategyProgression.indexOf(hashCode) + 1;
-                    int end = strategyProgression.size() + 1;
-                    simulation.getResult().setCycle(start, end);
-                    simulation.kill();
-                }
+            MessageDigest sha256 = simulation.getConfig().getSha256();
+            byte[] currentHash = sha256.digest(byteBuffer.array());
+
+            for (byte[] hash : strategyProgression) {
+                if (!Arrays.equals(hash, currentHash)) continue;
+
+                int start = strategyProgression.indexOf(hash) + 1;
+                int end = strategyProgression.size() + 1;
+                simulation.getResult().setCycle(start, end);
+                simulation.kill();
             }
 
-            strategyProgression.add(currentHashCode);
+            strategyProgression.add(currentHash);
         }
 
         // Only one strategy left
