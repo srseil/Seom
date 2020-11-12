@@ -4,9 +4,15 @@ import seom.processes.*;
 import sim.engine.Schedule;
 import sim.engine.SimState;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Simulation extends SimState {
     private final Configuration config;
     private final Result result;
+    private final List<SimulationProcess> processes;
+
+    private final Initialization initialization;
     private final Interactions interactions;
     private final Learning learning;
     private final Mutation mutation;
@@ -21,17 +27,37 @@ public class Simulation extends SimState {
 
         this.config = config;
         result = new Result();
+        processes = new ArrayList<>();
+
+        initialization = new Initialization(config);
+        processes.add(initialization);
+
         interactions = new Interactions(config);
+        processes.add(interactions);
+
         learning = new Learning(config);
+        processes.add(learning);
+
         mutation = new Mutation(config);
+        processes.add(mutation);
+
         stability = new Stability(this);
+        processes.add(stability);
     }
 
     @Override
     public void start() {
         super.start();
 
-        schedule.scheduleOnce(Schedule.EPOCH, new Initialization(config));
+        stability.setCycleDetectionEnabled(true);
+        for (SimulationProcess process : processes) {
+            process.reset();
+            if (process.isStochastic()) {
+                stability.setCycleDetectionEnabled(false);
+            }
+        }
+
+        schedule.scheduleOnce(Schedule.EPOCH, initialization);
 
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, interactions);
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, learning);
@@ -59,5 +85,9 @@ public class Simulation extends SimState {
 
     public Result getResult() {
         return result;
+    }
+
+    public List<SimulationProcess> getProcesses() {
+        return processes;
     }
 }
