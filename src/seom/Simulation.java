@@ -60,10 +60,10 @@ public class Simulation extends SimState {
         schedule.scheduleOnce(Schedule.EPOCH, initialization);
 
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, interactions);
-        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, learning);
-        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 0, mutation);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 1, learning);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 2, mutation);
 
-        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 1, stability);
+        schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 3, stability);
 
         System.out.println("Start");
     }
