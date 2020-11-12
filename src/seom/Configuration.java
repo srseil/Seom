@@ -7,9 +7,14 @@ import seom.learning.LearningRule;
 import seom.networks.Edge;
 import seom.utils.JavaRandomFacade;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 public class Configuration {
     private MersenneTwisterFast random;
     private JavaRandomFacade javaRandom;
+    private MessageDigest sha256;
+
     private Game game;
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
@@ -18,8 +23,21 @@ public class Configuration {
     private boolean interactionsVisualized;
     private boolean learningVisualized;
 
+    public Configuration() {
+        try {
+            sha256 = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Missing SHA-256 implementation");
+        }
+    }
+
     public boolean validate() {
         return game != null && learningRule != null && network != null;
+    }
+
+    public MessageDigest getSha256() {
+        return sha256;
     }
 
     public MersenneTwisterFast getRandom() {
