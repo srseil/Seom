@@ -51,12 +51,10 @@ public class Stability implements SimulationProcess {
                     int end = strategyProgression.size() + 1;
                     simulation.getResult().setCycle(start, end);
                     simulation.kill();
-                    System.out.println("Cycle from " + start + " to " + end);
                 }
             }
 
             strategyProgression.add(currentHashCode);
-            System.out.println(strategyProgression.size() + " hash codes");
         }
 
         // Only one strategy left

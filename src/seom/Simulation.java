@@ -75,6 +75,9 @@ public class Simulation extends SimState {
         // The zeroth generation is only used for initialization
         result.setGenerationCount(schedule.getSteps() - 1);
 
+        if (result.isCyclic()) {
+            System.out.println("Cycle (" + result.getCycleStart() + " to " + result.getCycleEnd() + ")");
+        }
         System.out.println("Finish (" + result.getGenerationCount() + ")");
         System.out.println();
     }
