@@ -63,7 +63,9 @@ public class SmallWorldNetworkBuilder {
             interactionGraph.addEdge(edge, endpoints.getFirst(), endpoints.getSecond());
         }
 
-        for (InteractionEdge edge : interactionGraph.getEdges().toArray(InteractionEdge[]::new)) {
+        var sortedEdges = new ArrayList<>(interactionGraph.getEdges());
+        Collections.sort(sortedEdges);
+        for (InteractionEdge edge : sortedEdges) {
             double rand = random.nextDouble();
             if (rand >= beta) continue;
 

@@ -61,7 +61,9 @@ public class RandomNetworkBuilder {
             .createInteractionGraph();
 
         var toRemove = new ArrayList<InteractionEdge>();
-        for (InteractionEdge edge : interactionGraph.getEdges()) {
+        var sortedEdges = new ArrayList<>(interactionGraph.getEdges());
+        Collections.sort(sortedEdges);
+        for (InteractionEdge edge : sortedEdges) {
             double rand = random.nextDouble();
             if (rand >= edgeProbability) {
                 toRemove.add(edge);

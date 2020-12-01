@@ -149,6 +149,7 @@ public class BoundedDegreeNetworkBuilder {
         }
 
         // Attempt to remove all loops and duplicate edges
+        Collections.sort(unwantedEdges);
         for (InteractionEdge unwantedEdge : unwantedEdges) {
             if (!configGraph.containsEdge(unwantedEdge)) continue;
 
