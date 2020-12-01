@@ -53,7 +53,8 @@ public class Stability implements SimulationProcess {
                 if (!Arrays.equals(hash, currentHash)) continue;
 
                 int start = strategyProgression.indexOf(hash) + 1;
-                int end = strategyProgression.size() + 1;
+                // Cycle ends one generation before this one
+                int end = strategyProgression.size();
                 simulation.getResult().setCycle(start, end);
                 simulation.kill();
             }
