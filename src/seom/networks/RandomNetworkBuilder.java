@@ -27,8 +27,6 @@ public class RandomNetworkBuilder {
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert numAgents > 1 : "The number of agents must be at least 2";
         assert edgeProbability >= 0 && edgeProbability <= 1.0 : "Edge probability must be in [0,1]";
-        assert edgeProbability >= (numAgents - 1) / (double) getMaxNumEdges(numAgents)
-            : "Edge probability must describe at least the minimum number of edges for a connected network";
 
         //noinspection StatementWithEmptyBody
         while (!tryCreateNetwork()) ;
@@ -103,17 +101,5 @@ public class RandomNetworkBuilder {
         }
 
         return true;
-    }
-
-    private static int getMaxNumEdges(int numAgents) {
-        return factorial(numAgents) / (2 * factorial(numAgents - 2));
-    }
-
-    private static int factorial(int x) {
-        int result = 1;
-        for (int i = 2; i <= x; i++) {
-            result *= i;
-        }
-        return result;
     }
 }
