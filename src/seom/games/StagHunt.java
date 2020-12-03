@@ -17,10 +17,11 @@ public class StagHunt implements Game {
 
         @Override
         public Color getColor() {
-            return switch (this) {
-                case Stag -> Color.LIGHT_GRAY;
-                case Hare -> Color.BLACK;
-            };
+            switch (this) {
+                case Stag: return Color.LIGHT_GRAY;
+                case Hare: return Color.BLACK;
+                default: return null;
+            }
         }
     }
 

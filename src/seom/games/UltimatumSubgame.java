@@ -37,16 +37,17 @@ public class UltimatumSubgame implements Game {
 
         @Override
         public Color getColor() {
-            return switch (this) {
-                case S1Gamesman -> new Color(0, 0, 0);
-                case S2 -> new Color(45, 48, 146);
-                case S3 -> new Color(0, 166, 79);
-                case S4MadDog -> new Color(0, 173, 239);
-                case S5EasyRider -> new Color(237, 27, 35);
-                case S6 -> new Color(236, 0, 140);
-                case S7Fairman -> new Color(255, 242, 0);
-                case S8 -> new Color(255, 255, 255);
-            };
+            switch (this) {
+                case S1Gamesman: return new Color(0, 0, 0);
+                case S2: return new Color(45, 48, 146);
+                case S3: return new Color(0, 166, 79);
+                case S4MadDog: return new Color(0, 173, 239);
+                case S5EasyRider: return new Color(237, 27, 35);
+                case S6: return new Color(236, 0, 140);
+                case S7Fairman: return new Color(255, 242, 0);
+                case S8: return new Color(255, 255, 255);
+                default: return null;
+            }
         }
     }
 

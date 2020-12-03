@@ -17,10 +17,11 @@ public class PrisonersDilemma implements Game {
 
         @Override
         public Color getColor() {
-            return switch (this) {
-                case Cooperate -> Color.WHITE;
-                case Defect -> Color.BLACK;
-            };
+            switch (this) {
+                case Cooperate: return Color.WHITE;
+                case Defect: return Color.BLACK;
+                default: return null;
+            }
         }
     }
 

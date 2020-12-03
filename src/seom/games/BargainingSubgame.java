@@ -15,11 +15,12 @@ public class BargainingSubgame implements Game {
 
         @Override
         public Color getColor() {
-            return switch (this) {
-                case Demand4 -> new Color(0, 173, 239);
-                case Demand5 -> new Color(236, 0, 140);
-                case Demand6 -> new Color(255, 242, 0);
-            };
+            switch (this) {
+                case Demand4: return new Color(0, 173, 239);
+                case Demand5: return new Color(236, 0, 140);
+                case Demand6: return new Color(255, 242, 0);
+                default: return null;
+            }
         }
     }
 
@@ -34,9 +35,9 @@ public class BargainingSubgame implements Game {
         for (seom.games.Strategy strategy : strategies) {
             Strategy demand = (Strategy) strategy;
             switch (demand) {
-                case Demand4 -> sum += 4;
-                case Demand5 -> sum += 5;
-                case Demand6 -> sum += 6;
+                case Demand4: sum += 4; break;
+                case Demand5: sum += 5; break;
+                case Demand6: sum += 6; break;
             }
         }
 
@@ -49,9 +50,9 @@ public class BargainingSubgame implements Game {
             for (int i = 0; i < strategies.length; i++) {
                 Strategy demand = (Strategy) strategies[i];
                 switch (demand) {
-                    case Demand4 -> payoffs[i] = 4;
-                    case Demand5 -> payoffs[i] = 5;
-                    case Demand6 -> payoffs[i] = 6;
+                    case Demand4: payoffs[i] = 4; break;
+                    case Demand5: payoffs[i] = 5; break;
+                    case Demand6: payoffs[i] = 6; break;
                 }
             }
         }
