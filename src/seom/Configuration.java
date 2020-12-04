@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 public class Configuration {
     private MersenneTwisterFast random;
     private JavaRandomFacade javaRandom;
-    private MessageDigest sha256;
+    private final MessageDigest sha256;
 
     private Game game;
     private LearningRule learningRule;
@@ -22,6 +22,7 @@ public class Configuration {
     private int mutationDistance;
     private boolean interactionsVisualized;
     private boolean learningVisualized;
+    private boolean cycleDetectionEnabled;
 
     public Configuration() {
         try {
@@ -113,5 +114,13 @@ public class Configuration {
 
     public void setLearningVisualized(boolean learningVisualized) {
         this.learningVisualized = learningVisualized;
+    }
+
+    public boolean isCycleDetectionEnabled() {
+        return cycleDetectionEnabled;
+    }
+
+    public void setCycleDetectionEnabled(boolean cycleDetectionEnabled) {
+        this.cycleDetectionEnabled = cycleDetectionEnabled;
     }
 }

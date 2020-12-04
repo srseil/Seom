@@ -50,11 +50,13 @@ public class Simulation extends SimState {
 
         result = new Result();
 
-        stability.setCycleDetectionEnabled(true);
-        for (SimulationProcess process : processes) {
-            process.reset();
-            if (process.isStochastic()) {
-                stability.setCycleDetectionEnabled(false);
+        stability.setCycleDetectionEnabled(config.isCycleDetectionEnabled());
+        if (config.isCycleDetectionEnabled()) {
+            for (SimulationProcess process : processes) {
+                process.reset();
+                if (process.isStochastic()) {
+                    stability.setCycleDetectionEnabled(false);
+                }
             }
         }
 
