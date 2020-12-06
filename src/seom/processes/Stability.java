@@ -1,6 +1,7 @@
 package seom.processes;
 
 import seom.Agent;
+import seom.Configuration;
 import seom.Simulation;
 import seom.games.Strategy;
 import sim.engine.SimState;
@@ -11,6 +12,7 @@ import java.util.*;
 
 public class Stability implements SimulationProcess {
     private final Simulation simulation;
+    private final Configuration config;
     private final List<Agent> sortedAgents;
     private final ByteBuffer byteBuffer;
     private final List<byte[]> strategyProgression;
@@ -19,9 +21,10 @@ public class Stability implements SimulationProcess {
 
     public Stability(Simulation simulation) {
         this.simulation = simulation;
-        sortedAgents = new ArrayList<>(simulation.getConfig().getNetwork().getVertices());
+        config = simulation.getConfig();
+        sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
         sortedAgents.sort(Comparator.comparingInt(Agent::getId));
-        byteBuffer = ByteBuffer.allocate(Integer.BYTES * simulation.getConfig().getNetwork().getVertexCount());
+        byteBuffer = ByteBuffer.allocate(Integer.BYTES * config.getNetwork().getVertexCount());
         strategyProgression = new ArrayList<>();
     }
 
@@ -46,7 +49,7 @@ public class Stability implements SimulationProcess {
                 byteBuffer.putInt(agent.getStrategy().getId());
             }
 
-            MessageDigest sha256 = simulation.getConfig().getSha256();
+            MessageDigest sha256 = config.getSha256();
             byte[] currentHash = sha256.digest(byteBuffer.array());
 
             for (byte[] hash : strategyProgression) {
@@ -65,7 +68,7 @@ public class Stability implements SimulationProcess {
         // Only one strategy left
         boolean stable = true;
         Strategy stableStrategy = null;
-        for (Agent agent : simulation.getConfig().getNetwork().getVertices()) {
+        for (Agent agent : config.getNetwork().getVertices()) {
             if (stableStrategy == null) {
                 stableStrategy = agent.getStrategy();
             } else if (stableStrategy != agent.getStrategy()) {
