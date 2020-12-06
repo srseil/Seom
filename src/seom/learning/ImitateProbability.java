@@ -3,6 +3,7 @@ package seom.learning;
 import ec.util.MersenneTwisterFast;
 import seom.Agent;
 import seom.games.Game;
+import seom.games.Strategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +14,7 @@ public class ImitateProbability implements LearningRule {
     private MersenneTwisterFast random;
 
     @Override
-    public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
+    public Strategy getUpdatedStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var betterNeighbors = new ArrayList<Agent>(neighbors.size());
         double totalScoreDifference = 0.0;
         for (Agent neighbor : neighbors) {
@@ -24,10 +25,9 @@ public class ImitateProbability implements LearningRule {
         }
 
         if (betterNeighbors.size() == 0) {
-            return;
+            return agent.getStrategy();
         } else if (betterNeighbors.size() == 1) {
-            agent.setStrategy(betterNeighbors.get(0).getStrategy());
-            return;
+            return betterNeighbors.get(0).getStrategy();
         }
 
         var betterNeighborDistribution = new HashMap<Range, Agent>();
@@ -43,10 +43,12 @@ public class ImitateProbability implements LearningRule {
         double rand = random.nextDouble();
         for (Map.Entry<Range, Agent> entry : betterNeighborDistribution.entrySet()) {
             if (entry.getKey().contains(rand)) {
-                agent.setStrategy(entry.getValue().getStrategy());
-                break;
+                return entry.getValue().getStrategy();
             }
         }
+
+        assert false;
+        return null;
     }
 
     @Override

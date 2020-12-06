@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class BestResponse implements LearningRule {
     @Override
-    public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
+    public Strategy getUpdatedStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var strategyScores = new HashMap<Strategy, Double>();
         for (Strategy strategy : game.getStrategies()) {
             if (agent.getStrategy() == strategy) {
@@ -42,18 +42,21 @@ public class BestResponse implements LearningRule {
         }
 
         if (agent.getScore() >= bestStrategyScore) {
-            return;
+            return agent.getStrategy();
         }
 
         if (bestStrategies.size() == 1) {
-            agent.setStrategy(bestStrategies.get(0));
+            return bestStrategies.get(0);
         } else {
             for (Strategy strategy : game.getStrategies()) {
                 if (bestStrategies.contains(strategy)) {
-                    agent.setStrategy(strategy);
+                    return strategy;
                 }
             }
         }
+
+        assert false;
+        return null;
     }
 
     @Override

@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ImitateAverage implements LearningRule {
     @Override
-    public void updateStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
+    public Strategy getUpdatedStrategy(Agent agent, Collection<Agent> neighbors, Game game) {
         var strategyPayoffs = new HashMap<Strategy, ArrayList<Double>>();
         for (Agent neighbor : neighbors) {
             if (!strategyPayoffs.containsKey(neighbor.getStrategy())) {
@@ -46,18 +46,21 @@ public class ImitateAverage implements LearningRule {
         }
 
         if (agent.getScore() >= maxAvgPayoff) {
-            return;
+            return agent.getStrategy();
         }
 
         if (bestStrategies.size() == 1) {
-            agent.setStrategy(bestStrategies.get(0));
+            return bestStrategies.get(0);
         } else {
             for (Strategy strategy : game.getStrategies()) {
                 if (bestStrategies.contains(strategy)) {
-                    agent.setStrategy(strategy);
+                    return strategy;
                 }
             }
         }
+
+        assert false;
+        return null;
     }
 
     @Override
