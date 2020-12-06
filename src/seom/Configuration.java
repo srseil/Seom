@@ -18,6 +18,7 @@ public class Configuration {
     private Game game;
     private LearningRule learningRule;
     private UndirectedSparseMultigraph<Agent, Edge> network;
+    private double initialMoralMean;
     private double mutationProbability;
     private int mutationDistance;
     private boolean interactionsVisualized;
@@ -83,6 +84,14 @@ public class Configuration {
 
     public void setNetwork(UndirectedSparseMultigraph<Agent, Edge> network) {
         this.network = network;
+    }
+
+    public void setInitialMoralMean(double initialMoralMean) {
+        this.initialMoralMean = initialMoralMean;
+    }
+
+    public double getInitialMoralMean() {
+        return initialMoralMean;
     }
 
     public double getMutationProbability() {
