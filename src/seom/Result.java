@@ -28,6 +28,10 @@ public class Result {
         return cycleEnd;
     }
 
+    public int getCycleLength() {
+        return cycleEnd - cycleStart + 1;
+    }
+
     public long getGenerationCount() {
         return generationCount;
     }

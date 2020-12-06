@@ -79,7 +79,8 @@ public class Simulation extends SimState {
         result.setGenerationCount(schedule.getSteps() - 1);
 
         if (result.isCyclic()) {
-            System.out.println("Cycle (" + result.getCycleStart() + " to " + result.getCycleEnd() + ")");
+            System.out.println("Cycle (length: " + result.getCycleLength()
+                + ", start: " + result.getCycleStart() + ", end: " + result.getCycleEnd() + ")");
         }
         System.out.println("Finish (" + result.getGenerationCount() + ")");
         System.out.println();
