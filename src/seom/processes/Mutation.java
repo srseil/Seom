@@ -34,6 +34,8 @@ public class Mutation implements SimulationProcess {
     public void step(SimState simState) {
         System.out.println("Mutation");
 
+        if (config.getMutationProbability() == 0.0) return;
+
         for (Agent agent : config.getNetwork().getVertices()) {
             double rand = config.getRandom().nextDouble();
             if (rand >= config.getMutationProbability()) continue;
