@@ -48,7 +48,7 @@ public class Simulation extends SimState {
     public void start() {
         super.start();
 
-        result = new Result();
+        result = new Result(config);
 
         stability.setCycleDetectionEnabled(config.isCycleDetectionEnabled());
         if (config.isCycleDetectionEnabled()) {
@@ -83,6 +83,7 @@ public class Simulation extends SimState {
                 + ", start: " + result.getCycleStart() + ", end: " + result.getCycleEnd() + ")");
         }
         System.out.println("Finish (" + result.getGenerationCount() + ")");
+        System.out.println("Result (stability: " + result.getStability() + ", morality: " + result.getMorality() + ")");
         System.out.println();
     }
 

@@ -15,7 +15,8 @@ public class Stability implements SimulationProcess {
     private final Configuration config;
     private final List<Agent> sortedAgents;
     private final ByteBuffer byteBuffer;
-    private final List<byte[]> strategyProgression;
+    private final List<Strategy[]> strategyHistory;
+    private final List<byte[]> strategyHashHistory;
 
     private boolean cycleDetectionEnabled;
 
@@ -25,7 +26,8 @@ public class Stability implements SimulationProcess {
         sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
         sortedAgents.sort(Comparator.comparingInt(Agent::getId));
         byteBuffer = ByteBuffer.allocate(Integer.BYTES * config.getNetwork().getVertexCount());
-        strategyProgression = new ArrayList<>();
+        strategyHistory = new ArrayList<>();
+        strategyHashHistory = new ArrayList<>();
     }
 
     @Override
@@ -35,15 +37,42 @@ public class Stability implements SimulationProcess {
 
     @Override
     public void reset() {
-        strategyProgression.clear();
+        strategyHistory.clear();
+        strategyHashHistory.clear();
     }
 
     @Override
     public void step(SimState simState) {
         System.out.println("Stability");
 
+        // Store strategies in history
+        var strategies = new Strategy[sortedAgents.size()];
+        for (int i = 0; i < sortedAgents.size(); i++) {
+            strategies[i] = sortedAgents.get(i).getStrategy();
+        }
+        strategyHistory.add(strategies);
+
         // Maximum number of generations
         if (simState.schedule.getSteps() == config.getMaxNumGenerations()) {
+            simulation.getResult().computeOutputs(strategyHistory);
+            simulation.kill();
+        }
+
+        // Only one strategy left
+        boolean homogenous = true;
+        Strategy stableStrategy = null;
+        for (Agent agent : config.getNetwork().getVertices()) {
+            if (stableStrategy == null) {
+                stableStrategy = agent.getStrategy();
+            } else if (stableStrategy != agent.getStrategy()) {
+                homogenous = false;
+                break;
+            }
+        }
+        if (homogenous) {
+            int lastStep = (int) simulation.schedule.getSteps();
+            simulation.getResult().setCycle(lastStep, lastStep);
+            simulation.getResult().computeOutputs(strategyHistory);
             simulation.kill();
         }
 
@@ -57,33 +86,18 @@ public class Stability implements SimulationProcess {
             MessageDigest sha256 = config.getSha256();
             byte[] currentHash = sha256.digest(byteBuffer.array());
 
-            for (byte[] hash : strategyProgression) {
+            for (byte[] hash : strategyHashHistory) {
                 if (!Arrays.equals(hash, currentHash)) continue;
 
-                int start = strategyProgression.indexOf(hash) + 1;
+                int start = strategyHashHistory.indexOf(hash) + 1;
                 // Cycle ends one generation before this one
-                int end = strategyProgression.size();
+                int end = strategyHashHistory.size();
                 simulation.getResult().setCycle(start, end);
+                simulation.getResult().computeOutputs(strategyHistory);
                 simulation.kill();
             }
 
-            strategyProgression.add(currentHash);
-        }
-
-        // Only one strategy left
-        boolean stable = true;
-        Strategy stableStrategy = null;
-        for (Agent agent : config.getNetwork().getVertices()) {
-            if (stableStrategy == null) {
-                stableStrategy = agent.getStrategy();
-            } else if (stableStrategy != agent.getStrategy()) {
-                stable = false;
-                break;
-            }
-        }
-
-        if (stable) {
-            simulation.kill();
+            strategyHashHistory.add(currentHash);
         }
     }
 
