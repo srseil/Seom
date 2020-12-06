@@ -75,7 +75,7 @@ public class Simulation extends SimState {
     public void finish() {
         super.finish();
 
-        // The zeroth generation is only used for initialization
+        // When the simulation is killed by Stability, finish() is called one generation after
         result.setGenerationCount(schedule.getSteps() - 1);
 
         if (result.isCyclic()) {
