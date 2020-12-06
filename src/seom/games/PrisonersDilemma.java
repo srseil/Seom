@@ -45,6 +45,11 @@ public class PrisonersDilemma implements Game {
     }
 
     @Override
+    public seom.games.Strategy[] getMoralStrategies() {
+        return new Strategy[] {Strategy.Cooperate};
+    }
+
+    @Override
     public Payoffs play(seom.games.Strategy... strategies) {
         StrategyProfile profile = new StrategyProfile(strategies);
         return results.get(profile);

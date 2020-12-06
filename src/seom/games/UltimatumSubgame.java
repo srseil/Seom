@@ -57,6 +57,11 @@ public class UltimatumSubgame implements Game {
     }
 
     @Override
+    public seom.games.Strategy[] getMoralStrategies() {
+        return new Strategy[] {Strategy.S7Fairman};
+    }
+
+    @Override
     public Payoffs play(seom.games.Strategy... strategies) {
         Strategy p1Strategy = (Strategy) strategies[0];
         Strategy p2Strategy = (Strategy) strategies[1];

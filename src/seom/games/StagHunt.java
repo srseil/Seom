@@ -45,6 +45,11 @@ public class StagHunt implements Game {
     }
 
     @Override
+    public seom.games.Strategy[] getMoralStrategies() {
+        return new Strategy[] {Strategy.Stag};
+    }
+
+    @Override
     public Payoffs play(seom.games.Strategy... strategies) {
         StrategyProfile profile = new StrategyProfile(strategies);
         return results.get(profile);

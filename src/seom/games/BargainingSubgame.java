@@ -30,6 +30,11 @@ public class BargainingSubgame implements Game {
     }
 
     @Override
+    public seom.games.Strategy[] getMoralStrategies() {
+        return new Strategy[] {Strategy.Demand5};
+    }
+
+    @Override
     public Payoffs play(seom.games.Strategy... strategies) {
         int sum = 0;
         for (seom.games.Strategy strategy : strategies) {
