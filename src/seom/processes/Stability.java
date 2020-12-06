@@ -42,6 +42,11 @@ public class Stability implements SimulationProcess {
     public void step(SimState simState) {
         System.out.println("Stability");
 
+        // Maximum number of generations
+        if (simState.schedule.getSteps() == config.getMaxNumGenerations()) {
+            simulation.kill();
+        }
+
         // Cycle detection
         if (cycleDetectionEnabled) {
             byteBuffer.clear();

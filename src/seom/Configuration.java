@@ -23,6 +23,7 @@ public class Configuration {
     private boolean interactionsVisualized;
     private boolean learningVisualized;
     private boolean cycleDetectionEnabled;
+    private int maxNumGenerations;
 
     public Configuration() {
         try {
@@ -122,5 +123,13 @@ public class Configuration {
 
     public void setCycleDetectionEnabled(boolean cycleDetectionEnabled) {
         this.cycleDetectionEnabled = cycleDetectionEnabled;
+    }
+
+    public void setMaxNumGenerations(int maxNumGenerations) {
+        this.maxNumGenerations = maxNumGenerations;
+    }
+
+    public int getMaxNumGenerations() {
+        return maxNumGenerations;
     }
 }
