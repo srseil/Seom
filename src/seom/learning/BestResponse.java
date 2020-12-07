@@ -20,10 +20,15 @@ public class BestResponse implements LearningRule {
                 continue;
             }
 
-            double score = 0;
+            double score = 0.0;
             for (Agent neighbor : neighbors) {
                 Payoffs payoffs = game.play(strategy, neighbor.getStrategy());
                 score += payoffs.getPayoffForPlayer(0);
+
+                if (game.isSequential()) {
+                    Payoffs reversePayoffs = game.play(neighbor.getStrategy(), strategy);
+                    score += reversePayoffs.getPayoffForPlayer(1);
+                }
             }
 
             strategyScores.put(strategy, score);
