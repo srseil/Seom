@@ -40,6 +40,11 @@ public class PrisonersDilemma implements Game {
     }
 
     @Override
+    public boolean isSequential() {
+        return false;
+    }
+
+    @Override
     public seom.games.Strategy[] getStrategies() {
         return Strategy.values();
     }

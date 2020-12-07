@@ -52,6 +52,11 @@ public class UltimatumSubgame implements Game {
     }
 
     @Override
+    public boolean isSequential() {
+        return true;
+    }
+
+    @Override
     public seom.games.Strategy[] getStrategies() {
         return Strategy.values();
     }
