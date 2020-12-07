@@ -39,6 +39,12 @@ public class Interactions implements SimulationProcess {
             Payoffs payoffs = config.getGame().play(agent0.getStrategy(), agent1.getStrategy());
             agent0.increaseScore(payoffs.getPayoffForPlayer(0));
             agent1.increaseScore(payoffs.getPayoffForPlayer(1));
+
+            if (config.getGame().isSequential()) {
+                Payoffs reversePayoffs = config.getGame().play(agent1.getStrategy(), agent0.getStrategy());
+                agent1.increaseScore(reversePayoffs.getPayoffForPlayer(0));
+                agent0.increaseScore(reversePayoffs.getPayoffForPlayer(1));
+            }
         }
     }
 }
