@@ -155,7 +155,9 @@ public class NetworkUtils {
         for (InteractionEdge interactionEdge : interactionGraph.getOutEdges(hub)) {
             Pair<Agent> endpoints = interactionGraph.getEndpoints(interactionEdge);
             Agent hubNeighbor = endpoints.getFirst() == hub ? endpoints.getSecond() : endpoints.getFirst();
-            learningGraph.addEdge(new LearningEdge(), agent, hubNeighbor);
+            if (agent != hubNeighbor) {
+                learningGraph.addEdge(new LearningEdge(), agent, hubNeighbor);
+            }
         }
 
         if (steps > 1) {
