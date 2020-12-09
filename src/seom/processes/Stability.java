@@ -53,7 +53,7 @@ public class Stability implements SimulationProcess {
         strategyHistory.add(strategies);
 
         // Maximum number of generations
-        if (simState.schedule.getSteps() == config.getMaxNumGenerations()) {
+        if (strategyHistory.size() == config.getMaxNumGenerations()) {
             simulation.getResult().computeOutputs(strategyHistory);
             simulation.kill();
         }
@@ -70,7 +70,7 @@ public class Stability implements SimulationProcess {
             }
         }
         if (homogenous) {
-            int lastStep = (int) simulation.schedule.getSteps();
+            int lastStep = strategyHistory.size();
             simulation.getResult().setCycle(lastStep, lastStep);
             simulation.getResult().computeOutputs(strategyHistory);
             simulation.kill();
