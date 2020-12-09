@@ -8,9 +8,7 @@ import seom.networks.InteractionEdge;
 import seom.networks.NetworkUtils;
 import sim.engine.SimState;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class Mutation implements SimulationProcess {
     private final Configuration config;
@@ -36,7 +34,9 @@ public class Mutation implements SimulationProcess {
 
         if (config.getMutationProbability() == 0.0) return;
 
-        for (Agent agent : config.getNetwork().getVertices()) {
+        var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
+        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        for (Agent agent : sortedAgents) {
             double rand = config.getRandom().nextDouble();
             if (rand >= config.getMutationProbability()) continue;
 
