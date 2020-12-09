@@ -36,7 +36,7 @@ public class Configuration {
     }
 
     public boolean validate() {
-        return game != null && learningRule != null && network != null;
+        return game != null && learningRule != null && network != null && random != null;
     }
 
     public MessageDigest getSha256() {
