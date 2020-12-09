@@ -51,4 +51,8 @@ public class Agent {
     public void resetScore() {
         score = 0.0;
     }
+
+    public static void resetIds() {
+        nextId = 0;
+    }
 }
