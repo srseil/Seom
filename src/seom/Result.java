@@ -31,7 +31,7 @@ public class Result {
         }
 
         double relativeMorality = 0.0;
-        for (int i = start; i < end; i++) {
+        for (int i = start; i <= end; i++) {
             Strategy[] strategies = strategyHistory.get(i);
             int moralAgents = 0;
             for (Strategy strategy : strategies) {
