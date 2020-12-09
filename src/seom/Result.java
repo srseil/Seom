@@ -25,13 +25,13 @@ public class Result {
         stability = 1.0 / config.getMaxNumGenerations();
 
         if (isCyclic()) {
-            start = cycleStart;
-            end = cycleEnd;
+            start = cycleStart - 1;
+            end = cycleEnd - 1;
             stability = 1.0 / getCycleLength();
         }
 
         double relativeMorality = 0.0;
-        for (int i = start - 1; i < end; i++) {
+        for (int i = start; i < end; i++) {
             Strategy[] strategies = strategyHistory.get(i);
             int moralAgents = 0;
             for (Strategy strategy : strategies) {
