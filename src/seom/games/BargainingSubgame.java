@@ -68,4 +68,9 @@ public class BargainingSubgame implements Game {
         }
         return new Payoffs(payoffs);
     }
+
+    @Override
+    public String toString() {
+        return "BargainingSubgame";
+    }
 }

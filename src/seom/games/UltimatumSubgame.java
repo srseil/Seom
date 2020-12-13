@@ -63,7 +63,7 @@ public class UltimatumSubgame implements Game {
 
     @Override
     public seom.games.Strategy[] getMoralStrategies() {
-        return new Strategy[] {Strategy.S7Fairman};
+        return new Strategy[] {Strategy.S7Fairman, Strategy.S5EasyRider};
     }
 
     @Override
@@ -76,5 +76,10 @@ public class UltimatumSubgame implements Game {
         } else {
             return new Payoffs(0, 0);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "UltimatumSubgame";
     }
 }

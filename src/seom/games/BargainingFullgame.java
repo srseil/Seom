@@ -76,4 +76,9 @@ public class BargainingFullgame implements Game {
         }
         return new Payoffs(payoffs);
     }
+
+    @Override
+    public String toString() {
+        return "BargainingFullgame";
+    }
 }

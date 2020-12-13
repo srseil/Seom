@@ -59,4 +59,9 @@ public class StagHunt implements Game {
         StrategyProfile profile = new StrategyProfile(strategies);
         return results.get(profile);
     }
+
+    @Override
+    public String toString() {
+        return "StagHunt";
+    }
 }

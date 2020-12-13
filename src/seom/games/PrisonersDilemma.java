@@ -59,4 +59,9 @@ public class PrisonersDilemma implements Game {
         StrategyProfile profile = new StrategyProfile(strategies);
         return results.get(profile);
     }
+
+    @Override
+    public String toString() {
+        return "PrisonersDilemma";
+    }
 }
