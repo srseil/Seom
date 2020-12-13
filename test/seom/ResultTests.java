@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class ResultTests {
     @Test
-    public void computeMorality() {
+    public void computeOutputs() {
         var config = new Configuration();
         config.setGame(new BargainingSubgame());
         config.setMaxNumGenerations(10);
@@ -35,5 +35,8 @@ public class ResultTests {
         result.setCycle(1, 3);
         result.computeOutputs(history);
         Assertions.assertEquals(2.0/3.0, result.getMorality());
+        Assertions.assertEquals(2, result.getStrategyMap().get(BargainingSubgame.Strategy.Demand4));
+        Assertions.assertEquals(6, result.getStrategyMap().get(BargainingSubgame.Strategy.Demand5));
+        Assertions.assertEquals(1, result.getStrategyMap().get(BargainingSubgame.Strategy.Demand6));
     }
 }
