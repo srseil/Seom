@@ -7,6 +7,7 @@ import seom.Configuration;
 import seom.games.Payoffs;
 import seom.networks.InteractionEdge;
 import seom.networks.NetworkUtils;
+import seom.utils.Log;
 import sim.engine.SimState;
 
 public class Interactions implements SimulationProcess {
@@ -29,7 +30,7 @@ public class Interactions implements SimulationProcess {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("Interactions");
+        Log.fine("Interactions");
 
         for (InteractionEdge edge : interactionGraph.getEdges()) {
             Pair<Agent> agents = interactionGraph.getEndpoints(edge);

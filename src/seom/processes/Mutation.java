@@ -6,6 +6,7 @@ import seom.Configuration;
 import seom.games.Strategy;
 import seom.networks.InteractionEdge;
 import seom.networks.NetworkUtils;
+import seom.utils.Log;
 import sim.engine.SimState;
 
 import java.util.*;
@@ -30,7 +31,7 @@ public class Mutation implements SimulationProcess {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("Mutation");
+        Log.fine("Mutation");
 
         if (config.getMutationProbability() == 0.0) return;
 

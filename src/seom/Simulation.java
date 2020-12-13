@@ -1,6 +1,7 @@
 package seom;
 
 import seom.processes.*;
+import seom.utils.Log;
 import sim.engine.Schedule;
 import sim.engine.SimState;
 
@@ -65,7 +66,7 @@ public class Simulation extends SimState {
 
         schedule.scheduleRepeating(Schedule.EPOCH + 1.0, 3, stability);
 
-        System.out.println("Start");
+        Log.fine("Start");
     }
 
     @Override
@@ -76,12 +77,11 @@ public class Simulation extends SimState {
         result.setGenerationCount(schedule.getSteps() - 1);
 
         if (result.isCyclic()) {
-            System.out.println("Cycle (length: " + result.getCycleLength()
+            Log.fine("Cycle (length: " + result.getCycleLength()
                 + ", start: " + result.getCycleStart() + ", end: " + result.getCycleEnd() + ")");
         }
-        System.out.println("Finish (" + result.getGenerationCount() + ")");
-        System.out.println("Result (stability: " + result.getStability() + ", morality: " + result.getMorality() + ")");
-        System.out.println();
+        Log.fine("Finish (" + result.getGenerationCount() + ")");
+        Log.fine("Result (stability: " + result.getStability() + ", morality: " + result.getMorality() + ")");
     }
 
     public Configuration getConfig() {

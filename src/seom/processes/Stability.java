@@ -4,6 +4,7 @@ import seom.Agent;
 import seom.Configuration;
 import seom.Simulation;
 import seom.games.Strategy;
+import seom.utils.Log;
 import sim.engine.SimState;
 
 import java.nio.ByteBuffer;
@@ -43,7 +44,7 @@ public class Stability implements SimulationProcess {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("Stability");
+        Log.fine("Stability");
 
         // Store strategies in history
         var strategies = new Strategy[sortedAgents.size()];

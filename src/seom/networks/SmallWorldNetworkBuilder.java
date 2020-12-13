@@ -6,6 +6,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.utils.JavaRandomFacade;
+import seom.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -82,7 +83,7 @@ public class SmallWorldNetworkBuilder {
             }
 
             if (agent2 == null) {
-                System.out.println("Could not rewire edge, attempting network construction from scratch");
+                Log.finer("Could not rewire edge, attempting network construction from scratch");
                 return false;
             }
 
@@ -91,7 +92,7 @@ public class SmallWorldNetworkBuilder {
         }
 
         if (!NetworkUtils.isConnected(interactionGraph)) {
-            System.out.println("Constructed graph is not connected, attempting network construction from scratch");
+            Log.finer("Constructed graph is not connected, attempting network construction from scratch");
             return false;
         }
 

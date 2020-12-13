@@ -6,6 +6,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.utils.JavaRandomFacade;
+import seom.utils.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -93,10 +94,10 @@ public class RandomNetworkBuilder {
         }
 
         if (leftover != 0) {
-            System.out.println("Could not remove enough edges, attempting network construction from scratch");
+            Log.finer("Could not remove enough edges, attempting network construction from scratch");
             return false;
         } else if (!NetworkUtils.isConnected(interactionGraph)) {
-            System.out.println("Generated network is not connected, attempting network construction from scratch");
+            Log.finer("Generated network is not connected, attempting network construction from scratch");
             return false;
         }
 

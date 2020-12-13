@@ -7,6 +7,7 @@ import seom.games.Strategy;
 import seom.learning.ImitateProbability;
 import seom.networks.LearningEdge;
 import seom.networks.NetworkUtils;
+import seom.utils.Log;
 import sim.engine.SimState;
 
 import java.util.HashMap;
@@ -31,7 +32,7 @@ public class Learning implements SimulationProcess {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("Learning");
+        Log.fine("Learning");
 
         var newStrategies = new HashMap<Agent, Strategy>();
         for (Agent agent : learningGraph.getVertices()) {

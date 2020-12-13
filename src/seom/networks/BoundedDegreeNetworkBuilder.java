@@ -6,6 +6,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 import seom.utils.JavaRandomFacade;
+import seom.utils.Log;
 
 import java.util.*;
 
@@ -169,7 +170,7 @@ public class BoundedDegreeNetworkBuilder {
             }
 
             if (!removed) {
-                System.out.println("Could not remove unwanted edge, attempting network construction from scratch");
+                Log.finer("Could not remove unwanted edge, attempting network construction from scratch");
                 return false;
             }
         }
@@ -180,7 +181,7 @@ public class BoundedDegreeNetworkBuilder {
         }
 
         if (!NetworkUtils.isConnected(configGraph)) {
-            System.out.println("Generated network is not connected, attempting network construction from scratch");
+            Log.finer("Generated network is not connected, attempting network construction from scratch");
             return false;
         }
 

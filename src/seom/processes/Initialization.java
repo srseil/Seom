@@ -3,6 +3,7 @@ package seom.processes;
 import seom.Agent;
 import seom.Configuration;
 import seom.games.Strategy;
+import seom.utils.Log;
 import sim.engine.SimState;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class Initialization implements SimulationProcess {
 
     @Override
     public void step(SimState simState) {
-        System.out.println("Initialization");
+        Log.fine("Initialization");
 
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
         sortedAgents.sort(Comparator.comparingInt(Agent::getId));
