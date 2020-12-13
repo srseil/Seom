@@ -7,7 +7,7 @@ public class SimulationWithUI extends GUIState {
     private final Simulation simulation;
     private NetworkVisualization networkFrame;
 
-    public SimulationWithUI(Configuration config) throws Exception {
+    public SimulationWithUI(Configuration config) {
         super(new Simulation(config));
         simulation = (Simulation)state;
     }
