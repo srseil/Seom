@@ -67,4 +67,9 @@ public class BestResponse implements LearningRule {
     @Override
     public void setRandom(MersenneTwisterFast random) {
     }
+
+    @Override
+    public String toString() {
+        return "BestResponse";
+    }
 }

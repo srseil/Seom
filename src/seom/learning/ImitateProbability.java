@@ -69,4 +69,9 @@ public class ImitateProbability implements LearningRule {
             return value >= lowerBound && value < upperBound;
         }
     }
+
+    @Override
+    public String toString() {
+        return "ImitateProbability";
+    }
 }

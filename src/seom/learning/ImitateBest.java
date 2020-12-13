@@ -35,4 +35,9 @@ public class ImitateBest implements LearningRule {
     @Override
     public void setRandom(MersenneTwisterFast random) {
     }
+
+    @Override
+    public String toString() {
+        return "ImitateBest";
+    }
 }
