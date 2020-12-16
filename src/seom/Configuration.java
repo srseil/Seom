@@ -5,6 +5,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.games.Game;
 import seom.learning.LearningRule;
 import seom.networks.Edge;
+import seom.networks.NetworkBuilder;
 import seom.utils.JavaRandomFacade;
 
 import java.security.MessageDigest;
@@ -17,6 +18,7 @@ public class Configuration {
 
     private Game game;
     private LearningRule learningRule;
+    private NetworkBuilder networkBuilder;
     private UndirectedSparseMultigraph<Agent, Edge> network;
     private double initialMoralMean;
     private double mutationProbability;
@@ -76,6 +78,14 @@ public class Configuration {
         if (random != null) {
             learningRule.setRandom(random);
         }
+    }
+
+    public NetworkBuilder getNetworkBuilder() {
+        return networkBuilder;
+    }
+
+    public void setNetworkBuilder(NetworkBuilder networkBuilder) {
+        this.networkBuilder = networkBuilder;
     }
 
     public UndirectedSparseMultigraph<Agent, Edge> getNetwork() {
