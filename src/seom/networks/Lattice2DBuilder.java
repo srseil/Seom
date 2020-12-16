@@ -1,5 +1,6 @@
 package seom.networks;
 
+import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.Agent;
@@ -18,6 +19,10 @@ public class Lattice2DBuilder implements NetworkBuilder {
     public enum Neighborhood {
         VonNeumann,
         Moore
+    }
+
+    @Override
+    public void setRandom(MersenneTwisterFast random) {
     }
 
     @Override

@@ -16,11 +16,19 @@ public class SmallWorldNetworkBuilder implements NetworkBuilder {
     private int learningDistance;
     private double beta;
 
-    private final MersenneTwisterFast random;
-    private final JavaRandomFacade javaRandom;
+    private MersenneTwisterFast random;
+    private JavaRandomFacade javaRandom;
     private UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
+    public SmallWorldNetworkBuilder() {
+    }
+
     public SmallWorldNetworkBuilder(MersenneTwisterFast random) {
+        setRandom(random);
+    }
+
+    @Override
+    public void setRandom(MersenneTwisterFast random) {
         this.random = random;
         javaRandom = new JavaRandomFacade(random);
     }

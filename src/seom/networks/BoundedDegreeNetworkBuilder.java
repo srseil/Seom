@@ -16,12 +16,20 @@ public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
     private int maxDegree;
     private int learningDistance;
 
-    private final MersenneTwisterFast random;
-    private final JavaRandomFacade javaRandom;
+    private MersenneTwisterFast random;
+    private JavaRandomFacade javaRandom;
     private Agent[] stubs;
     private UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
+    public BoundedDegreeNetworkBuilder() {
+    }
+
     public BoundedDegreeNetworkBuilder(MersenneTwisterFast random) {
+        setRandom(random);
+    }
+
+    @Override
+    public void setRandom(MersenneTwisterFast random) {
         this.random = random;
         javaRandom = new JavaRandomFacade(random);
     }

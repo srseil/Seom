@@ -1,5 +1,6 @@
 package seom.networks;
 
+import ec.util.MersenneTwisterFast;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.Agent;
@@ -9,6 +10,10 @@ public class Lattice1DBuilder implements NetworkBuilder {
     private int interactionDistance;
     private int learningDistance;
     private boolean wrapAround;
+
+    @Override
+    public void setRandom(MersenneTwisterFast random) {
+    }
 
     @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
