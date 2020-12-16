@@ -55,6 +55,9 @@ public class Configuration {
         if (learningRule != null) {
             learningRule.setRandom(random);
         }
+        if (networkBuilder != null) {
+            networkBuilder.setRandom(random);
+        }
     }
 
     public JavaRandomFacade getJavaRandom() {
