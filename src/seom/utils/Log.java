@@ -1,5 +1,6 @@
 package seom.utils;
 
+import java.io.IOException;
 import java.util.logging.*;
 
 public class Log {
@@ -42,6 +43,16 @@ public class Log {
         for (Handler handler : rootLogger.getHandlers()) {
             handler.setFormatter(new SimpleFormatter());
             handler.setLevel(Level.ALL);
+        }
+    }
+
+    public static void enableFileLogging(String filePath) {
+        Logger rootLogger = logger.getParent();
+        try {
+            rootLogger.addHandler(new FileHandler(filePath));
+        } catch (IOException e) {
+            e.printStackTrace();
+            assert false;
         }
     }
 
