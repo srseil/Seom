@@ -11,7 +11,7 @@ import seom.utils.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RandomNetworkBuilder {
+public class RandomNetworkBuilder implements NetworkBuilder {
     private int numAgents;
     private int learningDistance;
     private double edgeProbability;
@@ -25,6 +25,7 @@ public class RandomNetworkBuilder {
         javaRandom = new JavaRandomFacade(random);
     }
 
+    @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert numAgents > 1 : "The number of agents must be at least 2";
         assert edgeProbability >= 0 && edgeProbability <= 1.0 : "Edge probability must be in [0,1]";

@@ -5,9 +5,10 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 
-public class FullyConnectedNetworkBuilder {
+public class FullyConnectedNetworkBuilder implements NetworkBuilder {
     private int numAgents;
 
+    @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph = createInteractionGraph();
 

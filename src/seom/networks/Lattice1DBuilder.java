@@ -4,12 +4,13 @@ import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.Agent;
 
-public class Lattice1DBuilder {
+public class Lattice1DBuilder implements NetworkBuilder {
     private int length;
     private int interactionDistance;
     private int learningDistance;
     private boolean wrapAround;
 
+    @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert length > 1 : "Length must be at least 2";
         assert interactionDistance <= length / 2 : "Maximum interaction distance is length / 2";

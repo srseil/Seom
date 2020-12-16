@@ -11,7 +11,7 @@ import seom.utils.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SmallWorldNetworkBuilder {
+public class SmallWorldNetworkBuilder implements NetworkBuilder {
     private UndirectedSparseGraph<Agent, InteractionEdge> baseLattice;
     private int learningDistance;
     private double beta;
@@ -25,6 +25,7 @@ public class SmallWorldNetworkBuilder {
         javaRandom = new JavaRandomFacade(random);
     }
 
+    @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert baseLattice.getVertexCount() > 1 : "The number of agents in base lattice must be at least 2";
         assert beta >= 0 && beta <= 1.0 : "Beta must be in [0,1]";

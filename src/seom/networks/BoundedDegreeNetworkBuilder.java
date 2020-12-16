@@ -10,7 +10,7 @@ import seom.utils.Log;
 
 import java.util.*;
 
-public class BoundedDegreeNetworkBuilder {
+public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
     private int numAgents;
     private int minDegree;
     private int maxDegree;
@@ -26,6 +26,7 @@ public class BoundedDegreeNetworkBuilder {
         javaRandom = new JavaRandomFacade(random);
     }
 
+    @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert numAgents > 0 : "Number of agents must be larger than one";
         assert minDegree <= maxDegree : "Minimum degree must not be larger than maximum degree";

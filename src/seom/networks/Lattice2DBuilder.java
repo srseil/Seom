@@ -4,7 +4,7 @@ import edu.uci.ics.jung.graph.UndirectedSparseGraph;
 import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import seom.Agent;
 
-public class Lattice2DBuilder {
+public class Lattice2DBuilder implements NetworkBuilder {
     private int width;
     private int height;
     private int interactionDistance;
@@ -20,6 +20,7 @@ public class Lattice2DBuilder {
         Moore
     }
 
+    @Override
     public UndirectedSparseMultigraph<Agent, Edge> create() {
         assert width > 1 || height > 1 : "Either width or height must be larger than 1";
         assert interactionDistance < width || interactionDistance < height : "Interaction distance must be smaller than largest dimension";
