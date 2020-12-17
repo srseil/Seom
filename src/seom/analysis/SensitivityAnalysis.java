@@ -57,7 +57,12 @@ public class SensitivityAnalysis {
         }
     }
 
-    @SuppressWarnings({"rawtypes"})
+    @SuppressWarnings("rawtypes")
+    public Parameter[] getParameters() {
+        return parameters.toArray(Parameter[]::new);
+    }
+
+    @SuppressWarnings({"rawtypes", "unchecked"})
     public void simulate() {
         Timer.start();
         for (Parameter parameter : parameters) {
