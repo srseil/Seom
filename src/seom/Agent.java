@@ -4,7 +4,7 @@ import seom.games.Strategy;
 
 import java.awt.*;
 
-public class Agent {
+public class Agent implements Comparable<Agent> {
     private static int nextId = 0;
 
     private final int id;
@@ -13,11 +13,6 @@ public class Agent {
 
     public Agent() {
         id = nextId++;
-    }
-
-    @Override
-    public String toString() {
-        return String.valueOf(id);
     }
 
     public Paint getStrategyColor() {
@@ -50,6 +45,16 @@ public class Agent {
 
     public void resetScore() {
         score = 0.0;
+    }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
+    @Override
+    public int compareTo(Agent o) {
+        return Integer.compare(id, o.id);
     }
 
     public static void resetIds() {
