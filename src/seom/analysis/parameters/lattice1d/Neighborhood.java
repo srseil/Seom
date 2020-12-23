@@ -20,9 +20,9 @@ public class Neighborhood implements Parameter<Integer> {
     @Override
     public Integer[] getValues() {
         return new Integer[] {
-            1,
             2,
-            3
+            3,
+            4
         };
     }
 
