@@ -5,7 +5,6 @@ import seom.analysis.GameType;
 import seom.analysis.NetworkType;
 import seom.analysis.parameters.Parameter;
 import seom.networks.BoundedDegreeNetworkBuilder;
-import seom.networks.Lattice2DBuilder;
 import seom.utils.tuples.Pair;
 
 public class DegreeInterval implements Parameter<Pair<Integer, Integer>> {
@@ -41,7 +40,7 @@ public class DegreeInterval implements Parameter<Pair<Integer, Integer>> {
 
     @Override
     public String getValueName(Pair<Integer, Integer> value) {
-        return "[" + value.getFirst() + ", " + value.getSecond() + "]";
+        return value.getFirst() + "-" + value.getSecond();
     }
 
     @Override
