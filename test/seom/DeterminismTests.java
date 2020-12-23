@@ -42,6 +42,7 @@ public class DeterminismTests {
         config.setInitialMoralMean(0.5);
         config.setMutationProbability(1.0);
         config.setMutationDistance(0);
+        config.setHomogeneityDetectionEnabled(false);
         config.setCycleDetectionEnabled(false);
         config.setMaxNumGenerations(MAX_NUM_GENERATIONS);
         config.setRandom(random);

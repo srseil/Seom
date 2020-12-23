@@ -20,6 +20,7 @@ public class Stability implements SimulationProcess {
     private final List<byte[]> strategyHashHistory;
 
     private boolean cycleDetectionEnabled;
+    private boolean homogeneityDetectionEnabled;
 
     public Stability(Simulation simulation) {
         this.simulation = simulation;
@@ -60,21 +61,23 @@ public class Stability implements SimulationProcess {
         }
 
         // Only one strategy left
-        boolean homogenous = true;
-        Strategy stableStrategy = null;
-        for (Agent agent : config.getNetwork().getVertices()) {
-            if (stableStrategy == null) {
-                stableStrategy = agent.getStrategy();
-            } else if (stableStrategy != agent.getStrategy()) {
-                homogenous = false;
-                break;
+        if (homogeneityDetectionEnabled) {
+            boolean homogenous = true;
+            Strategy stableStrategy = null;
+            for (Agent agent : config.getNetwork().getVertices()) {
+                if (stableStrategy == null) {
+                    stableStrategy = agent.getStrategy();
+                } else if (stableStrategy != agent.getStrategy()) {
+                    homogenous = false;
+                    break;
+                }
             }
-        }
-        if (homogenous) {
-            int lastStep = strategyHistory.size();
-            simulation.getResult().setCycle(lastStep, lastStep);
-            simulation.getResult().computeOutputs(strategyHistory);
-            simulation.kill();
+            if (homogenous) {
+                int lastStep = strategyHistory.size();
+                simulation.getResult().setCycle(lastStep, lastStep);
+                simulation.getResult().computeOutputs(strategyHistory);
+                simulation.kill();
+            }
         }
 
         // Cycle detection
@@ -100,6 +103,10 @@ public class Stability implements SimulationProcess {
 
             strategyHashHistory.add(currentHash);
         }
+    }
+
+    public void setHomogeneityDetectionEnabled(boolean homogeneityDetectionEnabled) {
+        this.homogeneityDetectionEnabled = homogeneityDetectionEnabled;
     }
 
     public void setCycleDetectionEnabled(boolean cycleDetectionEnabled) {

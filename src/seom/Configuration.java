@@ -25,6 +25,7 @@ public class Configuration {
     private int mutationDistance;
     private boolean interactionsVisualized;
     private boolean learningVisualized;
+    private boolean homogeneityDetectionEnabled;
     private boolean cycleDetectionEnabled;
     private int maxNumGenerations;
 
@@ -137,6 +138,14 @@ public class Configuration {
 
     public void setLearningVisualized(boolean learningVisualized) {
         this.learningVisualized = learningVisualized;
+    }
+
+    public boolean isHomogeneityDetectionEnabled() {
+        return homogeneityDetectionEnabled;
+    }
+
+    public void setHomogeneityDetectionEnabled(boolean homogeneityDetectionEnabled) {
+        this.homogeneityDetectionEnabled = homogeneityDetectionEnabled;
     }
 
     public boolean isCycleDetectionEnabled() {

@@ -48,13 +48,13 @@ public class Simulation extends SimState {
 
         result = new Result(config);
 
+        stability.setHomogeneityDetectionEnabled(config.isHomogeneityDetectionEnabled());
         stability.setCycleDetectionEnabled(config.isCycleDetectionEnabled());
-        if (config.isCycleDetectionEnabled()) {
-            for (SimulationProcess process : processes) {
-                process.reset();
-                if (process.isStochastic()) {
-                    stability.setCycleDetectionEnabled(false);
-                }
+        for (SimulationProcess process : processes) {
+            process.reset();
+            if (process.isStochastic()) {
+                stability.setHomogeneityDetectionEnabled(false);
+                stability.setCycleDetectionEnabled(false);
             }
         }
 

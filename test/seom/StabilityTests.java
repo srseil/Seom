@@ -19,6 +19,7 @@ public class StabilityTests {
         config.setCycleDetectionEnabled(false);
         var simulation = new Simulation(config);
         var stability = new Stability(simulation);
+        stability.setHomogeneityDetectionEnabled(true);
         simulation.start();
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
         sortedAgents.sort(Comparator.comparingInt(Agent::getId));
