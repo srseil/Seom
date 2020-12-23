@@ -19,4 +19,13 @@ public class InteractionEdge implements Edge, Comparable<InteractionEdge> {
     public int compareTo(InteractionEdge o) {
         return Integer.compare(id, o.id);
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
+    public static void resetIds() {
+        nextId = 0;
+    }
 }
