@@ -41,7 +41,7 @@ public class Mutation implements SimulationProcess {
             double rand = config.getRandom().nextDouble();
             if (rand >= config.getMutationProbability()) continue;
 
-            List<Strategy> shuffledStrategies = Arrays.asList(config.getGame().getStrategies());
+            var shuffledStrategies = new ArrayList<>(Arrays.asList(config.getGame().getStrategies()));
             Collections.shuffle(shuffledStrategies, config.getJavaRandom());
             Strategy newStrategy = shuffledStrategies.get(0) != agent.getStrategy()
                 ? shuffledStrategies.get(0)
