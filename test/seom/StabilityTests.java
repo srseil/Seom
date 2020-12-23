@@ -9,7 +9,7 @@ import seom.networks.Lattice1DBuilder;
 import seom.processes.Stability;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 
 public class StabilityTests {
     @Test
@@ -22,7 +22,7 @@ public class StabilityTests {
         stability.setHomogeneityDetectionEnabled(true);
         simulation.start();
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
 
         sortedAgents.get(0).setStrategy(PrisonersDilemma.Strategy.Cooperate);
         sortedAgents.get(1).setStrategy(PrisonersDilemma.Strategy.Defect);
@@ -51,7 +51,7 @@ public class StabilityTests {
         var stability = new Stability(simulation);
         simulation.start();
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
 
         sortedAgents.get(0).setStrategy(PrisonersDilemma.Strategy.Cooperate);
         sortedAgents.get(1).setStrategy(PrisonersDilemma.Strategy.Defect);
@@ -78,7 +78,7 @@ public class StabilityTests {
         stability.setCycleDetectionEnabled(true);
         simulation.start();
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
 
         sortedAgents.get(0).setStrategy(PrisonersDilemma.Strategy.Cooperate);
         sortedAgents.get(1).setStrategy(PrisonersDilemma.Strategy.Defect);

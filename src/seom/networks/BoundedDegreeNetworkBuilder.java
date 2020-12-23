@@ -293,7 +293,7 @@ public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
         for (Agent stub : stubs) {
             agents.remove(stub);
         }
-        agents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(agents);
         Collections.shuffle(agents, javaRandom);
         return agents.toArray(Agent[]::new);
     }

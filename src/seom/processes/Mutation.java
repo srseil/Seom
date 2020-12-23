@@ -36,7 +36,7 @@ public class Mutation implements SimulationProcess {
         if (config.getMutationProbability() == 0.0) return;
 
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
         for (Agent agent : sortedAgents) {
             double rand = config.getRandom().nextDouble();
             if (rand >= config.getMutationProbability()) continue;

@@ -6,10 +6,7 @@ import seom.games.Strategy;
 import seom.utils.Log;
 import sim.engine.SimState;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Initialization implements SimulationProcess {
     private final Configuration config;
@@ -62,7 +59,7 @@ public class Initialization implements SimulationProcess {
         Log.fine("Initialization");
 
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
         for (Agent agent : sortedAgents) {
             int strategyIndex;
             double rand = config.getRandom().nextDouble();

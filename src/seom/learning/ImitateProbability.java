@@ -21,7 +21,7 @@ public class ImitateProbability implements LearningRule {
             }
         }
 
-        betterNeighbors.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(betterNeighbors);
         if (betterNeighbors.size() == 0) {
             return agent.getStrategy();
         } else if (betterNeighbors.size() == 1) {

@@ -26,7 +26,7 @@ public class Stability implements SimulationProcess {
         this.simulation = simulation;
         config = simulation.getConfig();
         sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
         byteBuffer = ByteBuffer.allocate(Integer.BYTES * config.getNetwork().getVertexCount());
         strategyHistory = new ArrayList<>();
         strategyHashHistory = new ArrayList<>();

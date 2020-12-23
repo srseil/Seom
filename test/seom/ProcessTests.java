@@ -15,7 +15,7 @@ import seom.processes.Learning;
 import seom.processes.Mutation;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 
 public class ProcessTests {
     @Test
@@ -112,7 +112,7 @@ public class ProcessTests {
         config.setMutationDistance(1);
 
         var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
         sortedAgents.get(0).setStrategy(UltimatumSubgame.Strategy.S7Fairman);
         sortedAgents.get(1).setStrategy(UltimatumSubgame.Strategy.S7Fairman);
         sortedAgents.get(2).setStrategy(UltimatumSubgame.Strategy.S7Fairman);

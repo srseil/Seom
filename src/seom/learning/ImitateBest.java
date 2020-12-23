@@ -7,7 +7,7 @@ import seom.games.Strategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Comparator;
+import java.util.Collections;
 
 public class ImitateBest implements LearningRule {
     @Override
@@ -28,7 +28,7 @@ public class ImitateBest implements LearningRule {
             return agent.getStrategy();
         }
 
-        bestNeighbors.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(bestNeighbors);
         return bestNeighbors.get(0).getStrategy();
     }
 

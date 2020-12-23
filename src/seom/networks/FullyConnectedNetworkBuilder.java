@@ -7,7 +7,7 @@ import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 
 public class FullyConnectedNetworkBuilder implements NetworkBuilder {
     private int numAgents;
@@ -56,7 +56,7 @@ public class FullyConnectedNetworkBuilder implements NetworkBuilder {
         }
 
         var sortedAgents = new ArrayList<>(interactionGraph.getVertices());
-        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        Collections.sort(sortedAgents);
         for (Agent agent : sortedAgents) {
             for (Agent other : sortedAgents) {
                 if (agent == other) continue;
