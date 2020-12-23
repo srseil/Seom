@@ -6,6 +6,9 @@ import edu.uci.ics.jung.graph.UndirectedSparseMultigraph;
 import edu.uci.ics.jung.graph.util.Pair;
 import seom.Agent;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 public class FullyConnectedNetworkBuilder implements NetworkBuilder {
     private int numAgents;
 
@@ -51,8 +54,11 @@ public class FullyConnectedNetworkBuilder implements NetworkBuilder {
         for (int i = 0; i < numAgents; i++) {
             interactionGraph.addVertex(new Agent());
         }
-        for (Agent agent : interactionGraph.getVertices()) {
-            for (Agent other : interactionGraph.getVertices()) {
+
+        var sortedAgents = new ArrayList<>(interactionGraph.getVertices());
+        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        for (Agent agent : sortedAgents) {
+            for (Agent other : sortedAgents) {
                 if (agent == other) continue;
                 interactionGraph.addEdge(new InteractionEdge(), agent, other);
             }

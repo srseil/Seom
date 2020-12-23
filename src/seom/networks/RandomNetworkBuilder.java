@@ -90,6 +90,7 @@ public class RandomNetworkBuilder implements NetworkBuilder {
         }
 
         ArrayList<InteractionEdge> shuffledEdges = new ArrayList<>(interactionGraph.getEdges());
+        Collections.sort(shuffledEdges);
         Collections.shuffle(shuffledEdges, javaRandom);
         for (InteractionEdge edge : shuffledEdges) {
             if (leftover == 0) break;

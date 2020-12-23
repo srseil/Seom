@@ -161,7 +161,9 @@ public class NetworkUtils {
         }
 
         if (steps > 1) {
-            for (Agent neighbor : interactionGraph.getNeighbors(hub)) {
+            var sortedNeighbors = new ArrayList<>(interactionGraph.getNeighbors(hub));
+            sortedNeighbors.sort(Comparator.comparingInt(Agent::getId));
+            for (Agent neighbor : sortedNeighbors) {
                 addLearningEdges(steps - 1, agent, neighbor, interactionGraph, learningGraph);
             }
         }

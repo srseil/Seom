@@ -113,8 +113,9 @@ public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
             boolean removed = false;
             for (Agent agent : getShuffledNodesWithoutStubs(configGraph)) {
                 if (configGraph.getNeighborCount(agent) > minDegree) {
-                    InteractionEdge edge = (InteractionEdge) configGraph.getOutEdges(agent).toArray()[0];
-                    configGraph.removeEdge(edge);
+                    var outEdges = new ArrayList<>(configGraph.getOutEdges(agent));
+                    Collections.sort(outEdges);
+                    configGraph.removeEdge(outEdges.get(0));
                     removed = true;
                     break;
                 }
@@ -292,12 +293,14 @@ public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
         for (Agent stub : stubs) {
             agents.remove(stub);
         }
+        agents.sort(Comparator.comparingInt(Agent::getId));
         Collections.shuffle(agents, javaRandom);
         return agents.toArray(Agent[]::new);
     }
 
     private InteractionEdge[] getShuffledEdges(UndirectedSparseMultigraph<Agent, InteractionEdge> configGraph) {
         ArrayList<InteractionEdge> edges = new ArrayList<>(configGraph.getEdges());
+        Collections.sort(edges);
         Collections.shuffle(edges, javaRandom);
         return edges.toArray(InteractionEdge[]::new);
     }
