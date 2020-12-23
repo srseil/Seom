@@ -5,10 +5,7 @@ import seom.Agent;
 import seom.games.Game;
 import seom.games.Strategy;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ImitateProbability implements LearningRule {
     private MersenneTwisterFast random;
@@ -24,6 +21,7 @@ public class ImitateProbability implements LearningRule {
             }
         }
 
+        betterNeighbors.sort(Comparator.comparingInt(Agent::getId));
         if (betterNeighbors.size() == 0) {
             return agent.getStrategy();
         } else if (betterNeighbors.size() == 1) {
@@ -51,11 +49,6 @@ public class ImitateProbability implements LearningRule {
         return null;
     }
 
-    @Override
-    public void setRandom(MersenneTwisterFast random) {
-        this.random = random;
-    }
-
     private static class Range {
         final double lowerBound;
         final double upperBound;
@@ -68,6 +61,11 @@ public class ImitateProbability implements LearningRule {
         boolean contains(double value) {
             return value >= lowerBound && value < upperBound;
         }
+    }
+
+    @Override
+    public void setRandom(MersenneTwisterFast random) {
+        this.random = random;
     }
 
     @Override

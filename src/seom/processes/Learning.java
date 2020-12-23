@@ -10,6 +10,8 @@ import seom.networks.NetworkUtils;
 import seom.utils.Log;
 import sim.engine.SimState;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class Learning implements SimulationProcess {
@@ -35,7 +37,9 @@ public class Learning implements SimulationProcess {
         Log.fine("Learning");
 
         var newStrategies = new HashMap<Agent, Strategy>();
-        for (Agent agent : learningGraph.getVertices()) {
+        var sortedAgents = new ArrayList<>(config.getNetwork().getVertices());
+        sortedAgents.sort(Comparator.comparingInt(Agent::getId));
+        for (Agent agent : sortedAgents) {
             Strategy newStrategy = config.getLearningRule().getUpdatedStrategy(
                 agent, learningGraph.getNeighbors(agent), config.getGame());
             newStrategies.put(agent, newStrategy);
