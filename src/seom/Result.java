@@ -76,6 +76,10 @@ public class Result {
         }
     }
 
+    public List<Strategy[]> getStrategyHistory() {
+        return strategyHistory;
+    }
+
     public Map<Strategy, Integer> getStrategyMap() {
         return strategyMap;
     }
