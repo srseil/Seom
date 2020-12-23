@@ -7,7 +7,7 @@ import seom.analysis.NetworkType;
 public class MutationDistance implements Parameter<Integer> {
     @Override
     public boolean isApplicable(GameType gameType, NetworkType networkType) {
-        return true;
+        return networkType != NetworkType.FullyConnected;
     }
 
     @Override
