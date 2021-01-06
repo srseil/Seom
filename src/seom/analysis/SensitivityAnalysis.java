@@ -118,7 +118,7 @@ public class SensitivityAnalysis {
         Timer.stop();
 
         Log.info("");
-        Log.info("Simulation parameter '" + parameterName + "' finished ... " + Timer.duration().toMillis() + "ms");
+        Log.info("Simulation of parameter '" + parameterName + "' finished ... " + Timer.duration().toMillis() + "ms");
     }
 
     @SuppressWarnings({"rawtypes", "unchecked"})
