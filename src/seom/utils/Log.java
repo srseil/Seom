@@ -39,6 +39,14 @@ public class Log {
         logger.setLevel(level);
     }
 
+    public static void reset() {
+        Logger rootLogger = logger.getParent();
+        for (Handler handler : rootLogger.getHandlers()) {
+            rootLogger.removeHandler(handler);
+        }
+        rootLogger.addHandler(new ConsoleHandler());
+    }
+
     public static void enableSimpleLogging() {
         Logger rootLogger = logger.getParent();
         for (Handler handler : rootLogger.getHandlers()) {
