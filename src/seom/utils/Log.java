@@ -1,5 +1,6 @@
 package seom.utils;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.*;
 
@@ -47,6 +48,10 @@ public class Log {
     }
 
     public static void enableFileLogging(String filePath) {
+        var file = new File(filePath);
+        var dir = file.getParentFile();
+        assert dir.exists() || dir.mkdirs() : "Could not create directories: " + filePath;
+
         Logger rootLogger = logger.getParent();
         try {
             rootLogger.addHandler(new FileHandler(filePath));
