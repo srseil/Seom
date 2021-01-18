@@ -1,21 +1,30 @@
 package seom;
 
-import seom.games.BargainingGame;
-import seom.games.PrisonersDilemma;
-import seom.games.UltimatumGame;
+import seom.analysis.GameType;
+import seom.analysis.NetworkType;
+import seom.analysis.SensitivityAnalysis;
+import seom.utils.Log;
 
 public class Main {
-
     public static void main(String[] args) {
-	    var pd = new PrisonersDilemma();
-	    var payoffs = pd.play(PrisonersDilemma.Strategy.Cooperate, PrisonersDilemma.Strategy.Defect);
+        var gameTypes = new GameType[] {
+            GameType.PrisonersDilemma,
+            GameType.StagHunt,
+            GameType.BargainingSubgame,
+            GameType.UltimatumGame
+        };
 
-	    var bg = new BargainingGame();
-	    payoffs = bg.play(BargainingGame.Strategy.Demand10, BargainingGame.Strategy.Demand0);
+        for (GameType gameType : gameTypes) {
+            for (NetworkType networkType : NetworkType.values()) {
+                String logPath = "analysis/" + gameType + "/" + networkType + "/log.txt";
+                Log.reset();
+                Log.enableFileLogging(logPath);
+                Log.enableSimpleLogging();
 
-		var ug = new UltimatumGame();
-		payoffs = ug.play(UltimatumGame.Strategy.S7Fairman, UltimatumGame.Strategy.S4MadDog);
-
-	    return;
+                var analysis = new SensitivityAnalysis(gameType, networkType);
+                analysis.simulate();
+                analysis.writeResultTables("analysis");
+            }
+        }
     }
 }
