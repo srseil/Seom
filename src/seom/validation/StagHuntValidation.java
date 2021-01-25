@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 // This class replicates the experiment mentioned in The Structural Evolution of Morality, p. 137-138.
-// It is unclear how many agents were used. Here, the number 100 was chosen.
 // The experiment should be executed for the learning distances 1 and 2.
 public class StagHuntValidation {
     public final static long BASE_SEED = 19561831;
@@ -62,7 +61,7 @@ public class StagHuntValidation {
             Timer.start();
             var graph = new BoundedDegreeNetworkBuilder(random)
                 .setLearningDistance(learningDistance)
-                .setNumAgents(100)
+                .setNumAgents(40)
                 .setMinDegree(2)
                 .setMaxDegree(4)
                 .create();
