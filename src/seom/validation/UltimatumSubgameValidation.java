@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-// This class replicates the experiment mentioned in The Structural Evolution of Morality, p. 233-235.
+// This class replicates the experiment mentioned in The Structural Evolution of Morality, p. 231-233.
 public class UltimatumSubgameValidation {
     public final static long BASE_SEED = 19561831;
     public final static int NUM_REPETITIONS = 1000;
