@@ -28,10 +28,10 @@ public class SensitivityAnalysis {
     private final static DecimalFormat decimalFormat = new DecimalFormat(
         "#0.0###", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
-    public final static long BASE_SEED = 19561831;
-    public final static int NUM_REPETITIONS = 10;
-    public final static boolean CYCLE_DETECTION_ENABLED = true;
-    public final static int MAX_NUM_GENERATIONS = 1000;
+    public static long BASE_SEED = 19561831;
+    public static int NUM_REPETITIONS = 100;
+    public static boolean CYCLE_DETECTION_ENABLED = true;
+    public static int MAX_NUM_GENERATIONS = 1000;
 
     private final GameType gameType;
     private final NetworkType networkType;
