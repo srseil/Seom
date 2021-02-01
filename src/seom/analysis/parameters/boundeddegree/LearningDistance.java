@@ -4,7 +4,7 @@ import seom.Configuration;
 import seom.analysis.GameType;
 import seom.analysis.NetworkType;
 import seom.analysis.parameters.Parameter;
-import seom.networks.BoundedDegreeNetworkBuilder;
+import seom.networks.BoundedDegreeBuilder;
 
 public class LearningDistance implements Parameter<Integer> {
     @Override
@@ -28,8 +28,8 @@ public class LearningDistance implements Parameter<Integer> {
 
     @Override
     public void apply(Integer value, Configuration config) {
-        assert config.getNetworkBuilder() instanceof BoundedDegreeNetworkBuilder : "Incorrect network builder";
-        var builder = (BoundedDegreeNetworkBuilder) config.getNetworkBuilder();
+        assert config.getNetworkBuilder() instanceof BoundedDegreeBuilder : "Incorrect network builder";
+        var builder = (BoundedDegreeBuilder) config.getNetworkBuilder();
         builder.setLearningDistance(value);
     }
 

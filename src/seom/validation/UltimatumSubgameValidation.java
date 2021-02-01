@@ -6,7 +6,7 @@ import seom.Result;
 import seom.games.Strategy;
 import seom.games.UltimatumSubgame;
 import seom.learning.ImitateBest;
-import seom.networks.BoundedDegreeNetworkBuilder;
+import seom.networks.BoundedDegreeBuilder;
 import seom.utils.*;
 import seom.utils.tuples.Triple;
 
@@ -79,7 +79,7 @@ public class UltimatumSubgameValidation {
             var random = new MersenneTwisterFast(BASE_SEED + i);
 
             Timer.start();
-            var graph = new BoundedDegreeNetworkBuilder(random)
+            var graph = new BoundedDegreeBuilder(random)
                 .setLearningDistance(1)
                 .setNumAgents(50)
                 .setMinDegree(minDegree)

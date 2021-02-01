@@ -193,7 +193,7 @@ public class SensitivityAnalysis {
     private boolean applySpecialValueCases(Parameter<?> parameter, Object value, Configuration config) {
         // RandomNetwork's edge probabilities are too small for population count of 100
         // Additionally, a population size of 10000 consumes too much memory
-        if (parameter instanceof PopulationSize && networkType == NetworkType.RandomNetwork) {
+        if (parameter instanceof PopulationSize && networkType == NetworkType.FullyRandom) {
             PopulationSize populationSize = (PopulationSize) parameter;
             if ((int) value != populationSize.getNominal()) return false;
         }
@@ -237,19 +237,19 @@ public class SensitivityAnalysis {
             case PrisonersDilemma: config.setGame(new PrisonersDilemma()); break;
             case StagHunt: config.setGame(new StagHunt()); break;
             case BargainingSubgame: config.setGame(new BargainingSubgame()); break;
-            case UltimatumGame: config.setGame(new UltimatumSubgame()); break;
+            case UltimatumSubgame: config.setGame(new UltimatumSubgame()); break;
         }
     }
 
     private void setConfigNetworkBuilder(Configuration config, NetworkType networkType) {
         switch (networkType) {
-            case FullyConnected: config.setNetworkBuilder(new FullyConnectedNetworkBuilder()); break;
+            case FullyConnected: config.setNetworkBuilder(new FullyConnectedBuilder()); break;
             case Lattice1D: config.setNetworkBuilder(new Lattice1DBuilder()); break;
             case Lattice2D: config.setNetworkBuilder(new Lattice2DBuilder()); break;
             case SmallWorld1D: config.setNetworkBuilder(new SmallWorld1DBuilder()); break;
             case SmallWorld2D: config.setNetworkBuilder(new SmallWorld2DBuilder()); break;
-            case BoundedDegree: config.setNetworkBuilder(new BoundedDegreeNetworkBuilder()); break;
-            case RandomNetwork: config.setNetworkBuilder(new RandomNetworkBuilder()); break;
+            case BoundedDegree: config.setNetworkBuilder(new BoundedDegreeBuilder()); break;
+            case FullyRandom: config.setNetworkBuilder(new FullyRandomBuilder()); break;
         }
     }
 }

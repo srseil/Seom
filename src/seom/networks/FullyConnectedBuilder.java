@@ -9,7 +9,7 @@ import seom.Agent;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class FullyConnectedNetworkBuilder implements NetworkBuilder {
+public class FullyConnectedBuilder implements NetworkBuilder {
     private int numAgents;
 
     @Override
@@ -67,7 +67,7 @@ public class FullyConnectedNetworkBuilder implements NetworkBuilder {
         return interactionGraph;
     }
 
-    public FullyConnectedNetworkBuilder setNumAgents(int numAgents) {
+    public FullyConnectedBuilder setNumAgents(int numAgents) {
         this.numAgents = numAgents;
         return this;
     }

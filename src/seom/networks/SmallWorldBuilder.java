@@ -11,7 +11,7 @@ import seom.utils.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class SmallWorldNetworkBuilder implements NetworkBuilder {
+public class SmallWorldBuilder implements NetworkBuilder {
     private UndirectedSparseGraph<Agent, InteractionEdge> baseLattice;
     private int learningDistance;
     private double beta;
@@ -20,10 +20,10 @@ public class SmallWorldNetworkBuilder implements NetworkBuilder {
     private JavaRandomFacade javaRandom;
     private UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
-    public SmallWorldNetworkBuilder() {
+    public SmallWorldBuilder() {
     }
 
-    public SmallWorldNetworkBuilder(MersenneTwisterFast random) {
+    public SmallWorldBuilder(MersenneTwisterFast random) {
         setRandom(random);
     }
 
@@ -46,17 +46,17 @@ public class SmallWorldNetworkBuilder implements NetworkBuilder {
 
     //region Builder Setters
 
-    public SmallWorldNetworkBuilder setBaseLattice(UndirectedSparseGraph<Agent, InteractionEdge> baseLattice) {
+    public SmallWorldBuilder setBaseLattice(UndirectedSparseGraph<Agent, InteractionEdge> baseLattice) {
         this.baseLattice = baseLattice;
         return this;
     }
 
-    public SmallWorldNetworkBuilder setLearningDistance(int learningDistance) {
+    public SmallWorldBuilder setLearningDistance(int learningDistance) {
         this.learningDistance = learningDistance;
         return this;
     }
 
-    public SmallWorldNetworkBuilder setBeta(double beta) {
+    public SmallWorldBuilder setBeta(double beta) {
         this.beta = beta;
         return this;
     }

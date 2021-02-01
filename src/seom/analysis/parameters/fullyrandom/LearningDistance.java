@@ -1,15 +1,15 @@
-package seom.analysis.parameters.randomnetwork;
+package seom.analysis.parameters.fullyrandom;
 
 import seom.Configuration;
 import seom.analysis.GameType;
 import seom.analysis.NetworkType;
 import seom.analysis.parameters.Parameter;
-import seom.networks.RandomNetworkBuilder;
+import seom.networks.FullyRandomBuilder;
 
 public class LearningDistance implements Parameter<Integer> {
     @Override
     public boolean isApplicable(GameType gameType, NetworkType networkType) {
-        return networkType == NetworkType.RandomNetwork;
+        return networkType == NetworkType.FullyRandom;
     }
 
     @Override
@@ -28,8 +28,8 @@ public class LearningDistance implements Parameter<Integer> {
 
     @Override
     public void apply(Integer value, Configuration config) {
-        assert config.getNetworkBuilder() instanceof RandomNetworkBuilder : "Incorrect network builder";
-        var builder = (RandomNetworkBuilder) config.getNetworkBuilder();
+        assert config.getNetworkBuilder() instanceof FullyRandomBuilder : "Incorrect network builder";
+        var builder = (FullyRandomBuilder) config.getNetworkBuilder();
         builder.setLearningDistance(value);
     }
 

@@ -4,7 +4,7 @@ import seom.Configuration;
 import seom.analysis.GameType;
 import seom.analysis.NetworkType;
 import seom.analysis.parameters.Parameter;
-import seom.networks.BoundedDegreeNetworkBuilder;
+import seom.networks.BoundedDegreeBuilder;
 import seom.utils.tuples.Pair;
 
 public class DegreeInterval implements Parameter<Pair<Integer, Integer>> {
@@ -32,8 +32,8 @@ public class DegreeInterval implements Parameter<Pair<Integer, Integer>> {
 
     @Override
     public void apply(Pair<Integer, Integer> value, Configuration config) {
-        assert config.getNetworkBuilder() instanceof BoundedDegreeNetworkBuilder : "Incorrect network builder";
-        var builder = (BoundedDegreeNetworkBuilder) config.getNetworkBuilder();
+        assert config.getNetworkBuilder() instanceof BoundedDegreeBuilder : "Incorrect network builder";
+        var builder = (BoundedDegreeBuilder) config.getNetworkBuilder();
         builder.setMinDegree(value.getFirst());
         builder.setMaxDegree(value.getSecond());
     }

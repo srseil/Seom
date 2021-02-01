@@ -6,7 +6,7 @@ import seom.Result;
 import seom.games.Payoffs;
 import seom.games.StagHunt;
 import seom.learning.ImitateBest;
-import seom.networks.BoundedDegreeNetworkBuilder;
+import seom.networks.BoundedDegreeBuilder;
 import seom.utils.Log;
 import seom.utils.Range;
 import seom.utils.SimulationRunner;
@@ -59,7 +59,7 @@ public class StagHuntValidation {
             var random = new MersenneTwisterFast(BASE_SEED + i);
 
             Timer.start();
-            var graph = new BoundedDegreeNetworkBuilder(random)
+            var graph = new BoundedDegreeBuilder(random)
                 .setLearningDistance(learningDistance)
                 .setNumAgents(40)
                 .setMinDegree(2)

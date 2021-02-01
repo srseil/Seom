@@ -7,5 +7,5 @@ public enum NetworkType {
     SmallWorld1D,
     SmallWorld2D,
     BoundedDegree,
-    RandomNetwork
+    FullyRandom
 }

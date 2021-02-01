@@ -6,7 +6,7 @@ import seom.Result;
 import seom.games.Payoffs;
 import seom.games.PrisonersDilemma;
 import seom.learning.ImitateBest;
-import seom.networks.BoundedDegreeNetworkBuilder;
+import seom.networks.BoundedDegreeBuilder;
 import seom.utils.Log;
 import seom.utils.SimulationRunner;
 import seom.utils.Timer;
@@ -91,7 +91,7 @@ public class PrisonersDilemmaValidation {
             var random = new MersenneTwisterFast(BASE_SEED + i);
 
             Timer.start();
-            var graph = new BoundedDegreeNetworkBuilder(random)
+            var graph = new BoundedDegreeBuilder(random)
                 .setLearningDistance(1)
                 .setNumAgents(numAgents)
                 .setMinDegree(minDegree)

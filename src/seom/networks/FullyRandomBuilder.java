@@ -11,7 +11,7 @@ import seom.utils.Log;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RandomNetworkBuilder implements NetworkBuilder {
+public class FullyRandomBuilder implements NetworkBuilder {
     private int numAgents;
     private int learningDistance;
     private double edgeProbability;
@@ -20,10 +20,10 @@ public class RandomNetworkBuilder implements NetworkBuilder {
     private JavaRandomFacade javaRandom;
     private UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
-    public RandomNetworkBuilder() {
+    public FullyRandomBuilder() {
     }
 
-    public RandomNetworkBuilder(MersenneTwisterFast random) {
+    public FullyRandomBuilder(MersenneTwisterFast random) {
         setRandom(random);
     }
 
@@ -46,17 +46,17 @@ public class RandomNetworkBuilder implements NetworkBuilder {
 
     //region Builder Setters
 
-    public RandomNetworkBuilder setNumAgents(int numAgents) {
+    public FullyRandomBuilder setNumAgents(int numAgents) {
         this.numAgents = numAgents;
         return this;
     }
 
-    public RandomNetworkBuilder setLearningDistance(int learningDistance) {
+    public FullyRandomBuilder setLearningDistance(int learningDistance) {
         this.learningDistance = learningDistance;
         return this;
     }
 
-    public RandomNetworkBuilder setEdgeProbability(double edgeProbability) {
+    public FullyRandomBuilder setEdgeProbability(double edgeProbability) {
         this.edgeProbability = edgeProbability;
         return this;
     }
@@ -64,7 +64,7 @@ public class RandomNetworkBuilder implements NetworkBuilder {
     //endregion
 
     private boolean tryCreateNetwork() {
-        interactionGraph = new FullyConnectedNetworkBuilder()
+        interactionGraph = new FullyConnectedBuilder()
             .setNumAgents(numAgents)
             .createInteractionGraph();
 

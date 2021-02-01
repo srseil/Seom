@@ -37,7 +37,7 @@ public class SmallWorld2DBuilder implements NetworkBuilder {
             .setWrapAround(wrapAround)
             .setNeighborhood(neighborhood)
             .create();
-        var builder = new SmallWorldNetworkBuilder()
+        var builder = new SmallWorldBuilder()
             .setBaseLattice(NetworkUtils.getInteractionGraph(lattice))
             .setLearningDistance(learningDistance)
             .setBeta(beta);

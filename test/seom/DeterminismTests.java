@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import seom.games.PrisonersDilemma;
 import seom.learning.ImitateBest;
-import seom.networks.BoundedDegreeNetworkBuilder;
+import seom.networks.BoundedDegreeBuilder;
 import seom.utils.SimulationRunner;
 
 public class DeterminismTests {
@@ -32,7 +32,7 @@ public class DeterminismTests {
         var config = new Configuration();
         config.setGame(new PrisonersDilemma());
         config.setLearningRule(new ImitateBest());
-        config.setNetwork(new BoundedDegreeNetworkBuilder(random)
+        config.setNetwork(new BoundedDegreeBuilder(random)
             .setNumAgents(20)
             .setLearningDistance(2)
             .setMinDegree(2)

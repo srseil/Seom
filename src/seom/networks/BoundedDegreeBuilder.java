@@ -10,7 +10,7 @@ import seom.utils.Log;
 
 import java.util.*;
 
-public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
+public class BoundedDegreeBuilder implements NetworkBuilder {
     private int numAgents;
     private int minDegree;
     private int maxDegree;
@@ -21,10 +21,10 @@ public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
     private Agent[] stubs;
     private UndirectedSparseGraph<Agent, InteractionEdge> interactionGraph;
 
-    public BoundedDegreeNetworkBuilder() {
+    public BoundedDegreeBuilder() {
     }
 
-    public BoundedDegreeNetworkBuilder(MersenneTwisterFast random) {
+    public BoundedDegreeBuilder(MersenneTwisterFast random) {
         setRandom(random);
     }
 
@@ -64,22 +64,22 @@ public class BoundedDegreeNetworkBuilder implements NetworkBuilder {
 
     //region Builder Setters
 
-    public BoundedDegreeNetworkBuilder setNumAgents(int numAgents) {
+    public BoundedDegreeBuilder setNumAgents(int numAgents) {
         this.numAgents = numAgents;
         return this;
     }
 
-    public BoundedDegreeNetworkBuilder setMinDegree(int minDegree) {
+    public BoundedDegreeBuilder setMinDegree(int minDegree) {
         this.minDegree = minDegree;
         return this;
     }
 
-    public BoundedDegreeNetworkBuilder setMaxDegree(int maxDegree) {
+    public BoundedDegreeBuilder setMaxDegree(int maxDegree) {
         this.maxDegree = maxDegree;
         return this;
     }
 
-    public BoundedDegreeNetworkBuilder setLearningDistance(int learningDistance) {
+    public BoundedDegreeBuilder setLearningDistance(int learningDistance) {
         this.learningDistance = learningDistance;
         return this;
     }

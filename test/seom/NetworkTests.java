@@ -37,7 +37,7 @@ public class NetworkTests {
 
     @Test
     public void createFullyConnectedNetwork() {
-        var graph = new FullyConnectedNetworkBuilder()
+        var graph = new FullyConnectedBuilder()
             .setNumAgents(10)
             .create();
         var interactionGraph = NetworkUtils.getInteractionGraph(graph);
@@ -102,7 +102,7 @@ public class NetworkTests {
             .setWrapAround(true)
             .create();
         var interactionLattice = NetworkUtils.getInteractionGraph(lattice);
-        var graph = new SmallWorldNetworkBuilder(random)
+        var graph = new SmallWorldBuilder(random)
             .setBaseLattice(interactionLattice)
             .setLearningDistance(1)
             .setBeta(0.2)
@@ -133,7 +133,7 @@ public class NetworkTests {
             .setWrapAround(true)
             .create();
         var interactionLattice = NetworkUtils.getInteractionGraph(lattice);
-        var graph = new SmallWorldNetworkBuilder(random)
+        var graph = new SmallWorldBuilder(random)
             .setBaseLattice(interactionLattice)
             .setLearningDistance(1)
             .setBeta(0.2)
@@ -154,7 +154,7 @@ public class NetworkTests {
     @Test
     public void createBoundedDegreeNetwork() {
         var random = new MersenneTwisterFast(12345678);
-        var graph = new BoundedDegreeNetworkBuilder(random)
+        var graph = new BoundedDegreeBuilder(random)
             .setNumAgents(10)
             .setLearningDistance(1)
             .setMinDegree(1)
@@ -171,7 +171,7 @@ public class NetworkTests {
     @Test
     public void createRandomNetwork() {
         var random = new MersenneTwisterFast(12345678);
-        var graph = new RandomNetworkBuilder(random)
+        var graph = new FullyRandomBuilder(random)
             .setNumAgents(5)
             .setLearningDistance(1)
             .setEdgeProbability(0.2)

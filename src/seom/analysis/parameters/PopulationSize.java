@@ -29,8 +29,8 @@ public class PopulationSize implements Parameter<Integer> {
     public void apply(Integer value, Configuration config) {
         assert config.getNetworkBuilder() != null : "Network builder is null";
 
-        if (config.getNetworkBuilder() instanceof FullyConnectedNetworkBuilder) {
-            var builder = (FullyConnectedNetworkBuilder) config.getNetworkBuilder();
+        if (config.getNetworkBuilder() instanceof FullyConnectedBuilder) {
+            var builder = (FullyConnectedBuilder) config.getNetworkBuilder();
             builder.setNumAgents(value);
         } else if (config.getNetworkBuilder() instanceof Lattice1DBuilder) {
             var builder = (Lattice1DBuilder) config.getNetworkBuilder();
@@ -48,11 +48,11 @@ public class PopulationSize implements Parameter<Integer> {
             int sqrt = (int) Math.round(Math.sqrt(value));
             builder.setWidth(sqrt);
             builder.setHeight(sqrt);
-        } else if (config.getNetworkBuilder() instanceof BoundedDegreeNetworkBuilder) {
-            var builder = (BoundedDegreeNetworkBuilder) config.getNetworkBuilder();
+        } else if (config.getNetworkBuilder() instanceof BoundedDegreeBuilder) {
+            var builder = (BoundedDegreeBuilder) config.getNetworkBuilder();
             builder.setNumAgents(value);
-        } else if (config.getNetworkBuilder() instanceof RandomNetworkBuilder) {
-            var builder = (RandomNetworkBuilder) config.getNetworkBuilder();
+        } else if (config.getNetworkBuilder() instanceof FullyRandomBuilder) {
+            var builder = (FullyRandomBuilder) config.getNetworkBuilder();
             builder.setNumAgents(value);
         } else {
             assert false : "Unknown network builder";
