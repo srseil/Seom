@@ -4,5 +4,5 @@ public enum GameType {
     PrisonersDilemma,
     StagHunt,
     BargainingSubgame,
-    UltimatumGame
+    UltimatumSubgame
 }
