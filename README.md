@@ -36,3 +36,7 @@ Pre-computed results of the sensitivity analysis can be found in the directory `
 * [The Structural Evolution of Morality (Alexander 2007)](https://doi.org/10.1017/CBO9780511550997)
 
   *Alexander's theory about the evolutionary emergence of moral behaviour*
+
+## License
+
+This project is licensed under **GPLv2 or later**.
