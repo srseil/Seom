@@ -39,4 +39,6 @@ Pre-computed results of the sensitivity analysis can be found in the directory `
 
 ## License
 
-This project is licensed under **GPLv2 or later**.
+This project is licensed under **GPLv2 or later**. See the `LICENSE` file for details.
+
+If you would like to use the project under a different license, please [open an issue](https://github.com/srseil/Seom/issues/new/choose) or contact [Stefan Seil](https://github.com/srseil).
