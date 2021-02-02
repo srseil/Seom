@@ -11,13 +11,13 @@ The model is implemented in Java using the [MASON](https://cs.gmu.edu/~eclab/pro
 The project was developed in IntelliJ IDEA. To build, import the root of the checked out repository into IntelliJ. The main method lies in `de.lmu.ifi.pms.seom.Main`.
 It is recommended to add `-ea` to the JVM options, in order to enable assertions which are used in multiple places in the code. The project requires JDK 11.
 
-## Run
-
-To run the sensitivity analysis, simply execute the main method of the class `de.lmu.ifi.pms.seom.Main`. The results are stored in a new directory `analysis`.
-
 ## Dependencies
 
 All dependencies are bundled with the project in the `lib` directory, except for a suitable JDK.
+
+## Run
+
+To run the sensitivity analysis, simply execute the main method of the class `de.lmu.ifi.pms.seom.Main`. The results are stored in a new directory `analysis`.
 
 ## Results
 
