@@ -1,6 +1,7 @@
 seom_plot <- function(csvfile, parameter, output, title, nominal, extra) {
   library(ggplot2)
   library(scales)
+  library(stringr)
   
   violinfill <- "gray"
   if (output == "morality") {
@@ -67,17 +68,46 @@ seom_plot <- function(csvfile, parameter, output, title, nominal, extra) {
   }
   
   plot <- plot + ggtitle(title)
-  plot <- plot + xlab(parameter)
+  plot <- plot + xlab(str_to_title(parameter))
   plot <- plot + ylab(output)
   plot <- plot + theme(panel.grid.major.x = element_blank(),
-                       text = element_text(size = 20, family = "calibri"),
-                       plot.title = element_text(size = 20))
+                       axis.title.y = element_text(size = 20, family = "Calibri"),
+                       axis.title.x = element_text(size = 20, family = "Calibri"),
+                       axis.text = element_text(size = 16, family = "Calibri"),
+                       plot.title = element_text(size = 20, family = "Calibri"))
   
   #if (extra == "sw1d" | extra == "sw2d") {
   #  plot <- plot + scale_x_discrete(labels = xlabels)
   #}
   
   plot
+}
+
+prob_distribution <- function(mean) {
+  library(ggplot2)
+  
+  plot <- ggplot(data = data.frame(probability = c(0, 1)), aes(probability))
+  plot <- plot + stat_function(fun = dnorm, n = 101, args = list(mean = mean, sd = 0.1))
+  
+  
+  plot <- plot + geom_vline(xintercept = 0.0, linetype = "dotted")
+  plot <- plot + geom_vline(xintercept = 1.0, linetype = "dotted")
+  if (mean == 0.75) {
+    
+  }
+  
+  plot <- plot + ylab("")
+  plot <- plot + scale_y_continuous(breaks = NULL)
+  plot <- plot + theme(panel.grid.major.x = element_blank(),
+                       panel.grid.minor.x = element_blank(),
+                       text = element_text(size = 20, family = "Linux Biolinum"),
+                       axis.text = element_text(family = "Calibri"))
+  plot
+}
+
+prob_distribution_cairo <- function(mean, name) {
+  plot <- prob_distribution(mean)
+  cairo(plot, name)
 }
 
 cairo <- function(plot, name) {
@@ -127,7 +157,7 @@ plot_parameters_all <- function(basedir) {
   plot_parameters(basedir, "PrisonersDilemma", "SmallWorld1D")
   plot_parameters(basedir, "PrisonersDilemma", "SmallWorld2D")
   plot_parameters(basedir, "PrisonersDilemma", "BoundedDegree")
-  plot_parameters(basedir, "PrisonersDilemma", "RandomNetwork")
+  plot_parameters(basedir, "PrisonersDilemma", "FullyRandom")
   
   plot_parameters(basedir, "StagHunt", "FullyConnected")
   plot_parameters(basedir, "StagHunt", "Lattice1D")
@@ -135,7 +165,7 @@ plot_parameters_all <- function(basedir) {
   plot_parameters(basedir, "StagHunt", "SmallWorld1D")
   plot_parameters(basedir, "StagHunt", "SmallWorld2D")
   plot_parameters(basedir, "StagHunt", "BoundedDegree")
-  plot_parameters(basedir, "StagHunt", "RandomNetwork")
+  plot_parameters(basedir, "StagHunt", "FullyRandom")
   
   plot_parameters(basedir, "BargainingSubgame", "FullyConnected")
   plot_parameters(basedir, "BargainingSubgame", "Lattice1D")
@@ -143,15 +173,15 @@ plot_parameters_all <- function(basedir) {
   plot_parameters(basedir, "BargainingSubgame", "SmallWorld1D")
   plot_parameters(basedir, "BargainingSubgame", "SmallWorld2D")
   plot_parameters(basedir, "BargainingSubgame", "BoundedDegree")
-  plot_parameters(basedir, "BargainingSubgame", "RandomNetwork")
+  plot_parameters(basedir, "BargainingSubgame", "FullyRandom")
   
-  plot_parameters(basedir, "UltimatumGame", "FullyConnected")
-  plot_parameters(basedir, "UltimatumGame", "Lattice1D")
-  plot_parameters(basedir, "UltimatumGame", "Lattice2D")
-  plot_parameters(basedir, "UltimatumGame", "SmallWorld1D")
-  plot_parameters(basedir, "UltimatumGame", "SmallWorld2D")
-  plot_parameters(basedir, "UltimatumGame", "BoundedDegree")
-  plot_parameters(basedir, "UltimatumGame", "RandomNetwork")
+  plot_parameters(basedir, "UltimatumSubgame", "FullyConnected")
+  plot_parameters(basedir, "UltimatumSubgame", "Lattice1D")
+  plot_parameters(basedir, "UltimatumSubgame", "Lattice2D")
+  plot_parameters(basedir, "UltimatumSubgame", "SmallWorld1D")
+  plot_parameters(basedir, "UltimatumSubgame", "SmallWorld2D")
+  plot_parameters(basedir, "UltimatumSubgame", "BoundedDegree")
+  plot_parameters(basedir, "UltimatumSubgame", "FullyRandom")
 }
 
 plot_parameters <- function(basedir, game, network) {
@@ -164,7 +194,7 @@ plot_parameters <- function(basedir, game, network) {
     gametitle <- "Stag Hunt"
   } else if (game == "BargainingSubgame") {
     gametitle <- "Bargaining Subgame"
-  } else if (game == "UltimatumGame") {
+  } else if (game == "UltimatumSubgame") {
     gametitle <- "Ultimatum Subgame"
   } else {
     stop("unknown game")
@@ -172,19 +202,19 @@ plot_parameters <- function(basedir, game, network) {
   
   networktitle <- ""
   if (network == "FullyConnected") {
-    networktitle <- "Fully Connected Network"
+    networktitle <- "Fully Connected"
   } else if (network == "Lattice1D") {
     networktitle <- "Lattice 1D"
   } else if (network == "Lattice2D") {
     networktitle <- "Lattice 2D"
   } else if (network == "SmallWorld1D") {
-    networktitle <- "Small-World 1D"
+    networktitle <- "Small-world 1D"
   } else if (network == "SmallWorld2D") {
-    networktitle <- "Small-World 2D"
+    networktitle <- "Small-world 2D"
   } else if (network == "BoundedDegree") {
-    networktitle <- "Bounded-Degree Network"
-  } else if (network == "RandomNetwork") {
-    networktitle <- "Random Network"
+    networktitle <- "Bounded-degree"
+  } else if (network == "FullyRandom") {
+    networktitle <- "Fully Random"
   } else {
     stop("unknown network")
   }
